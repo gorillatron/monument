@@ -1,0 +1,104 @@
+
+@import url(http://fonts.googleapis.com/css?family=Quicksand:300,400,700);
+
+html {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  position: fixed;
+  padding: 0px;
+  margin: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  box-shadow: inset 0px 0px 150px rgba(0,0,0, 0.1);
+  height: 100%;
+  width: 100%;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#hero {
+  margin: 100px auto 0px auto;
+  width: 290px;
+}
+
+#hero #monument {
+  width: 80px;
+  height: 240px;
+  background: black;
+  margin: 0px auto 0px auto;
+  border-radius: 2px;
+  background-color: #363636;
+  border: 2px solid #404040;
+}
+
+#hero h1 {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 4em;
+  text-align: center;
+  color: #4D4D4D;
+  font-weight: 300;
+  text-shadow: 1px 1px rgba(5,5,5, 0.1);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+#hero #info {
+  width: 100%;
+
+}
+
+#hero #info h2 {  
+  font-size: 16px;
+  font-family: arial;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 300;
+  color: #808080;
+
+}
+
+#hero #info input {
+  display: inline-block;
+  width: 189px;
+  padding: 6px 10px;
+  height: 30px;
+  box-sizing: border-box;
+  margin-top: 80px;
+  border: 1px solid #D6D6D6;
+  border-radius: 2px;
+  box-shadow: inset 0px 0px 10px rgba(5,5,5, 0.05);
+  text-align: center;
+}
+
+#hero #info input:focus {
+  outline: none;
+}
+
+#hero #info #send {
+  display: inline-block;
+  color: #6CCC94;
+  text-align: center;
+  margin-top: 5px;
+  -webkit-transition: opacity 0.3s;
+  -moz-transition: opacity 0.3s;
+  cursor: default;
+  padding: 6px 10px;
+  height: 30px;
+  margin: 0px 0px 0px 4px;
+  border-radius: 1px;
+  background-color: #69BCCF;
+  border: 0px solid #68ADBD;
+  color: whitesmoke;
+  -webkit-transition: box-shadow 0.08s;
+  cursor: pointer;
+}
+
+#hero #info #send:active {
+  box-shadow: inset 0px 0px 100px rgba(0,0,0, 0.07);
+}
