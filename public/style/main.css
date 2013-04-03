@@ -43,6 +43,25 @@ section#featured {
   background-size: cover;
 }
 
+section#featured .image-fullscreen {
+  z-index: 9999;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0,0,0, 0.7);
+  background-image: url(/images/image-fullscreen.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 28px;
+  width: 32px;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+section#featured .image-fullscreen:hover {
+  opacity: 1;
+}
+
 section#featured .content {
   margin-top: 15%;  
 }
@@ -59,18 +78,19 @@ section#featured h1.monument {
   font-family: "Helvetica Neue";
   font-weight: 100;
   font-size: 5em;
-  margin-left
+  text-shadow: 2px 2px 1px rgba(0,0,0, 0.7);
 }
 
 section#featured .desc {
   display: inline-block;
   vertical-align: top;
   width: 600px;
-  background: rgba(255,255,255, 0.7);
+  background: rgba(255,255,255, 0.85);
   padding: 20px;
   line-height: 1.6em;
   margin-left: 20px;
   font-family: "Helvetica Neue";
+  box-shadow: 2px 2px 2px 0px rgba(0,0,0, 0.3)
 }
 
 section#featured .desc h2 {
@@ -90,4 +110,8 @@ section#featured .desc p {
 
 section#featured .desc #player {
   margin-bottom: 20px;
+}
+
+.typekit-badge {
+  display: none!important;
 }
