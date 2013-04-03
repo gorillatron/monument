@@ -3,6 +3,16 @@ html
   head
     title= title
     link(rel='stylesheet', href='/style/main.css')
+
+    script(type="text/javascript", src="http://w.soundcloud.com/player/api.js")
+
     script(src='/main.js')
+    script(src="//use.typekit.net/jor0qjq.js")
+
+    script
+      try{
+        Typekit.load();
+      } catch(e){}
+
   body
     block content

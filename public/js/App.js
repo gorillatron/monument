@@ -14,6 +14,7 @@ var App = Backbone.Router.extend({
     var podCasts
 
     podCasts = new PodCasts()
+    podCasts.fetch()
 
     $( document ).ready(_.bind(function( event ) {
 
@@ -21,8 +22,6 @@ var App = Backbone.Router.extend({
         el: 'body',
         collection: podCasts
       })
-
-      podCasts.fetch()
 
       Backbone.history.start()
 
