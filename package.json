@@ -15,6 +15,7 @@
   },
   "subdomain": "monument",
   "engines": {
-    "node": "0.8.x"
+    "node": ">= 0.8.x",
+    "npm":  ">= 1.0.0"
   }
 }
