@@ -11,11 +11,13 @@
     "jade": "*",
     "mongoose": "*",
     "browserify": "~1.17.2",
-    "underscore": "~1.4.3"
+    "underscore": "~1.4.3",
+    "jquery-browserify": "~1.8.1",
+    "backbone-browserify": "~0.9.2-1"
   },
   "subdomain": "monument",
   "engines": {
     "node": ">= 0.8.x",
-    "npm":  ">= 1.0.0"
+    "npm": ">= 1.0.0"
   }
 }
