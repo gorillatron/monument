@@ -37,7 +37,7 @@ section#featured {
   z-index: 0;
   clear: both;
   padding: 1px 0px 0px 0px;
-  background-image: url(/images/treer2.jpg);
+  background-image: url(/images/feature_photos/sommer_fjell.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   -webkit-background-size: cover;
@@ -52,7 +52,7 @@ section#featured .image-fullscreen {
   bottom: 10px;
   right: 10px;
   background-color: rgba(0,0,0, 0.7);
-  background-image: url(/images/image-fullscreen.png);
+  background-image: url(/images/gfx/image-fullscreen.png);
   background-repeat: no-repeat;
   background-position: center center;
   height: 28px;
@@ -75,7 +75,7 @@ section#featured h1.monument {
   position: relative;
   z-index: 1;
   color: white;
-  font-family: "Helvetica Neue";
+  font-family: "museo-sans";
   font-weight: 100;
   font-size: 5em;
   text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
