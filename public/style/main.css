@@ -189,10 +189,12 @@ section#featured .desc #player {
 
   section#featured .content h1 {
     font-size: 8em;
+    font-weight: 600;
   }
 
   section#featured .content h2 {
     font-size: 6em;
+    font-weight: 300;
   }
 
   section#featured .desc p {
@@ -203,5 +205,5 @@ section#featured .desc #player {
     margin-bottom: 20px;
     height: 300px;
   }
-  
+
 }
