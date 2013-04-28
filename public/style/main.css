@@ -76,7 +76,7 @@ section#featured h1.monument {
   position: relative;
   z-index: 1;
   color: white;
-  font-family: "museo-sans";
+  font-family: "ff-enzo-web";
   font-weight: 100;
   font-size: 5em;
   text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
@@ -91,10 +91,10 @@ section#featured .desc {
 
 section#featured .desc h2 {
   font-weight: 100;
-  font-family: "museo-sans";
+  font-family: "ff-enzo-web";
   font-size: 2em;
   margin-bottom: 20px;
-  text-shadow: 1px 1px 1px rgb(36, 36, 36);
+  text-shadow: 1px 1px 1px rgba(0,0,0, 0.5);
   color: rgb(240, 240, 240);
   margin-bottom: 40px;
 }
