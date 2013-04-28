@@ -152,9 +152,56 @@ section#featured .desc .socialicons .socialicon#twitter {
 }
 
 section#featured .desc #player {
-  margin-bottom: 20px;
+  margin-bottom: 20px; 
 }
 
 .typekit-badge {
   display: none!important;
+}
+
+
+@media only screen and (max-width : 320px), only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) {
+
+  html {
+    height: auto;
+  }
+
+  body {
+    height: auto;
+  }
+
+  section#featured .content {
+    max-width: 100%;
+    width: 100%;
+    margin-top: 0px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .content {
+
+    max-width: auto;
+    width: 100%;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    margin-top: 10px;
+  }
+
+  section#featured .content h1 {
+    font-size: 8em;
+  }
+
+  section#featured .content h2 {
+    font-size: 6em;
+  }
+
+  section#featured .desc p {
+    font-size: 3em;
+  }
+
+  section#featured .desc #player {
+    margin-bottom: 20px;
+    height: 300px;
+  }
+  
 }
