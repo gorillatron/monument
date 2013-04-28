@@ -47,11 +47,12 @@ section#featured {
 }
 
 section#featured .image-fullscreen {
+  display: none;
   z-index: 9999;
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background-color: rgba(0,0,0, 0.7);
+  background-color: white;
   background-image: url(/images/gfx/image-fullscreen.png);
   background-repeat: no-repeat;
   background-position: center center;
