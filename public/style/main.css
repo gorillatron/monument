@@ -123,11 +123,12 @@ section#featured .wrapper .content header {
 section#featured .wrapper .content header h1, 
 section#featured .wrapper .content header h2 {
   color: white;
-  font-family: futura;
+  font-family: "ff-enzo-web";
   text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
 }
 
 section#featured .wrapper .content header h1 {
+  font-family: futura, "ff-enzo-web";;
   font-weight: 100;
   font-size: 5em;
 }
