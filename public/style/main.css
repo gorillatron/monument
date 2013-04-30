@@ -54,7 +54,7 @@ section#featured.b {
 section#featured .wrapper {
   position: absolute;
   min-width: 1155px;
-  top: 20%;
+  top: 15%;
   left: 8%;
 }
 
@@ -69,7 +69,12 @@ section#featured .wrapper .logo {
   height: 399px;
   width: 468px;
   background-image: url(/images/gfx/logo1.png);
+  -moz-mask-image: url(/images/gfx/logo1_mask.png);
+  mask: url(/images/gfx/logo1_mask.png);
+  -ms-mask-box-image: url(/images/gfx/logo1_mask.png);
+  -o-mask-box-image: url(/images/gfx/logo1_mask.png);
   -webkit-mask-box-image: url(/images/gfx/logo1_mask.png);
+  mask-box-image: url(/images/gfx/logo1_mask.png);
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 1;
@@ -162,8 +167,8 @@ section#featured .desc p {
   font-weight: 100;
   font-size: 1em;
   line-height: 1.8em;
-  text-shadow: 1px 1px 3px rgba(1,1,1, 0.8);
-  color: whitesmoke;
+  text-shadow: 1px 1px 5px rgba(1,1,1, 0.8);
+  color: white;
   display: inline-block;
   vertical-align: top;
   width: 49%;
@@ -184,7 +189,7 @@ section#featured .socialicons .socialicon {
   width: 38px;
   height: 38px;
   margin-right: 10px;
-  opacity: 0.8;
+  opacity: 0.85;
   -ms-transition: all 0.1s ease-in;
   -moz-transition: all 0.1s ease-in;
   -o-transition: all 0.1s ease-in;
