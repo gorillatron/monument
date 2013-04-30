@@ -43,6 +43,14 @@ section#featured {
   background-size: cover;
 }
 
+section#featured.a {
+  background-image: url(/images/feature_photos/hamarøy_stauren_1600x731.jpg);
+}
+
+section#featured.b {
+  background-image: url(/images/feature_photos/vemork2.jpg);
+}
+
 section#featured .wrapper {
   position: absolute;
   min-width: 1155px;

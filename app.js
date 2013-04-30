@@ -41,4 +41,4 @@ app.configure('development', function() {
 /*
  * Routes
 */
-app.get( '/', routes.index )
+app.get( '/:bg?', routes.index )
