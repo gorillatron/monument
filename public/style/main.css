@@ -161,6 +161,14 @@ section#featured .desc {
   font-family: "Helvetica Neue";
 }
 
+
+section#featured .desc .column {
+  display: inline-block;
+  vertical-align: top;
+  width: 49%;
+  margin-left: 1%;
+}
+  
 section#featured .desc p {
   margin-bottom: 10px;
   font-family: "source-sans-pro";
@@ -169,10 +177,14 @@ section#featured .desc p {
   line-height: 1.8em;
   text-shadow: 1px 1px 5px rgba(1,1,1, 0.8);
   color: white;
-  display: inline-block;
-  vertical-align: top;
-  width: 49%;
-  margin-left: 1%;
+  padding: 10px;
+  transition: background-color 0.14s ease-out;
+}
+
+section#featured .desc p:hover,
+section#featured .desc p:focus {
+  background-color: rgba(5,5,5, 0.6);
+  outline: none;
 }
 
 section#featured .socialicons {
