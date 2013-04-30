@@ -2,14 +2,13 @@
   "name": "monument",
   "version": "0.0.1-7",
   "private": true,
-  "domain": "monument.local.com",
+  "domain": "mnmt.no",
   "scripts": {
     "start": "app.js"
   },
   "dependencies": {
     "express": "3.0.0rc5",
     "jade": "*",
-    "mongoose": "*",
     "browserify": "~1.17.2",
     "underscore": "~1.4.3",
     "jquery-browserify": "~1.8.1",
