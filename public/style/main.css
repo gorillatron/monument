@@ -67,7 +67,7 @@ section#featured .wrapper .logowrapper {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  border: 15px solid white;
+  border: 10px solid white;
   border-image:  linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
   border-image:  -o-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
   border-image:  -moz-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
@@ -97,7 +97,7 @@ section#featured .wrapper .logowrapper {
 }
 
 .logowrapper .logobox .dot.b {
-  bottom: -18px;
+  bottom: -23px;
   left: 20px;
   background-color: white;
 }
