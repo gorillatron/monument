@@ -55,7 +55,19 @@ section#featured .image-fullscreen:hover {
   opacity: 1;
 }
 
+section#featured .wrapper .logo {
+  position: relative;
+  display: inline-block;
+  height: 399px;
+  width: 468px;
+  background-image: url(/images/gfx/logo1.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+}
+
 section#featured .wrapper .logowrapper {
+  display: none;
   position: relative;
   display: inline-block;
   vertical-align: top;
@@ -73,14 +85,7 @@ section#featured .wrapper .logowrapper {
   border-image:  -moz-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
   border-image:  -webkit-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
   border-image:  -ms-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
-  background-image: -o-linear-gradient(left bottom, rgba(250,247,250, 0.5) 50%, rgba(255,255,255, 0.3) 50%);
-  background-image: -moz-linear-gradient(left bottom, rgba(250,247,250, 0.5) 50%, rgba(255,255,255, 0.3) 50%);
-  
-  background-image: -ms-linear-gradient(left bottom, rgba(250,247,250, 0.5) 50%, rgba(255,255,255, 0.3) 50%);
-  background-image: linear-gradient(left bottom, rgba(250,247,250, 0.5) 50%, rgba(255,255,255, 0.3) 50%);
-
   background: linear-gradient(40deg, rgba(255,255,255, 0.5) 50%, rgba(240,240,240, 0.5) 50%);
-  
 }
 
 .logowrapper .logobox .dot {
