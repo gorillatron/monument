@@ -7,15 +7,16 @@ var express     = require( 'express' ),
 
 var app = express()
 
-var server = require( 'http' ).createServer( app )
+module.exports = app
 
 
+/*
+ * Configuration
+*/
 app.configure(function() {
-  app.set( 'port', process.env.PORT || 3002 )
   app.set( 'views', __dirname + '/views' )
   app.set( 'view engine', 'jade' )
   app.use( express.favicon() )
-  app.use( express.logger('dev') )
   app.use( express.bodyParser() )
   app.use( express.methodOverride() )
   app.use( app.router )
@@ -26,18 +27,18 @@ app.configure(function() {
     require: {
       'jquery': 'jquery-browserify',
       'Backbone': 'backbone-browserify'
-    },
-    watch: true,
-    debug: true
+    }
   }))
 })
 
-app.configure('development', function(){
+app.configure('development', function() {
+  app.use( express.logger('dev') )
   app.use( express.errorHandler() )
 })
 
+
+
+/*
+ * Routes
+*/
 app.get( '/', routes.index )
-
-
-server.listen( app.get("port") )
-console.log( "app listening on port " + app.get("port") )

@@ -4,7 +4,7 @@
   "private": true,
   "domain": "mnmt.no",
   "scripts": {
-    "start": "app.js"
+    "start": "server.js"
   },
   "dependencies": {
     "express": "3.0.0rc5",
