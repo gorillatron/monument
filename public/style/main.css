@@ -162,13 +162,9 @@ section#featured .desc p {
   margin-left: 1%;
 }
 
-section#featured .desc p:first-child {
-  margin-left: 0%; 
-  margin-right: 0%; 
-}
-
 section#featured .socialicons {
   margin-top: 20px;
+  margin-left: 1%;
 }
 
 section#featured .socialicons .socialicon {
