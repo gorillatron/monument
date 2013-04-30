@@ -61,7 +61,7 @@ section#featured .wrapper .logo {
   height: 399px;
   width: 468px;
   background-image: url(/images/gfx/logo1.png);
-  /*-webkit-mask-box-image: url(/images/gfx/logo1_mask.png);*/
+  -webkit-mask-box-image: url(/images/gfx/logo1_mask.png);
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 1;
