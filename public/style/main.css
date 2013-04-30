@@ -73,7 +73,7 @@ section#featured .wrapper .logowrapper {
   border-image:  -moz-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
   border-image:  -webkit-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
   border-image:  -ms-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
-  background-color: rgba(255,255,255, 0.2)
+  background-color: rgba(255,255,255, 0.3)
 }
 
 .logowrapper .logobox .dot {
