@@ -165,8 +165,7 @@ section#featured .desc {
 section#featured .desc .column {
   display: inline-block;
   vertical-align: top;
-  width: 49%;
-  margin-left: 1%;
+  width: 50%;
 }
   
 section#featured .desc p {
@@ -189,7 +188,7 @@ section#featured .desc p:focus {
 
 section#featured .socialicons {
   margin-top: 20px;
-  margin-left: 1%;
+  margin-left: 10px;
 }
 
 section#featured .socialicons .socialicon {
