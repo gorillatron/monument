@@ -125,6 +125,7 @@ section#featured .wrapper .content {
   display: inline-block;
   vertical-align: top;
   width: 650px;
+  min-height: 857px;
   margin-left: 35px;
 }
 
