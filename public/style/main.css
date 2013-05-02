@@ -65,7 +65,7 @@ section#featured .image-fullscreen:hover {
 
 section#featured .wrapper .logo {
   position: relative;
-  display: inline-block;
+  display: none;
   height: 399px;
   width: 468px;
   background-image: url(/images/gfx/logo1.png);
@@ -141,7 +141,7 @@ section#featured .wrapper .content header h2 {
 }
 
 section#featured .wrapper .content header h1 {
-  font-family: futura, "ff-enzo-web";;
+  font-family: "ff-enzo-web";
   font-weight: 100;
   font-size: 5em;
 }
