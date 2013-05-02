@@ -7,7 +7,7 @@ server = require( 'http' ).createServer( app )
 
 modulename = process.mainModule.filename
 pid = process.pid
-port = process.env.PORT || 3002
+port = process.env.PORT || 80
 
 
 server.listen( port )
