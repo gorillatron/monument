@@ -21,14 +21,6 @@ app.configure(function() {
   app.use( express.methodOverride() )
   app.use( app.router )
   app.use( express.static(path.join(__dirname, 'public')) )
-  app.use( browserify({ 
-    entry: __dirname + '/public/js/main.js',
-    mount: "/main.js",
-    require: {
-      'jquery': 'jquery-browserify',
-      'Backbone': 'backbone-browserify'
-    }
-  }))
 })
 
 app.configure('development', function() {
