@@ -36,21 +36,13 @@ section#featured {
   z-index: 0;
   clear: both;
   padding: 1px 0px 0px 0px;
-  background-image: url(/images/feature_photos/sommer_fjell.jpg);
+  background-image: url(/images/feature_photos/01background.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
-
-section#featured.a {
-  background-image: url(/images/feature_photos/hamarøy_stauren_1600x731.jpg);
-}
-
-section#featured.b {
-  background-image: url(/images/feature_photos/vemork2.jpg);
 }
 
 section#featured .wrapper {
