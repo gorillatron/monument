@@ -26,8 +26,10 @@ app.configure(function() {
 app.configure('development', function() {
   app.use( express.logger('dev') )
   app.use( express.errorHandler() )
+  app.use( express.basicAuth(function( user, pass ) {
+    return user === "monument.podcast@gmail.com" && passs == "supp0rt19887"
+  }))
 })
-
 
 
 /*
