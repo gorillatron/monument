@@ -39,3 +39,4 @@ app.get( '/', routes.index )
 
 
 http.createServer( app ).listen( process.env.PORT )
+console.log( 'monument now listening on port %d', process.env.PORT );
