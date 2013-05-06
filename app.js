@@ -36,3 +36,6 @@ app.configure('development', function() {
  * Routes
 */
 app.get( '/', routes.index )
+
+
+http.createServer( app, process.env.PORT )
