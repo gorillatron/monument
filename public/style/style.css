@@ -17,13 +17,162 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
 * {
   padding: 0px;
   margin: 0px;
 }
+
+
+ul.panes {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  padding-top: 1px;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  list-style-type: none;
+  -moz-transition: all 0.8s;
+  -ms-transition: all 0.8s;
+  -o-transition: all 0.8s;
+  -webkit-transition: all 0.8s;
+}
+
+
+ul.panes li.pane {
+  display: inline-block;
+  vertical-align: top;
+  float: left;
+  height: 100%;
+  width: 50%;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+ul.panes li.pane .content {
+  
+}
+
+ul.panes.backgrounds li.pane {
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+ul.panes.backgrounds {
+  z-index: 0;
+  -moz-transition: all 1.25s;
+  -ms-transition: all 1.25s;
+  -o-transition: all 1.25s;
+  -webkit-transition: all 1.25s;
+}
+
+ul.panes.backgrounds li.pane.two {
+  background-image: url(/images/feature_photos/hamarøy_stauren_2048x936.jpg);
+}
+
+ul.panes.backgrounds li.pane.one {
+  background-image: url(/images/feature_photos/01background.jpg);
+}
+
+ul.panes.players .pane iframe{
+  margin-top: 280px;
+}
+
+ul.panes.h2 {
+  -moz-transition: all 1.45s;
+  -ms-transition: all 1.45s;
+  -o-transition: all 1.45s;
+  -webkit-transition: all 1.45s;
+}
+
+ul.panes.h2 h2 {
+  font-weight: 300;
+  font-size: 2em;
+  text-shadow: 1px 1px 1px rgba(0,0,0, 0.5);
+  color: white;
+  margin-top: 215px;
+  color: white;
+  font-family: "ff-enzo-web";
+  text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
+}
+
+ul.panes.description li.pane .content {
+  margin-top: 500px;
+}
+
+
+
+ul.panes.description li.pane .content .column {
+  display: inline-block;
+  vertical-align: top;
+  width: 50%;
+  float: left;
+}
+  
+ul.panes.description li.pane .content p {
+  margin-bottom: 10px;
+  font-family: "source-sans-pro";
+  font-weight: 100;
+  font-size: 1em;
+  line-height: 1.8em;
+  text-shadow: 1px 1px 5px rgba(1,1,1, 0.8);
+  color: white;
+  padding: 10px;
+  transition: background-color 0.14s ease-out;
+}
+
+ul.panes.description li.pane .content p:hover,
+ul.panes.description li.pane .content p:focus {
+  background-color: rgba(5,5,5, 0.6);
+  outline: none;
+}
+
+
+#features_wrapper {
+  position: relative;
+  height: 100%;
+  width: 200%;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: 1px;
+}
+
+#features_wrapper .content {
+  width: 670px;
+  margin-left: 180px;
+}
+
+#features_wrapper .static-header {
+  position: relative;
+  z-index: 500;
+}
+
+#features_wrapper .static-header h1 {
+  margin-top: 130px;
+  font-family: "ff-enzo-web";
+  font-weight: 100;
+  font-size: 5em;
+  color: white;
+  text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
+}
+
 
 
 section#featured {
@@ -43,83 +192,9 @@ section#featured {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  padding-top: 1px;
 }
 
-section#featured .wrapper {
-  position: absolute;
-  top: 15%;
-  left: 8%;
-}
-
-
-section#featured .image-fullscreen:hover {
-  opacity: 1;
-}
-
-section#featured .wrapper .logo {
-  position: relative;
-  display: none;
-  height: 399px;
-  width: 468px;
-  background-image: url(/images/gfx/logo1.png);
-  -moz-mask-image: url(/images/gfx/logo1_mask.png);
-  mask: url(/images/gfx/logo1_mask.png);
-  -ms-mask-box-image: url(/images/gfx/logo1_mask.png);
-  -o-mask-box-image: url(/images/gfx/logo1_mask.png);
-  -webkit-mask-box-image: url(/images/gfx/logo1_mask.png);
-  mask-box-image: url(/images/gfx/logo1_mask.png);
-  background-position: center center;
-  background-repeat: no-repeat;
-  opacity: 1;
-}
-
-section#featured .wrapper .logowrapper {
-  display: none;
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  height: 300px;
-  width: 110px;
-}
-
-.logowrapper .logobox {
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  border: 10px solid white;
-  border-image:  linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
-  border-image:  -o-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
-  border-image:  -moz-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
-  border-image:  -webkit-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
-  border-image:  -ms-linear-gradient(left bottom, #F2F2F5 8%, #FFFFFF 52%) 25 30 10 20 repeat stretch;
-  background: linear-gradient(40deg, rgba(255,255,255, 0.5) 50%, rgba(240,240,240, 0.5) 50%);
-}
-
-.logowrapper .logobox .dot {
-  position: absolute;
-  height: 5%;
-  width: 14%;
-  background-color: #F2F2F5;
-  box-shadow: 0px 0px 3px 1px rgba(0,0,0, 0.1)
-}
-
-.logowrapper .logobox .dot.a {
-  bottom: 20px;
-  left: 20px;
-}
-
-.logowrapper .logobox .dot.b {
-  bottom: -23px;
-  left: 20px;
-  background-color: white;
-}
-
-section#featured .wrapper .content {
-  display: inline-block;
-  vertical-align: top;
-  width: 650px;
-  margin-left: 35px;
-}
 
 section#featured .wrapper .content header {
   margin-bottom: 35px;
@@ -159,10 +234,6 @@ section#featured .desc .column {
   display: inline-block;
   vertical-align: top;
   width: 50%;
-}
-
-section#featured .desc .column.first {
-  float: left;
 }
   
 section#featured .desc p {

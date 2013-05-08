@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "express": "3.0.0rc5",
-    "jade": "*",
+    "hjs": "0.0.4",
     "browserify": "~1.17.2",
     "jquery-browserify": "~1.8.1",
     "backbone": "~1.0.0",

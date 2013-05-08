@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>Monument</title><link rel="stylesheet" href="/style/style.css">
+      <meta property="og:image" content="/images/feature_photos/01thumbnail.png">
+
+      <script type="text/javascript" src="http://w.soundcloud.com/player/api.js"></script>
+      <script src="//use.typekit.net/jor0qjq.js"></script>
+
+      <script>
+        try{
+          Typekit.load();
+        } catch(e){}
+      </script>
+
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-40625614-1', 'mnmt.no');
+        ga('send', 'pageview');
+      </script>
+
+      <script>(function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hubspot.com/analytics/'+(Math.ceil(new Date()/r)*r)+'/272217.js';
+        e.parentNode.insertBefore(n, e);
+        })(document,"script","hs-analytics",300000);
+      </script>
+
+    </head>
+    <body>
+
+
+      <div id="features_wrapper">
+
+        <div class="static-header content">
+          <h1>MONUMENT</h1>
+        </div>
+
+        <ul class="panes backgrounds">
+          <li class="pane podcast two"></li>
+          <li class="pane podcast one"></li>
+        </ul>
+
+        <ul class="panes players">
+          <li class="pane podcast two">
+            <div class="content">
+              <iframe id="player" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F89868066&amp;show_artwork=false&amp;color=A5BD7D"></iframe>
+            </div>
+          </li>
+          <li class="pane podcast one">
+            <div class="content">
+              <iframe id="player" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F89868066&amp;show_artwork=false&amp;color=A5BD7D"></iframe>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="panes h2">
+          <li class="pane podcast two"> 
+            <div class="content">
+              <h2>02: Ronny "Rabalder" Tafjord</h2> 
+            </div>
+          </li>
+          <li class="pane podcast one"> 
+            <div class="content">
+              <h2>01: Korpex</h2> 
+            </div>
+          </li>
+        </ul>
+
+        <ul class="panes description">
+          <li class="pane podcast two">
+            <div class="content">
+              <div class="column first">
+                <p>The young berliner had his first success behind the turntables in the beginning of the new millennium. After moving to Norway in 2005, everything changed fast and Korpex had countless gigs and became resident at The Villa Oslo.</p>
+                <p>In Oslo Korpex and his friends also started a new underground concept called: Amenta. Amenta was launched in 2011 and Korpex is one of the main guys behind the concept which focuses on providing unforgettable nights on the dancefloor, both as DJ and organizer.</p>
+              </div>
+              <div class="column second">
+                <p>His style varies between Detroithouse, driving Deephouse and Dubtechno. After Monument introduced their new norwegian podcast for Techno-interested people around the world, it was no question for him to make the first edition of the Monument Podcast series.</p>
+                <p>This man knows how to play, and also how to create epic underground nights, preferably starting in the night and ending in the morning.</p>
+              </div> 
+            </div>
+          </li>
+          <li class="pane podcast one">
+            <div class="content">
+              <div class="column first">
+                <p>The young berliner had his first success behind the turntables in the beginning of the new millennium. After moving to Norway in 2005, everything changed fast and Korpex had countless gigs and became resident at The Villa Oslo.</p>
+                <p>In Oslo Korpex and his friends also started a new underground concept called: Amenta. Amenta was launched in 2011 and Korpex is one of the main guys behind the concept which focuses on providing unforgettable nights on the dancefloor, both as DJ and organizer.</p>
+              </div>
+              <div class="column second">
+                <p>His style varies between Detroithouse, driving Deephouse and Dubtechno. After Monument introduced their new norwegian podcast for Techno-interested people around the world, it was no question for him to make the first edition of the Monument Podcast series.</p>
+                <p>This man knows how to play, and also how to create epic underground nights, preferably starting in the night and ending in the morning.</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+
+
+
+
+      <!-- <section id="featured">
+        <div class="wrapper">
+          <div class="content">
+            <header>
+              <h1>MONUMENT </h1>
+              <h2>01: Korpex</h2>
+            </header>
+            <div class="desc">
+              <iframe id="player" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F89868066&amp;show_artwork=false&amp;color=A5BD7D"></iframe>
+              <div class="column first">
+                <p>The young berliner had his first success behind the turntables in the beginning of the new millennium. After moving to Norway in 2005, everything changed fast and Korpex had countless gigs and became resident at The Villa Oslo.</p>
+                <p>In Oslo Korpex and his friends also started a new underground concept called: Amenta. Amenta was launched in 2011 and Korpex is one of the main guys behind the concept which focuses on providing unforgettable nights on the dancefloor, both as DJ and organizer.</p>
+              </div>
+              <div class="column second">
+                <p>His style varies between Detroithouse, driving Deephouse and Dubtechno. After Monument introduced their new norwegian podcast for Techno-interested people around the world, it was no question for him to make the first edition of the Monument Podcast series.</p>
+                <p>This man knows how to play, and also how to create epic underground nights, preferably starting in the night and ending in the morning.</p>
+              </div>
+            </div>
+            <div class="socialicons">
+              <a id="facebook" href="https://www.facebook.com/MonuMnt" target="_blank" class="socialicon"></a>
+              <a id="twitter" href="https://twitter.com/MonumentPodcast" target="_blank" class="socialicon"></a>
+            </div>
+          </div>
+        </div>
+      </section> -->
+
+      <script type="text/javascript" src="/main.js"></script>
+      <script type="text/javascript">
+        $(function() {
+
+          $('body').toggle(function() {
+            $('.panes').css({ left: '-50%' })
+          }, function() {
+            $('.panes').css({ left: '0%' })
+          })
+
+        })
+      </script>
+    </body>
+  </html>
