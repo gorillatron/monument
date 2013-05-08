@@ -300,7 +300,9 @@
 
           features.turnOffTransitions()
           features.render()
-          $('body').show()
+          setTimeout(function() {
+            $('body').show()
+          }, 10)
           setTimeout(function() {
             features.turnOnTransitions()
           }, 1200)
