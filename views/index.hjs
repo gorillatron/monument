@@ -191,7 +191,9 @@
           })
 
           $(window).bind('resize', function() {
-            update()
+            setTimeout(turnOffTransitions, 0)
+            setTimeout(update, 1)
+            setTimeout(turnOnTransitions, 16)
           })
 
           function update() {
