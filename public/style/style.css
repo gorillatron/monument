@@ -18,6 +18,7 @@ body {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  -webkit-transform: translate3d(0px, 0px, 0px);
 }
 
 * {
@@ -78,6 +79,10 @@ ul.panes.backgrounds {
   -ms-transition: all 1.25s;
   -o-transition: all 1.25s;
   -webkit-transition: all 1.25s;
+}
+
+ul.panes.players .pane {
+
 }
 
 ul.panes.backgrounds li.pane.two {

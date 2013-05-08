@@ -135,10 +135,12 @@
       <script type="text/javascript">
         $(function() {
 
+          var width = $(window).width()
+
           $('body').toggle(function() {
-            $('.panes').css({ left: '-50%' })
+            $('.panes').attr( 'style', '-webkit-transform: translate3d(' + (width * -1) + 'px, 0px, 0px)')
           }, function() {
-            $('.panes').css({ left: '0%' })
+            $('.panes').attr( 'style', '-webkit-transform: translate3d(' + 0 + 'px, 0px, 0px)')
           })
 
         })
