@@ -32,7 +32,8 @@ app.configure('development', function() {
   app.use( express.logger('dev') )
   app.use( express.errorHandler() )
   app.use( express.basicAuth(function( user, pass ) {
-    return user === "monument.podcast@gmail.com" && pass == "supp0rt19887"
+    return (user === "monument.podcast@gmail.com" && pass == "supp0rt19887") ||
+           (user === "rolf.anders" && pass == "diamant")
   }))
 })
 
