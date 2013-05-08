@@ -143,9 +143,35 @@
       <script type="text/javascript">
         $(function() {
 
-          
-          var pagenr = 0
+          function has3d() {
+            var el = document.createElement('p'), 
+                has3d,
+                transforms = {
+                  'webkitTransform':'-webkit-transform',
+                  'OTransform':'-o-transform',
+                  'msTransform':'-ms-transform',
+                  'MozTransform':'-moz-transform',
+                  'transform':'transform'
+                };
 
+            // Add it to the body to get the computed style.
+            document.body.insertBefore(el, null);
+
+            for (var t in transforms) {
+              if (el.style[t] !== undefined) {
+                el.style[t] = "translate3d(1px,1px,1px)";
+                has3d = window.getComputedStyle(el).getPropertyValue(transforms[t]);
+              }
+            }
+
+            document.body.removeChild(el);
+
+            return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
+          }
+
+          var pagenr = 0
+          var threedSupport = has3d()
+          console.log(threedSupport);
 
 
           $('.arrow.left').click(function() {
@@ -168,15 +194,22 @@
 
           function update() {
             var x = $('body').width() * - pagenr
-            $('.panes').attr( 'style', 
-              '-moz-transform: translate3d(' + x + 'px, 0px, 0px);' +
-              '-ms-transform: translate3d(' + x + 'px, 0px, 0px);' +
-              '-o-transform: translate3d(' + x + 'px, 0px, 0px);' + 
-              '-webkit-transform: translate3d(' + x + 'px, 0px, 0px);' + 
-              'transform: translate3d(' + x + 'px, 0px, 0px);')
+            if( threedSupport ) {
+              $('.panes').attr( 'style', 
+                '-moz-transform: translate3d(' + x + 'px, 0px, 0px);' +
+                '-ms-transform: translate3d(' + x + 'px, 0px, 0px);' +
+                '-o-transform: translate3d(' + x + 'px, 0px, 0px);' + 
+                '-webkit-transform: translate3d(' + x + 'px, 0px, 0px);' + 
+                'transform: translate3d(' + x + 'px, 0px, 0px);')  
+            }
+            else {
+              $('.panes').css( 'left', x )
+            }
+            
           }
 
           $('body').css( 'min-height',  $('.socialicons').offset().top + $('.socialicons').outerHeight() + 30 )
+
 
         })
       </script>
