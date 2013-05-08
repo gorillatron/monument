@@ -167,7 +167,7 @@
           })
 
           function update() {
-            var x = $(window).width() * - pagenr
+            var x = $('body').width() * - pagenr
             $('.panes').attr( 'style', 
               '-moz-transform: translate3d(' + x + 'px, 0px, 0px);' +
               '-ms-transform: translate3d(' + x + 'px, 0px, 0px);' +
