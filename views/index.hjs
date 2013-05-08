@@ -138,9 +138,19 @@
           var width = $(window).width()
 
           $('body').toggle(function() {
-            $('.panes').attr( 'style', '-webkit-transform: translate3d(' + (width * -1) + 'px, 0px, 0px)')
+            $('.panes').attr( 'style', 
+              '-moz-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
+              '-ms-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
+              '-o-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' + 
+              '-webkit-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' + 
+              'transform: translate3d(' + (width * -1) + 'px, 0px, 0px);')
           }, function() {
-            $('.panes').attr( 'style', '-webkit-transform: translate3d(' + 0 + 'px, 0px, 0px)')
+            $('.panes').attr( 'style', 
+              '-moz-transform: translate3d(' + 0 + 'px, 0px, 0px);' +
+              '-ms-transform: translate3d(' + 0 + 'px, 0px, 0px);' +
+              '-o-transform: translate3d(' + 0 + 'px, 0px, 0px);' + 
+              '-webkit-transform: translate3d(' + 0 + 'px, 0px, 0px);' + 
+              'transform: translate3d(' + 0 + 'px, 0px, 0px);')
           })
 
         })
