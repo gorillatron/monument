@@ -225,8 +225,8 @@ ul.panes.description li.pane .content p:focus {
   position: absolute;
   top: 770px;
   left: 520px;
-  height: 1px;
-  width: 1px;
+  height: 4px;
+  width: 4px;
   background-color: rgba(0,0,0, 0.6);
   -moz-box-shadow: 0px 0px 200px 40px rgba(0,0,0, 1);
   -o-box-shadow: 0px 0px 200px 40px rgba(0,0,0, 1);
