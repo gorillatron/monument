@@ -143,11 +143,11 @@
       <script type="text/javascript">
         $(function() {
 
-          var width = $(window).width()
 
           $('.arrow.left').click(function() {
             $('.arrow.right').fadeIn()
             $('.arrow.left').fadeOut()
+            var width = $(window).width()
             $('.panes').attr( 'style', 
               '-moz-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
               '-ms-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
