@@ -88,12 +88,16 @@ ul.panes.backgrounds {
   -webkit-transition: all 1.25s;
 }
 
+ul.panes.players {
+  z-index: 600;
+}
+
 ul.panes.players .pane {
 
 }
 
 ul.panes.backgrounds li.pane.two {
-  background-image: url(/images/feature_photos/hamarøy_stauren_2048x936.jpg);
+  background-image: url(/images/feature_photos/02background.jpg);
 }
 
 ul.panes.backgrounds li.pane.one {
@@ -127,6 +131,7 @@ ul.panes.description {
   -ms-transition: all 1.15s;
   -o-transition: all 1.15s;
   -webkit-transition: all 1.15s;
+  z-index: 400;
 }
 
 ul.panes.description li.pane .content {
@@ -215,6 +220,26 @@ ul.panes.description li.pane .content p:focus {
   background-image: url(/images/gfx/arrow_right.png);
 }
 
+
+#features_wrapper .shadowdome {
+  position: absolute;
+  top: 770px;
+  left: 520px;
+  height: 1px;
+  width: 1px;
+  background-color: rgba(0,0,0, 0.6);
+  -moz-box-shadow: 0px 0px 200px 40px rgba(0,0,0, 1);
+  -o-box-shadow: 0px 0px 200px 40px rgba(0,0,0, 1);
+  -ms-box-shadow: 0px 0px 200px 40px rgba(0,0,0, 1);
+  -webkit-box-shadow: 0px 0px 200px 40px rgba(0,0,0, 1);
+  box-shadow: 0px 0px 200px 40px rgba(0,0,0, 1);
+  z-index: 300;
+  -ms-transition: box-shadow 0.4s;
+  -o-transition: box-shadow 0.4s;
+  -moz-transition: box-shadow 0.4s;
+  -webkit-transition: box-shadow 0.4s;
+  transition: box-shadow 0.4s;
+}
 
 section#featured {
   position: relative;
