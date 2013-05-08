@@ -167,6 +167,8 @@
               'transform: translate3d(' + 0 + 'px, 0px, 0px);')
           })
 
+          $('body').css( 'min-height',  $('.socialicons').offset().top + $('.socialicons').outerHeight() + 30 )
+
         })
       </script>
     </body>
