@@ -143,29 +143,38 @@
       <script type="text/javascript">
         $(function() {
 
+          
+          var pagenr = 0
+
+
 
           $('.arrow.left').click(function() {
             $('.arrow.right').fadeIn()
             $('.arrow.left').fadeOut()
-            var width = $(window).width()
-            $('.panes').attr( 'style', 
-              '-moz-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
-              '-ms-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
-              '-o-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' + 
-              '-webkit-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' + 
-              'transform: translate3d(' + (width * -1) + 'px, 0px, 0px);')
+            pagenr++
+            update()
           })
 
           $('.arrow.right').click(function() {
             $('.arrow.left').fadeIn()
             $('.arrow.right').fadeOut()
-            $('.panes').attr( 'style', 
-              '-moz-transform: translate3d(' + 0 + 'px, 0px, 0px);' +
-              '-ms-transform: translate3d(' + 0 + 'px, 0px, 0px);' +
-              '-o-transform: translate3d(' + 0 + 'px, 0px, 0px);' + 
-              '-webkit-transform: translate3d(' + 0 + 'px, 0px, 0px);' + 
-              'transform: translate3d(' + 0 + 'px, 0px, 0px);')
+            pagenr--
+            update()
           })
+
+          $(window).bind('resize', function() {
+            update()
+          })
+
+          function update() {
+            var x = $(window).width() * - pagenr
+            $('.panes').attr( 'style', 
+              '-moz-transform: translate3d(' + x + 'px, 0px, 0px);' +
+              '-ms-transform: translate3d(' + x + 'px, 0px, 0px);' +
+              '-o-transform: translate3d(' + x + 'px, 0px, 0px);' + 
+              '-webkit-transform: translate3d(' + x + 'px, 0px, 0px);' + 
+              'transform: translate3d(' + x + 'px, 0px, 0px);')
+          }
 
           $('body').css( 'min-height',  $('.socialicons').offset().top + $('.socialicons').outerHeight() + 30 )
 
