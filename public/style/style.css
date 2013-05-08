@@ -115,6 +115,13 @@ ul.panes.h2 h2 {
   text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
 }
 
+ul.panes.description {
+  -moz-transition: all 1.15s;
+  -ms-transition: all 1.15s;
+  -o-transition: all 1.15s;
+  -webkit-transition: all 1.15s;
+}
+
 ul.panes.description li.pane .content {
   margin-top: 480px;
 }
@@ -178,6 +185,28 @@ ul.panes.description li.pane .content p:focus {
   text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
 }
 
+#features_wrapper .arrow {
+  position: fixed;
+  display: block;
+  top: 48%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 32px;
+  width: 32px;
+  z-index: 999;
+  cursor: pointer;
+}
+
+#features_wrapper .arrow.left {
+  right: 32px;
+  background-image: url(/images/gfx/arrow_left.png);
+}
+
+#features_wrapper .arrow.right {
+  right: 74px;
+  display: none;
+  background-image: url(/images/gfx/arrow_right.png);
+}
 
 
 section#featured {

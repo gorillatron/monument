@@ -105,6 +105,9 @@
           <a id="twitter" href="https://twitter.com/MonumentPodcast" target="_blank" class="socialicon"></a>
         </div>
 
+        <div class="arrow left"></div>
+        <div class="arrow right"></div>
+
       </div>
 
 
@@ -142,14 +145,20 @@
 
           var width = $(window).width()
 
-          $('body').toggle(function() {
+          $('.arrow.left').click(function() {
+            $('.arrow.right').fadeIn()
+            $('.arrow.left').fadeOut()
             $('.panes').attr( 'style', 
               '-moz-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
               '-ms-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' +
               '-o-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' + 
               '-webkit-transform: translate3d(' + (width * -1) + 'px, 0px, 0px);' + 
               'transform: translate3d(' + (width * -1) + 'px, 0px, 0px);')
-          }, function() {
+          })
+
+          $('.arrow.right').click(function() {
+            $('.arrow.left').fadeIn()
+            $('.arrow.right').fadeOut()
             $('.panes').attr( 'style', 
               '-moz-transform: translate3d(' + 0 + 'px, 0px, 0px);' +
               '-ms-transform: translate3d(' + 0 + 'px, 0px, 0px);' +
