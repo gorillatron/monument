@@ -150,8 +150,9 @@
           var _ = _ || {}
 
           _.bind = function( fn, context ) {
+            var args = Array.prototype.slice.call(arguments, 1)
             return function() {
-              return fn.apply( context, Array.prototype.slice(arguments, 2))
+              return fn.apply( context, args.concat(Array.prototype.slice.call(arguments, 0)) )
             }
           }
 
@@ -259,13 +260,13 @@
 
           Features.prototype.windowResizeHandler = function() {
             setTimeout(_.bind(this.turnOffTransitions, this), 0)
-            setTimeout(_.bind(this.render, this), 2)
+            setTimeout(_.bind(this.render, this, true), 2)
             setTimeout(_.bind(this.turnOnTransitions, this), 10)
           }
 
-          Features.prototype.render = function() {
+          Features.prototype.render = function( noHeaderfade ) {
             var x
-
+            console.log(arguments);
             x = $('body').width() * - this.pagenr
 
             if( this.threedSupport ) {
@@ -280,8 +281,10 @@
               this.$el.find('.panes').css( 'left', x )
             }
             this.shadowDome.render()
-            this.$el.find( '.panes.h2 h2' ).fadeOut( 2000 )
-            $( this.$el.find('.panes.h2 h2')[this.pagenr] ).fadeIn( 2000 )
+            if( !noHeaderfade ) {
+              this.$el.find( '.panes.h2 h2' ).fadeOut( 2000 )
+              $( this.$el.find('.panes.h2 h2')[this.pagenr] ).fadeIn( 2000 )
+            }
           }
 
           Features.prototype.turnOffTransitions = function() {
