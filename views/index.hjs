@@ -144,7 +144,75 @@
       <script type="text/javascript">
         $(function() {
 
-          function has3d() {
+          var _ = _ || {}
+
+          _.bind = function( fn, context ) {
+            return function() {
+              return fn.apply( context, Array.prototype.slice(arguments, 2))
+            }
+          }
+
+
+          function ShadowDome( options ) {
+            this.$el = $( options.el )
+            this.on = true
+            this.screenwidth = screen.width
+          }
+
+          ShadowDome.prototype.generateShadowString = function( a, b, c, d, e ){
+            a = a || 0,  b = b || 0,  c = c || 0,  d = d || 0,  e = e || 0
+            return "box-shadow: " +a+ "px "+b+"px "+c+"px "+d+"px rgba(0,0,0, "+e+");"
+          }
+
+          ShadowDome.prototype.turnOff = function () {
+            this.$el.fadeOut()
+            this.on = false
+          }
+
+          ShadowDome.prototype.turnOn = function () {
+            this.$el.fadeIn()
+            this.on = true
+          }
+
+          ShadowDome.prototype.getPrctWidth = function () {
+            return $(window).width() / this.screenwidth * 100
+          }
+
+          ShadowDome.prototype.render = function () {
+            var prctwidth
+
+            if( !this.on )
+              return
+
+            prctwidth = this.getPrctWidth()
+            mod = 100 - prctwidth
+            
+            this.$el.attr( 'style', 
+             "border-radius: " + (mod * 100) +  "px;" + 
+             this.generateShadowString(
+              - (mod) * 1,
+              - (mod) * 3,
+              mod * 10,
+              mod * 7,
+              0.5
+            ))
+          }
+
+
+
+          function Features( options ) {
+            this.$el = $( options.el )
+            
+            this.pagenr = 1
+            this.threedSupport = this.has3d()
+            this.shadowDome = new ShadowDome({ el: this.$el.find('.shadowdome') })
+
+            this.$el.find( '.arrow.left' ).click( _.bind(this.leftClickHandler, this) )
+            this.$el.find( '.arrow.right' ).click( _.bind(this.rightClickHandler, this) )
+            $( window ).bind( 'resize', _.bind(this.windowResizeHandler, this) )
+          }
+
+          Features.prototype.has3d = function() {
             var el = document.createElement('p'), 
                 has3d,
                 transforms = {
@@ -170,36 +238,35 @@
             return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
           }
 
-          var pagenr = 1
-          var threedSupport = has3d()
-
-
-          $('.arrow.left').click(function() {
+          Features.prototype.leftClickHandler = function() {
             $('.arrow.right').fadeIn()
             $('.arrow.left').fadeOut()
-            shadowDome.turnOn()
-            pagenr = 1
-            update()
-          })
+            this.shadowDome.turnOn()
+            this.pagenr = 1
+            this.render()
+          }
 
-          $('.arrow.right').click(function() {
+          Features.prototype.rightClickHandler = function() {
             $('.arrow.left').fadeIn()
             $('.arrow.right').fadeOut()
-            shadowDome.turnOff()
-            pagenr = 0
-            update()
-          })
+            this.shadowDome.turnOff()
+            this.pagenr = 0
+            this.render()
+          }
 
-          $(window).bind('resize', function() {
-            setTimeout(turnOffTransitions, 0)
-            setTimeout(update, 1)
-            setTimeout(turnOnTransitions, 16)
-          })
+          Features.prototype.windowResizeHandler = function() {
+            setTimeout(_.bind(this.turnOffTransitions, this), 0)
+            setTimeout(_.bind(this.render, this), 2)
+            setTimeout(_.bind(this.turnOnTransitions, this), 10)
+          }
 
-          function update() {
-            var x = $('body').width() * - pagenr
-            if( threedSupport ) {
-              $('.panes').attr( 'style', 
+          Features.prototype.render = function() {
+            var x
+
+            x = $('body').width() * - this.pagenr
+
+            if( this.threedSupport ) {
+              this.$el.find( '.panes' ).attr( 'style', 
                 '-moz-transform: translate3d(' + x + 'px, 0px, 0px);' +
                 '-ms-transform: translate3d(' + x + 'px, 0px, 0px);' +
                 '-o-transform: translate3d(' + x + 'px, 0px, 0px);' + 
@@ -207,91 +274,34 @@
                 'transform: translate3d(' + x + 'px, 0px, 0px);')  
             }
             else {
-              $('.panes').css( 'left', x )
+              this.$el.find('.panes').css( 'left', x )
             }
-            $('.panes.h2 h2').fadeOut(2000)
-            $($('.panes.h2 h2')[pagenr]).fadeIn(2000)
+            this.shadowDome.render()
+            this.$el.find( '.panes.h2 h2' ).fadeOut( 2000 )
+            $( this.$el.find('.panes.h2 h2')[this.pagenr] ).fadeIn( 2000 )
           }
 
-          function turnOffTransitions() {
-            $('.panes').addClass( 'no-transition' )
+          Features.prototype.turnOffTransitions = function() {
+            this.$el.find('.panes').addClass( 'no-transition' )
           }
 
-          function turnOnTransitions() {
-            $('.panes').removeClass( 'no-transition' )
+          Features.prototype.turnOnTransitions = function() {
+            this.$el.find('.panes').removeClass( 'no-transition' )
           }
+
 
           $('body').css( 'min-height',  $('.socialicons').offset().top + $('.socialicons').outerHeight() + 30 )
 
-          turnOffTransitions()
-          update()
+          var features = new Features({ el: "#features_wrapper" })
 
+          features.turnOffTransitions()
+          features.render()
           setTimeout(function() {
-            turnOnTransitions()
+            features.turnOnTransitions()
           }, 1200)
 
         })
       </script>
-
-    <script type="text/javascript">
-
-      $(function() {
-
-        window.shadowDome = {
-
-          on: true,
-          el: $('.shadowdome'),
-          screenwidth: screen.width,
-
-          shadow: function( a, b, c, d, e ){
-            a = a || 0,  b = b || 0,  c = c || 0,  d = d || 0,  e = e || 0
-            return "box-shadow: " +a+ "px "+b+"px "+c+"px "+d+"px rgba(0,0,0, "+e+");"
-          },
-
-          turnOff: function () {
-            this.el.fadeOut()
-            this.on = false
-          },
-
-          turnOn: function () {
-            this.el.fadeIn()
-            this.on = true
-          },
-
-          getPrctWidth: function () {
-            return $(window).width() / this.screenwidth * 100
-          },
-
-          update: function () {
-            var prctwidth
-
-            if( !this.on )
-              return
-
-            prctwidth = this.getPrctWidth()
-            mod = 100 - prctwidth
-            
-            this.el.attr( 'style', 
-             "border-radius: " + (mod * 100) +  "px;" + 
-             this.shadow(
-              - (mod) * 1,
-              - (mod) * 3,
-              mod * 10,
-              mod * 7,
-              0.5
-            ))
-          }
-
-        }
-
-       shadowDome.update() 
-       $(window).resize(function() {
-        shadowDome.update()
-       })
-
-      })
-
-    </script>
 
     </body>
   </html>
