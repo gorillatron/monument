@@ -1,8 +1,10 @@
-var Backbone  = require( 'Backbone' ),
+var Backbone  = require( 'backbone' ),
     PodCasts  = require( './collections/PodCasts' )
     AppView   = require( './views/App' ),
-    $         = require( 'jquery' ),
+    $         = require( 'jquery-browserify' ),
     _         = require( 'underscore' )
+
+Backbone.$ = $
 
 var App = Backbone.Router.extend({
 

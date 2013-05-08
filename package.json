@@ -10,9 +10,9 @@
     "express": "3.0.0rc5",
     "jade": "*",
     "browserify": "~1.17.2",
-    "underscore": "~1.4.3",
     "jquery-browserify": "~1.8.1",
-    "backbone-browserify": "~0.9.2-1"
+    "backbone": "~1.0.0",
+    "underscore": "~1.4.4"
   },
   "subdomain": "monument",
   "engines": {

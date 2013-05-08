@@ -21,6 +21,11 @@ app.configure(function() {
   app.use( express.methodOverride() )
   app.use( app.router )
   app.use( express.static(path.join(__dirname, 'public')) )
+  app.use( browserify({ 
+    entry: __dirname + '/public/js/main.js',
+    mount: '/main.js',
+    watch: true
+  }))
 })
 
 app.configure('development', function() {
@@ -36,6 +41,29 @@ app.configure('development', function() {
  * Routes
 */
 app.get( '/', routes.index )
+
+app.get( '/posts', function( req, res ) {
+  res.send([
+    {
+      id: 1,
+      type: "podcast",
+      soundcloudtrackid: "2F89868066",
+      createtime: new Date(),
+      js: "",
+      css: "",
+      template: ""
+    },
+    {
+      id: 2,
+      type: "podcast",
+      soundcloudtrackid: "68072005",
+      createtime: new Date(),
+      js: "",
+      css: "",
+      template: ""
+    }
+  ])
+})
 
 
 http.createServer( app ).listen( process.env.PORT )

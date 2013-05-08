@@ -1,4 +1,4 @@
-var Backbone  = require( 'Backbone' ),
+var Backbone  = require( 'backbone' ),
     SC        = require( '../lib/SoundCloud' ),
     PodCast   = require( '../models/PodCast' ),
     create    = require( '../helpers/create' )
