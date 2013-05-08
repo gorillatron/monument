@@ -239,7 +239,7 @@
 
           turnOn: function () {
             this.el.fadeIn()
-            this.on = false
+            this.on = true
           },
 
           getPrctWidth: function () {
