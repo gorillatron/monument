@@ -51,6 +51,15 @@ ul.panes {
   -ms-transition: all 0.8s;
   -o-transition: all 0.8s;
   -webkit-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+ul.panes.no-transition {
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  -webkit-transition: none !important;
+  transition: none !important;
 }
 
 
@@ -116,6 +125,7 @@ ul.panes.h2 {
 }
 
 ul.panes.h2 h2 {
+  display: none;
   font-weight: 300;
   font-size: 2em;
   text-shadow: 1px 1px 1px rgba(0,0,0, 0.5);
@@ -124,6 +134,7 @@ ul.panes.h2 h2 {
   color: white;
   font-family: "ff-enzo-web";
   text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
+
 }
 
 ul.panes.description {
@@ -211,12 +222,12 @@ ul.panes.description li.pane .content p:focus {
 
 #features_wrapper .arrow.left {
   right: 32px;
+  display: none;
   background-image: url(/images/gfx/arrow_left.png);
 }
 
 #features_wrapper .arrow.right {
-  right: 74px;
-  display: none;
+  left: 32px;
   background-image: url(/images/gfx/arrow_right.png);
 }
 

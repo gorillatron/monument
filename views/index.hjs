@@ -43,17 +43,17 @@
         </div>
 
         <ul class="panes backgrounds">
-          <li class="pane podcast two"></li>
           <li class="pane podcast one"></li>
+          <li class="pane podcast two"></li>
         </ul>
 
         <ul class="panes players">
-          <li class="pane podcast two">
+          <li class="pane podcast one">
             <div class="content">
               <iframe id="player" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F89868066&amp;show_artwork=false&amp;color=A5BD7D"></iframe>
             </div>
           </li>
-          <li class="pane podcast one">
+          <li class="pane podcast two">
             <div class="content">
               <iframe id="player" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F89868066&amp;show_artwork=false&amp;color=A5BD7D"></iframe>
             </div>
@@ -61,14 +61,14 @@
         </ul>
 
         <ul class="panes h2">
-          <li class="pane podcast two"> 
-            <div class="content">
-              <h2>02: Ronny Rabalder</h2> 
-            </div>
-          </li>
           <li class="pane podcast one"> 
             <div class="content">
               <h2>01: Korpex</h2> 
+            </div>
+          </li>
+          <li class="pane podcast two"> 
+            <div class="content">
+              <h2>02: Ronny Rabalder</h2> 
             </div>
           </li>
         </ul>
@@ -170,15 +170,14 @@
             return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
           }
 
-          var pagenr = 0
+          var pagenr = 1
           var threedSupport = has3d()
-          console.log(threedSupport);
 
 
           $('.arrow.left').click(function() {
             $('.arrow.right').fadeIn()
             $('.arrow.left').fadeOut()
-            shadowDome.turnOff()
+            shadowDome.turnOn()
             pagenr = 1
             update()
           })
@@ -186,7 +185,7 @@
           $('.arrow.right').click(function() {
             $('.arrow.left').fadeIn()
             $('.arrow.right').fadeOut()
-            shadowDome.turnOn()
+            shadowDome.turnOff()
             pagenr = 0
             update()
           })
@@ -208,11 +207,26 @@
             else {
               $('.panes').css( 'left', x )
             }
-            
+            $('.panes.h2 h2').fadeOut(2000)
+            $($('.panes.h2 h2')[pagenr]).fadeIn(2000)
+          }
+
+          function turnOffTransitions() {
+            $('.panes').addClass( 'no-transition' )
+          }
+
+          function turnOnTransitions() {
+            $('.panes').removeClass( 'no-transition' )
           }
 
           $('body').css( 'min-height',  $('.socialicons').offset().top + $('.socialicons').outerHeight() + 30 )
 
+          turnOffTransitions()
+          update()
+
+          setTimeout(function() {
+            turnOnTransitions()
+          }, 1200)
 
         })
       </script>
