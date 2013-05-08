@@ -36,6 +36,10 @@
     <body>
 
 
+      <script type="text/javascript">
+        $('body').hide()
+      </script>
+
       <div id="features_wrapper">
 
         <div class="static-header content">
@@ -202,7 +206,7 @@
 
           function Features( options ) {
             this.$el = $( options.el )
-            
+
             this.pagenr = 1
             this.threedSupport = this.has3d()
             this.shadowDome = new ShadowDome({ el: this.$el.find('.shadowdome') })
@@ -296,6 +300,7 @@
 
           features.turnOffTransitions()
           features.render()
+          $('body').show()
           setTimeout(function() {
             features.turnOnTransitions()
           }, 1200)
