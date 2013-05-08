@@ -100,6 +100,11 @@
           </li>
         </ul>
 
+        <div class="socialicons content">
+          <a id="facebook" href="https://www.facebook.com/MonuMnt" target="_blank" class="socialicon"></a>
+          <a id="twitter" href="https://twitter.com/MonumentPodcast" target="_blank" class="socialicon"></a>
+        </div>
+
       </div>
 
 

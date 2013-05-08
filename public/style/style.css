@@ -116,7 +116,7 @@ ul.panes.h2 h2 {
 }
 
 ul.panes.description li.pane .content {
-  margin-top: 500px;
+  margin-top: 480px;
 }
 
 
@@ -259,12 +259,12 @@ section#featured .desc p:focus {
   outline: none;
 }
 
-section#featured .socialicons {
-  margin-top: 20px;
-  margin-left: 10px;
+.socialicons {
+  margin-top: 600px;
+  padding-left: 10px;
 }
 
-section#featured .socialicons .socialicon {
+.socialicons .socialicon {
   display: inline-block;
   vertical-align: top;
   background-repeat: no-repeat;
@@ -281,7 +281,7 @@ section#featured .socialicons .socialicon {
   transition: all 0.1s ease-in;
 }
 
-section#featured .socialicons .socialicon:hover {
+.socialicons .socialicon:hover {
   opacity: 1;
   -moz-transform: scale(1.05);
   -ms-transform: scale(1.05);
@@ -291,11 +291,11 @@ section#featured .socialicons .socialicon:hover {
 }
 
 
-section#featured .socialicons .socialicon#facebook {
+.socialicons .socialicon#facebook {
   background-image: url(/images/gfx/social/PNG/48x48/facebook.png);
 }
 
-section#featured .socialicons .socialicon#twitter {
+.socialicons .socialicon#twitter {
   background-image: url(/images/gfx/social/PNG/48x48/twitter.png);
 }
 
