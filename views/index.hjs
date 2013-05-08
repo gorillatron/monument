@@ -151,14 +151,14 @@
           $('.arrow.left').click(function() {
             $('.arrow.right').fadeIn()
             $('.arrow.left').fadeOut()
-            pagenr++
+            pagenr = 1
             update()
           })
 
           $('.arrow.right').click(function() {
             $('.arrow.left').fadeIn()
             $('.arrow.right').fadeOut()
-            pagenr--
+            pagenr = 0
             update()
           })
 
