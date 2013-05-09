@@ -233,6 +233,7 @@ ul.panes.description li.pane .content p:focus {
 
 #features_wrapper .shadowdome {
   position: absolute;
+  display: none;
   height: 4px;
   width: 4px;
   background-color: rgba(0,0,0, 0.6);

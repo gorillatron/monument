@@ -181,6 +181,10 @@
             this.on = false
           }
 
+          ShadowDome.prototype.remove = function () {
+            this.$el.remove()
+          }
+
           ShadowDome.prototype.turnOn = function () {
             this.$el.fadeIn()
             this.on = true
@@ -222,6 +226,10 @@
             this.pagenr = 1
             this.threeD = Modernizr.csstransforms
             this.shadowDome = new ShadowDome({ el: this.$el.find('.shadowdome') })
+
+            if( !Modernizr.csstransforms3d ) {
+              this.shadowDome.remove()              
+            }
 
             this.$el.find( '.arrow.left' ).click( _.bind(this.leftClickHandler, this) )
             this.$el.find( '.arrow.right' ).click( _.bind(this.rightClickHandler, this) )
