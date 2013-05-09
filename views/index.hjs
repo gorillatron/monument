@@ -227,8 +227,8 @@
             this.threeD = Modernizr.csstransforms
             this.shadowDome = new ShadowDome({ el: this.$el.find('.shadowdome') })
 
-            if( !Modernizr.csstransforms3d ) {
-              this.shadowDome.remove()              
+            if( Modernizr.csstransforms3d ) {
+              this.shadowDome.turnOn()              
             }
 
             this.$el.find( '.arrow.left' ).click( _.bind(this.leftClickHandler, this) )
