@@ -194,6 +194,10 @@
             prctwidth = this.getPrctWidth()
             mod = 100 - prctwidth
             
+            if( mod < 11 ) {
+              mod = 11
+            }
+
             this.$el.attr( 'style', 
              "border-radius: " + (mod * 100) +  "px;" + 
              this.generateShadowString(
