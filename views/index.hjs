@@ -2,7 +2,8 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>Monument</title><link rel="stylesheet" href="/style/style.css">
+      <title>Monument</title>
+      <link rel="stylesheet" href="/style/style.css">
       <meta property="og:image" content="/images/feature_photos/01thumbnail.png">
 
       <script type="text/javascript" src="http://w.soundcloud.com/player/api.js"></script>
