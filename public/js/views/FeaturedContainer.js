@@ -18,6 +18,8 @@ var FeaturedContainer = BaseView.extend({
 
     this.featuredViews = []
 
+    $(window).resize(_.bind(this.instantUpdate, this))
+
   },
 
   render: function() {
