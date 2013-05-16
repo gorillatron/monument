@@ -38,7 +38,7 @@ ul.panes {
   top: 0px;
   left: 0px;
   height: 100%;
-  width: 100%;
+  width: 300%;
   padding-top: 1px;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -67,7 +67,7 @@ ul.panes li.pane {
   vertical-align: top;
   float: left;
   height: 100%;
-  width: 50%;
+  width: 33.333%;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;
@@ -102,14 +102,6 @@ ul.panes.players {
 
 ul.panes.players .pane {
 
-}
-
-ul.panes.backgrounds li.pane.two {
-  background-image: url(/images/feature_photos/02background.jpg);
-}
-
-ul.panes.backgrounds li.pane.one {
-  background-image: url(/images/feature_photos/01background.jpg);
 }
 
 ul.panes.players .pane iframe{
@@ -176,10 +168,11 @@ ul.panes.description li.pane .content p:focus {
 }
 
 
-#features_wrapper {
+#featured_container {
   position: relative;
   height: 100%;
-  width: 200%;
+  width: 100%;
+  overflow-x: hidden;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;
@@ -188,17 +181,17 @@ ul.panes.description li.pane .content p:focus {
   padding-top: 1px;
 }
 
-#features_wrapper .content {
+#featured_container .content {
   width: 670px;
   margin-left: 180px;
 }
 
-#features_wrapper .static-header {
+#featured_container .static-header {
   position: relative;
   z-index: 500;
 }
 
-#features_wrapper .static-header h1 {
+#featured_container .static-header h1 {
   margin-top: 130px;
   font-family: "ff-enzo-web";
   font-weight: 100;
@@ -207,7 +200,7 @@ ul.panes.description li.pane .content p:focus {
   text-shadow: 2px 2px 1px rgba(0,0,0, 0.3);
 }
 
-#features_wrapper .arrow {
+#featured_container .arrow {
   position: fixed;
   display: block;
   top: 48%;
@@ -219,19 +212,18 @@ ul.panes.description li.pane .content p:focus {
   cursor: pointer;
 }
 
-#features_wrapper .arrow.left {
-  right: 32px;
-  display: none;
+#featured_container .arrow.left {
+  left: 32px;
   background-image: url(/images/gfx/arrow_left.png);
 }
 
-#features_wrapper .arrow.right {
-  left: 32px;
+#featured_container .arrow.right {
+  right: 32px;
   background-image: url(/images/gfx/arrow_right.png);
 }
 
 
-#features_wrapper .shadowdome {
+#featured_container .shadowdome {
   position: absolute;
   height: 4px;
   width: 4px;
@@ -340,7 +332,7 @@ section#featured .desc p:focus {
 
 .socialicons {
   position: relative;
-  margin-top: 620px;
+  margin-top: 650px;
   padding-left: 10px;
   z-index: 900;
 }

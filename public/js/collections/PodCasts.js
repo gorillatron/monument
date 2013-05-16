@@ -9,7 +9,7 @@ var PodCasts = Backbone.Collection.extend({
   model: PodCast,
 
   initialize: function() {
-    this.createSoundCloudConnection()
+    
   },
 
   createSoundCloudConnection: function() {
