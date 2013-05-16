@@ -1,4 +1,5 @@
 var $             = require( 'jquery-browserify' ),
+    _             = require( 'underscore' ),
     BaseView      = require( './BaseView' ),
     Featured      = require( './Featured' )
 
@@ -15,29 +16,39 @@ var FeaturedContainer = BaseView.extend({
     this.pagenr = this.nrOfPages
     this.threeD = Modernizr.csstransforms
 
+    this.featuredViews = []
+
   },
 
   render: function() {
+    this.featuredViews = []
     this.collection.forEach(function( feature ) {
       var featuredView
       
       featuredView = new Featured({ model: feature, el: this.$el })
       featuredView.render()
+
+      this.featuredViews.push( featuredView )
+
     }, this)
-    this.update()
+    this.instantUpdate()
   },
 
   leftClickHandler: function( event ) {
      if( this.pagenr - 1 >= 0 ) {
+      this.featuredViews[this.pagenr].deselected()
       this.pagenr--
       this.update()
-     }
+      this.featuredViews[this.pagenr].selected()
+    }
   },
 
   rightClickHandler: function( event ) {
     if( this.pagenr + 1 <= this.nrOfPages ) {
+      this.featuredViews[this.pagenr].deselected()
       this.pagenr++
       this.update()
+      this.featuredViews[this.pagenr].selected()
     }
   },
 
@@ -46,6 +57,17 @@ var FeaturedContainer = BaseView.extend({
 
     x = this.getPosition()
     
+    if( this.pagenr == 0 ) {
+      this.$el.find( '.arrow.left' ).hide()
+    } 
+    else if( this.pagenr == this.nrOfPages ) {
+      this.$el.find( '.arrow.right' ).hide()
+    }
+    else {
+      this.$el.find( '.arrow.left' ).show()
+      this.$el.find( '.arrow.right' ).show()
+    }
+
     if( this.threeD ) {
       this.$el.find( '.panes' ).attr( 'style', 
         '-moz-transform: translate3d(' + x + 'px, 0px, 0px);' +
@@ -57,6 +79,13 @@ var FeaturedContainer = BaseView.extend({
     else {
       this.$el.find('.panes').css( 'left', x )
     }
+  },
+
+  instantUpdate: function() {
+    this.$el.find( '.panes' ).addClass( 'no-transition' )
+    setTimeout(_.bind(this.update, this), 5)
+    setTimeout(_.bind(this.$el.removeClass, this.$el.find('.panes'), 'no-transition' ), 300)
+    this.featuredViews[this.pagenr].selected()
   },
 
   getPosition: function() {

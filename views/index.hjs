@@ -55,7 +55,7 @@
           <script type="text/template" id="featured_player_pane">
             <li class="pane podcast" data-numer="<%= number %>">
               <div class="content">
-                <iframe id="player" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F<%= scTrackId %>&amp;show_artwork=false&amp;color=A5BD7D"></iframe>
+                <iframe id="player" width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F<%= scTrackId %>&amp;show_artwork=false&amp;color=<%= scColor %>"></iframe>
               </div>
             </li>
           </script>
@@ -86,11 +86,10 @@
         <div class="arrow left"></div>
         <div class="arrow right"></div>
 
-        <div class="shadowdome a"></div>
-        <div class="shadowdome b"></div>
+        <!-- <div class="shadowdome a"></div>
+        <div class="shadowdome b"></div> -->
 
       </div>
-
 
       <script type="text/javascript" src="/js/main.js"></script>
 
@@ -156,87 +155,6 @@
               0.5
             ))
           }
-
-
-
-          function Features( options ) {
-            this.$el = $( options.el )
-
-            this.pagenr = 1
-            this.threeD = Modernizr.csstransforms
-            this.shadowDome = new ShadowDome({ el: this.$el.find('.shadowdome') })
-
-            this.$el.find( '.arrow.left' ).click( _.bind(this.leftClickHandler, this) )
-            this.$el.find( '.arrow.right' ).click( _.bind(this.rightClickHandler, this) )
-            $( window ).bind( 'resize', _.bind(this.windowResizeHandler, this) )
-          }
-
-          Features.prototype.leftClickHandler = function() {
-            $('.arrow.right').fadeIn()
-            $('.arrow.left').fadeOut()
-            this.shadowDome.turnOn()
-            this.pagenr = 1
-            this.render()
-          }
-
-          Features.prototype.rightClickHandler = function() {
-            $('.arrow.left').fadeIn()
-            $('.arrow.right').fadeOut()
-            this.shadowDome.turnOff()
-            this.pagenr = 0
-            this.render()
-          }
-
-          Features.prototype.windowResizeHandler = function() {
-            setTimeout(_.bind(this.turnOffTransitions, this), 0)
-            setTimeout(_.bind(this.render, this, true), 2)
-            setTimeout(_.bind(this.turnOnTransitions, this), 10)
-          }
-
-          Features.prototype.render = function( noHeaderfade ) {
-            var x
-            
-            x = $('body').width() * - this.pagenr
-
-            if( this.threeD ) {
-              this.$el.find( '.panes' ).attr( 'style', 
-                '-moz-transform: translate3d(' + x + 'px, 0px, 0px);' +
-                '-ms-transform: translate3d(' + x + 'px, 0px, 0px);' +
-                '-o-transform: translate3d(' + x + 'px, 0px, 0px);' + 
-                '-webkit-transform: translate3d(' + x + 'px, 0px, 0px);' + 
-                'transform: translate3d(' + x + 'px, 0px, 0px);')  
-            }
-            else {
-              this.$el.find('.panes').css( 'left', x )
-            }
-            this.shadowDome.render()
-            if( !noHeaderfade ) {
-              this.$el.find( '.panes.h2 h2' ).fadeOut( 2000 )
-              $( this.$el.find('.panes.h2 h2')[this.pagenr] ).fadeIn( 2000 )
-            }
-          }
-
-          Features.prototype.turnOffTransitions = function() {
-            this.$el.find('.panes').addClass( 'no-transition' )
-          }
-
-          Features.prototype.turnOnTransitions = function() {
-            this.$el.find('.panes').removeClass( 'no-transition' )
-          }
-
-
-
-          var features = new Features({ el: "#features_wrapper" })
-
-          features.turnOffTransitions()
-          features.render()
-          setTimeout(function() {
-            $('body').show()
-            $('body').css( 'min-height',  $('.socialicons').offset().top + $('.socialicons').outerHeight() + 30 )
-          }, 10)
-          setTimeout(function() {
-            features.turnOnTransitions()
-          }, 1200)
 
         })
       </script>
