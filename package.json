@@ -11,7 +11,8 @@
     "hjs": "0.0.4",
     "jquery-browserify": "~1.8.1",
     "backbone": "~1.0.0",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "browserify-middleware": "~1.9.0"
   },
   "subdomain": "monument",
   "engines": {
