@@ -2,7 +2,7 @@ var express     = require( 'express' ),
     routes      = require( './routes' ),
     http        = require( 'http' ),
     path        = require( 'path' ),
-    browserify  = require( 'browserify' )
+    browserify  = require( 'browserify-middleware' )
 
 
 var app = express()
@@ -21,11 +21,6 @@ app.configure(function() {
   app.use( express.methodOverride() )
   app.use( app.router )
   app.use( express.static(path.join(__dirname, 'public')) )
-  app.use( browserify({ 
-    entry: __dirname + '/public/js/main.js',
-    mount: '/main.js',
-    watch: true
-  }))
 })
 
 app.configure('development', function() {
@@ -42,6 +37,7 @@ app.configure('development', function() {
  * Routes
 */
 app.get( '/', routes.index )
+app.get( '/js/main.js', browserify(path.join(__dirname, '/public/js/main.js')) )
 
 app.get( '/posts', function( req, res ) {
   res.send([
