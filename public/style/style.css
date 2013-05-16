@@ -22,7 +22,6 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   height: 100%;
   width: 100%;
-  overflow-y: hidden;
   overflow-x: hidden;
   -webkit-transform: translate3d(0px, 0px, 0px);
 }
@@ -179,6 +178,7 @@ ul.panes.description li.pane .content p:focus {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding-top: 1px;
+  min-height: 950px;
 }
 
 #featured_container .content {
