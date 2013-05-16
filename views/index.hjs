@@ -4,7 +4,7 @@
     <head>
       <title>Monument</title>
       <link rel="stylesheet" href="/style/style.css">
-      <meta property="og:image" content="/images/feature_photos/profilepic.jpg">
+      <meta property="og:image" content="/images/feature_photos/profilepic03.png.jpg">
 
       <script type="text/javascript" src="http://w.soundcloud.com/player/api.js"></script>
       <script src="//use.typekit.net/jor0qjq.js"></script>
@@ -39,6 +39,8 @@
     <body>
 
       <script type="text/javascript" src="/main.js"></script>
+
+      
 
       <div id="featured_container">
 
@@ -158,6 +160,6 @@
 
         })
       </script>
-
+      
     </body>
   </html>
