@@ -37,7 +37,7 @@ ul.panes {
   top: 0px;
   left: 0px;
   height: 100%;
-  width: 300%;
+  width: 400%;
   padding-top: 1px;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -66,7 +66,7 @@ ul.panes li.pane {
   vertical-align: top;
   float: left;
   height: 100%;
-  width: 33.333%;
+  width: 25%;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;

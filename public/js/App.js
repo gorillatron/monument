@@ -46,6 +46,16 @@ var App = Backbone.Router.extend({
         backgroundImage: '/images/feature_photos/03background.jpg',
         descriptionHtml: '<div class="column first"><p>Monument 03 is out, and we are excited to bring you a really great and special mix from Vincent Neumann. Being a resident DJ at the Distillery (East Germany\'s oldest techno club) and a part wonderful Krill Music label this man knows his stuff.</p><p>Vincent told us he had the idea for this mix a while ago, showcasing that techno isn\'t dependent on varying tempos to showcase different feelings. ”So basically the tempo is constantly at 130bpm (my favourite tempo in the world) and I tried to show with different tracks and grooves how one tempo can still contain a lot of different feelings and emotions. Also, I had to use a corny Black Metal intro because Norway, you know?“.</p></div><div class="column second"><p>Outside the clubbing and techno bubble he just finished a diploma thesis in psychology (Congratulations). If you want to catch Vincent playing check out Distillery, Westwerk, Elipamanoke and Sweat. He will also be back on the legendary Tresor club soon, so keep your eyes open for an epic night of pure beauty when it comes to the sounds of Techno!</p></div>',
         shadowDome: true
+      },
+      {
+        id: 4,
+        number: 4,
+        title: 'Espen Lauritzen',
+        scTrackId: 93424185,
+        scColor: "A5BD7D",
+        backgroundImage: '/images/feature_photos/04background.jpg',
+        descriptionHtml: '<div class="column first"><p>Born in Norway and raised in South America, Espen is one of driving forces behind Krill Music. Always being strongly impregnated by music, in mid-2000 he became a regular DJ at Cocoliche, Buenos Aires. This is where he met his first heavyweight artists from the Techno international and national scene.</p><p>Espen is currently based in Norway, managing Krill Music and working on his own music productions. He told us that this mix contains both old and current stuff. But we are also lucky to take a sneak peak into Krills future valult and listen to tunes that will be released between this year and the next. \“there is a track is not getting released til 2014! so enjoy!\” -Espen Lauritzen</p></div><div class="column second"><p>The sound in this mix shows that Espen likes to vary, from the minimalistic and hard industrial techno, to the old school acid sound. This mix should get you up from the chair, and into a 1+ hour Krill trip, enjoy!</p></div>',
+        shadowDome: true
       }
     ])
   

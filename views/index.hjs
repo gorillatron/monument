@@ -2,12 +2,18 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>Monument</title>
+      <title>{{meta.title}}</title>
       <link rel="stylesheet" href="/style/style.css">
+
       <meta property="og:image" content="/images/feature_photos/profilepic03.png">
+      <meta name="description" content="{{meta.description}}">
 
       <script type="text/javascript" src="http://w.soundcloud.com/player/api.js"></script>
       <script src="//use.typekit.net/jor0qjq.js"></script>
+
+      <script type="text/javascript">
+        window.boostrap = {{bootstrapJSON}}
+      </script>
 
       <script>
         try{

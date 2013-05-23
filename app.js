@@ -2,7 +2,8 @@ var express     = require( 'express' ),
     routes      = require( './routes' ),
     http        = require( 'http' ),
     path        = require( 'path' ),
-    browserify  = require( 'browserify-middleware' )
+    browserify  = require( 'browserify-middleware' ),
+    Podcast     = require( './models/Podcast' )
 
 
 var app = express()
@@ -33,34 +34,18 @@ app.configure('development', function() {
 })
 
 
+function getAllPodcasts( req, res, next ) {
+  Podcast.getAll(function( err, podcasts ) {
+    req.podcasts = podcasts
+    return next()
+  })
+}
+
 /*
  * Routes
 */
-app.get( '/', routes.index )
+app.get( '/', getAllPodcasts, routes.index )
 app.get( '/js/main.js', browserify(path.join(__dirname, '/public/js/main.js')) )
-
-app.get( '/posts', function( req, res ) {
-  res.send([
-    {
-      id: 1,
-      type: "podcast",
-      soundcloudtrackid: "2F89868066",
-      createtime: new Date(),
-      js: "",
-      css: "",
-      template: ""
-    },
-    {
-      id: 2,
-      type: "podcast",
-      soundcloudtrackid: "68072005",
-      createtime: new Date(),
-      js: "",
-      css: "",
-      template: ""
-    }
-  ])
-})
 
 
 http.createServer( app ).listen( process.env.PORT )
