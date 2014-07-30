@@ -1,0 +1,20 @@
+{
+  "name": "mnmt",
+  "version": "0.0.0",
+  "description": "",
+  "main": "programm.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "koa": "^0.8.1"
+  },
+  "dependencies": {
+    "bluebird": "^2.2.2",
+    "browserify": "^4.2.3",
+    "koa-static": "^1.4.5",
+    "less": "^1.7.3"
+  }
+}
