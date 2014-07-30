@@ -12,9 +12,10 @@
     "node": "0.11.x"
   },
   "dependencies": {
-    "koa": "^0.8.1",
     "bluebird": "^2.2.2",
     "browserify": "^4.2.3",
+    "browserify-typescript": "0.0.1",
+    "koa": "^0.8.1",
     "koa-static": "^1.4.5",
     "less": "^1.7.3"
   }
