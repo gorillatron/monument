@@ -11,6 +11,9 @@
   "devDependencies": {
     "koa": "^0.8.1"
   },
+  "engines": {
+    "node": "0.11.x"
+  },
   "dependencies": {
     "bluebird": "^2.2.2",
     "browserify": "^4.2.3",
