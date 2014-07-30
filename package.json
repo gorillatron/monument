@@ -8,13 +8,11 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "koa": "^0.8.1"
-  },
   "engines": {
     "node": "0.11.x"
   },
   "dependencies": {
+    "koa": "^0.8.1",
     "bluebird": "^2.2.2",
     "browserify": "^4.2.3",
     "koa-static": "^1.4.5",
