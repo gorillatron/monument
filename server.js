@@ -1,22 +1,25 @@
 var koa         = require( 'koa' )
+var router      = require( 'koa-router' )
+var path        = require( 'path' )
 var serve       = require( 'koa-static' )
 var Promise     = require( 'bluebird' )
 var fs          = Promise.promisifyAll( require('fs') )
 var browserify  = require( 'browserify' )
-var typescript  = require( 'browserify-typescript' )
+var reactify    = require( 'reactify' )
 var less        = require( 'less' )
+
+
 
 
 function compileSrc() {
   return new Promise(function( resolve, reject) {
-    var bundle = browserify()
-    bundle.add( './client/src/main.ts' )
-    bundle.transform( typescript )
-    bundle.bundle(function( err, programm ) {
-      if( err )
-        return reject( err )
-      resolve( programm )
-    })
+    browserify( path.join(__dirname, 'client/src/main.js' ) )
+      .transform({ extension: 'jsx', harmony: true }, reactify )
+      .bundle(function( err, programm ) {
+        if( err )
+          return reject( err )
+        resolve( programm )
+      })
   })
 }
 
@@ -32,15 +35,22 @@ function compileLess() {
   })
 }
 
+
 const app = koa()
 
 app.use( serve('./static') )
+app.use( router(app) )
 
-app.use(function *(){
-  var html = yield fs.readFileAsync( './client/templates/index.html', 'utf8' )
-  var html = html.replace( "@PROGRAM@", yield compileSrc() )
-  var html = html.replace( "@CSS@", yield compileLess() )
-  this.body = html
+app.get('/', function *(){
+  this.body = yield fs.readFileAsync( './client/templates/index.html', 'utf8' )
+})
+
+app.get('/app.js', function*() {
+  this.body = yield compileSrc()
+})
+
+app.get('/styles.css', function*() {
+  this.body = yield compileLess()
 })
 
 
