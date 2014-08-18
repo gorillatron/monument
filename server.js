@@ -9,11 +9,9 @@ var reactify    = require( 'reactify' )
 var less        = require( 'less' )
 
 
-
-
-function compileSrc() {
+function compileSrc( path ) {
   return new Promise(function( resolve, reject) {
-    browserify( path.join(__dirname, 'client/src/main.js' ) )
+    browserify( path )
       .transform({ extension: 'jsx', harmony: true }, reactify )
       .bundle(function( err, programm ) {
         if( err )
@@ -46,7 +44,7 @@ app.get('/', function *(){
 })
 
 app.get('/app.js', function*() {
-  this.body = yield compileSrc()
+  this.body = yield compileSrc( path.join(__dirname, 'client/src/main.js' )  )
 })
 
 app.get('/styles.css', function*() {

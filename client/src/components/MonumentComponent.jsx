@@ -54,6 +54,11 @@ function MonumentComponent( mountNode ) {
 MonumentComponent.prototype.render = function() {
   this.component = React.renderComponent(
     <div id="container">
+      <header>
+        <div className='logo'>
+          <img src="/pictures/logo_small.png" /> <span>onument</span>
+        </div>
+      </header>
       <Podcasts tracks={this.props ? this.props.tracks : []} />
     </div>,
     this.mountNode
