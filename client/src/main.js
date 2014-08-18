@@ -15,11 +15,11 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
   })
   bits.splice(1,0, {
     type:'SOCIAL',
-    data: { type: 'facebook', url: '' }
+    data: { type: 'facebook', url: 'https://www.facebook.com/MonuMnt' }
   })
   bits.splice(4,0, {
     type:'SOCIAL',
-    data: { type: 'soundcloud', url: '' }
+    data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }
   })
   monumentComponent.setProps({
     bits: bits

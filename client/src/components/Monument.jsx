@@ -9,7 +9,7 @@ function getRandomInt(min, max) {
 
 var Monument = React.createClass({
 
-  logoClassNameSequence: ['r', 'b', 'r b', ''],
+  logoClassNameSequence: ['r', 'b', 'r b', '', 'r', 'b', ' r b', 'r b', ''],
 
   componentDidMount: function() {
     this.logoPulse()

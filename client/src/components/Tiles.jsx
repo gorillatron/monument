@@ -31,13 +31,15 @@ var Podcast = React.createClass({
 var Social = React.createClass({
 
   render: function(){ return (
-    <li className={ 'tile social ' + this.props.type}>
-      {
-        this.props.type == 'facebook'   ? <div className='text'>We are on facebook</div> :
-        this.props.type == 'soundcloud' ? <div className='text'>... and Soundcloud to :)</div> :
-                                          <div className='text'>YO</div>
-        }
-    </li>
+      <li className={ 'tile social ' + this.props.type}>
+        <a href={this.props.url} target='blank'>
+        {
+          this.props.type == 'facebook'   ? <div className='text'>We are on facebook</div> :
+          this.props.type == 'soundcloud' ? <div className='text'>... and Soundcloud to :)</div> :
+                                            <div className='text'>YO</div>
+          }
+        </a>
+      </li>
   )}
 
 })
