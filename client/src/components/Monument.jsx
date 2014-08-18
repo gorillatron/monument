@@ -9,23 +9,10 @@ function getRandomInt(min, max) {
 
 var Monument = React.createClass({
 
-  headerClassNameSequence: ['r', 'b', 'white'],
-
   logoClassNameSequence: ['r', 'b', 'r b', ''],
 
   componentDidMount: function() {
-    this.borderRoll()
     this.logoPulse()
-  },
-
-  borderRoll: function() {
-    var setColor = () => {
-      this.setState({
-        headerclass: this.headerClassNameSequence[getRandomInt(0, this.headerClassNameSequence.length)]
-      })
-    }
-    setInterval(setColor, 3500)
-    setColor()
   },
 
   logoPulse: function() {
