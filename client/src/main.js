@@ -21,7 +21,10 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
     type:'SOCIAL',
     data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }
   })
-  monumentComponent.setProps({
-    bits: bits
-  })
+  setTimeout(function(){
+    monumentComponent.setProps({
+      bits: bits
+    })
+  }, 1500)
+
 })
