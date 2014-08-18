@@ -79,10 +79,10 @@ body {
 
   // Gjøre om til tabell?
   // JA! kanskje
-  .podcasts{
+  .tiles{
     ul {
 
-      li.podcast {
+      li.tile {
         position: relative;
         display: inline-block;
         vertical-align: top;
@@ -190,6 +190,35 @@ body {
         }
 
       }
+
+      li.tile.social {
+
+        .text {
+          position: absolute;
+          color: white;
+          font-family: ff-enzo-web;
+          font-weight: 900;
+          font-size: 1em;
+        }
+
+        &.facebook {
+          background-color: rgb(59,89,152);
+          .text {
+            top: 24%;
+            left: 18%;
+          }
+        }
+
+        &.soundcloud {
+          background-color: rgb(248,90,15);
+          .text {
+            bottom: 24%;
+            right: 18%;
+          }
+        }
+
+      }
+
 
     }
 

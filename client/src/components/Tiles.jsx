@@ -2,7 +2,7 @@ var React = require( 'react' )
 var _     = require( 'underscore')
 
 
-var PodCast = React.createClass({
+var Podcast = React.createClass({
 
   getInitialState: function() {
     return { active: false }
@@ -13,7 +13,7 @@ var PodCast = React.createClass({
   },
 
   render: function(){ return (
-    <li className={'podcast ' + (this.state.active ? 'active' : '')} onClick={this.onClick}>
+    <li className={'tile ' + (this.state.active ? 'active' : '')} onClick={this.onClick}>
       <div className="cover" style={{ 'background-image': 'url(' +this.props.track.artwork_url.replace('large', 't500x500')+ ')' }}>
       </div>
       <div className="cover-overlay">
@@ -27,16 +27,36 @@ var PodCast = React.createClass({
 
 })
 
-var Podcasts = React.createClass({
+
+var Social = React.createClass({
+
+  render: function(){ return (
+    <li className={ 'tile social ' + this.props.type}>
+      {
+        this.props.type == 'facebook'   ? <div className='text'>We are on facebook</div> :
+        this.props.type == 'soundcloud' ? <div className='text'>... and Soundcloud to :)</div> :
+                                          <div className='text'>YO</div>
+        }
+    </li>
+  )}
+
+})
+
+
+var Tiles = React.createClass({
 
   getDefaultProps: function() {
-    return { tracks: [] }
+    return { bits: [] }
   },
 
   render: function() { return (
-    <div className='podcasts'>
+    <div className='tiles'>
       <ul>
-        {_.map(this.props.tracks, (track) => <PodCast track={track}/>) }
+        {_.map(this.props.bits, (bit) => {
+          return bit.type == 'PODCAST' ? <Podcast bit={bit} track={bit.data}/> :
+                 bit.type == 'SOCIAL'  ? <Social type={bit.data.type} url={bit.data.url} /> :
+                                         <li className='tile'></li>
+        })}
       </ul>
     </div>
   )}
@@ -44,4 +64,4 @@ var Podcasts = React.createClass({
 })
 
 
-module.exports = Podcasts
+module.exports = Tiles

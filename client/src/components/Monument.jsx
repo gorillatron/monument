@@ -1,6 +1,6 @@
 var React     = require( 'react' )
 var _         = require( 'underscore')
-var Podcasts  = require( './Podcasts.jsx' )
+var Tiles     = require( './Tiles.jsx' )
 
 
 function getRandomInt(min, max) {
@@ -53,7 +53,7 @@ var Monument = React.createClass({
           <span className="b">onument</span>
         </div>
       </header>
-      <Podcasts tracks={this.props ? this.props.tracks : []} />
+      <Tiles bits={this.props ? this.props.bits : []} />
     </div>
   )}
 

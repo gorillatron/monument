@@ -10,5 +10,18 @@ SoundCloud.initialize({
 var monumentComponent = React.renderComponent( new Monument(), document.getElementById('app') )
 
 SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
-  monumentComponent.setProps({ tracks: tracks })
+  var bits = tracks.map(function(track) {
+    return { type:'PODCAST', data: track }
+  })
+  bits.splice(1,0, {
+    type:'SOCIAL',
+    data: { type: 'facebook', url: '' }
+  })
+  bits.splice(4,0, {
+    type:'SOCIAL',
+    data: { type: 'soundcloud', url: '' }
+  })
+  monumentComponent.setProps({
+    bits: bits
+  })
 })
