@@ -1,5 +1,5 @@
 var React             = require( 'react' )
-var MonumentComponent = require( './components/MonumentComponent.jsx' )
+var Monument          = require( './components/Monument.jsx' )
 var SoundCloud        = require( './lib/SoundCloud' )
 
 SoundCloud.initialize({
@@ -7,7 +7,7 @@ SoundCloud.initialize({
   redirect_uri: "http://local.com:3000/#scauthredirect"
 })
 
-var monumentComponent = new MonumentComponent( document.getElementById('app') )
+var monumentComponent = React.renderComponent( new Monument(), document.getElementById('app') )
 
 SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
   monumentComponent.setProps({ tracks: tracks })

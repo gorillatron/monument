@@ -44,38 +44,4 @@ var Podcasts = React.createClass({
 })
 
 
-function MonumentComponent( mountNode ) {
-  this.mountNode = mountNode
-  this.props = {}
-  this.state = {}
-  this.render()
-}
-
-MonumentComponent.prototype.render = function() {
-  this.component = React.renderComponent(
-    <div id="container">
-      <header style={{ 'border-color': this.state.css.header.border_color }}>
-        <div className='logo'>
-          <div className='icon'></div>
-          <span className="r">onument</span>
-          <span className="b">onument</span>
-        </div>
-      </header>
-      <Podcasts tracks={this.props ? this.props.tracks : []} />
-    </div>,
-    this.mountNode
-  )
-}
-
-MonumentComponent.prototype.setProps = function( props ) {
-  this.props = props
-  return this.render()
-}
-
-MonumentComponent.prototype.setState = function( state ) {
-  this.state = state
-  return this.component.setState( state )
-}
-
-
-module.exports = MonumentComponent
+module.exports = Podcasts

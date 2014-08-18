@@ -1,5 +1,11 @@
 @import '/client/less/ffenzofont.less';
 
+
+@r: rgba(200,40,40, 0.3);
+@b: rgba(20,120,200, 0.3);
+
+
+
 * {
   margin: 0px;
   padding: 0px;
@@ -11,31 +17,60 @@ body {
   background-size: cover;
 }
 
+
 #app {
 
   padding: 2%;
 
   .logo {
     margin-bottom: 2%;
-    img {
+    position: relative;
+    .icon {
       display: inline-block;
-      vertical-align: top;
+      height: 96px;
+      width: 113px;
+      background-image: url(/pictures/2_1.png)
+    }
+    &.r span.r {
+      text-shadow: 8px -3px 0px @r;
+    }
+    &.b span.b {
+      text-shadow: 5px -2px 0px @b;
     }
     span {
-      vertical-align: top;
+      vertical-align: bottom;
       display: inline-block;
       font-family: ff-enzo-web;
-      font-size: 3em;
+      font-size: 48px;
       font-weight: 200;
       color: rgb(100,100,100);
       margin-top: 25px;
       margin-left: 3px;
+      text-shadow: 5px -1px 0px rgba(255,255,255, 0);
+      transition: all 0.8s;
+      &.r {
+      }
+      &.b {
+        position: absolute;
+        bottom: 0px;
+        left: 113px;
+      }
     }
   }
 
   header {
-    border-bottom: 2px solid rgb(40,40,40);
+    border-bottom: 2px solid white;
     margin-bottom: 2%;
+    transition: border-color 0.5s;
+    &.white{
+      border-color: white;
+    }
+    &.r{
+      border-color: @r;
+    }
+    &.b{
+      border-color: @b;
+    }
   }
 
   section#content {
@@ -143,15 +178,16 @@ body {
           background-color: rgba(0,0,0, 0);
         }
 
-        // @media only screen
-        // and (min-device-width : 320px)
-        // and (max-device-width : 480px) {
-        //   width: 100%;
-        //   height: 48%;
-        //   .cover-overlay {
-        //     .title { font-size: 2em; }
-        //   }
-        // }
+        @media only screen
+        and (min-device-width : 320px)
+        and (max-device-width : 480px) {
+          width: 100%!important;
+          height: 48%;
+          margin-bottom: 2%!important;
+          .cover-overlay {
+            .title { font-size: 2em; }
+          }
+        }
 
       }
 
