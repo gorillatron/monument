@@ -55,10 +55,10 @@ var Tiles = React.createClass({
 
   componentDidMount: function() {
     var i = 2
-    this.loadingInterval = setInterval(() =>{
+    this.loadingInterval = setInterval(function() {
       if(i == 7) i = 1
       this.setState({
-        loadingtext: _.map(_.range(1,i), (item) => <span className={(!(i % 2) ? 'r' : 'b')}>.</span>)
+        loadingtext: _.map(_.range(1,i), function(item){ return <span className={(!(i % 2) ? 'r' : 'b')}>.</span> })
       })
       i++
     }, 150)
@@ -74,7 +74,7 @@ var Tiles = React.createClass({
         this.props.bits && this.props.bits.length ?
 
           <ul>
-            {_.map(this.props.bits, (bit) => {
+            {_.map(this.props.bits, function(bit) {
               return bit.type == 'PODCAST' ? <Podcast bit={bit} track={bit.data} onClick={this.podcastOnClick} /> :
                      bit.type == 'SOCIAL'  ? <Social type={bit.data.type} url={bit.data.url} /> :
                                              <li className='tile'></li>

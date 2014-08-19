@@ -16,7 +16,7 @@ var Monument = React.createClass({
   },
 
   logoPulse: function() {
-    var setColor = () => {
+    var setColor = function() {
       this.setState({
         logoclass: this.logoClassNameSequence[getRandomInt(0, this.logoClassNameSequence.length)]
       })

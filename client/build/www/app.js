@@ -17,7 +17,7 @@ var Monument = React.createClass({displayName: 'Monument',
   },
 
   logoPulse: function() {
-    var setColor = () => {
+    var setColor = function() {
       this.setState({
         logoclass: this.logoClassNameSequence[getRandomInt(0, this.logoClassNameSequence.length)]
       })
@@ -108,10 +108,10 @@ var Tiles = React.createClass({displayName: 'Tiles',
 
   componentDidMount: function() {
     var i = 2
-    this.loadingInterval = setInterval(() =>{
+    this.loadingInterval = setInterval(function() {
       if(i == 7) i = 1
       this.setState({
-        loadingtext: _.map(_.range(1,i), (item) => React.DOM.span({className: (!(i % 2) ? 'r' : 'b')}, "."))
+        loadingtext: _.map(_.range(1,i), function(item){ return React.DOM.span({className: (!(i % 2) ? 'r' : 'b')}, ".") })
       })
       i++
     }, 150)
@@ -127,7 +127,7 @@ var Tiles = React.createClass({displayName: 'Tiles',
         this.props.bits && this.props.bits.length ?
 
           React.DOM.ul(null, 
-            _.map(this.props.bits, (bit) => {
+            _.map(this.props.bits, function(bit) {
               return bit.type == 'PODCAST' ? Podcast({bit: bit, track: bit.data, onClick: this.podcastOnClick}) :
                      bit.type == 'SOCIAL'  ? Social({type: bit.data.type, url: bit.data.url}) :
                                              React.DOM.li({className: "tile"})
