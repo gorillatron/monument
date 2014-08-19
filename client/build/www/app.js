@@ -108,13 +108,19 @@ var Tiles = React.createClass({displayName: 'Tiles',
 
   componentDidMount: function() {
     var i = 2
-    this.loadingInterval = setInterval(function() {
+    this.loadingInterval = setInterval(_.bind(function() {
       if(i == 7) i = 1
       this.setState({
         loadingtext: _.map(_.range(1,i), function(item){ return React.DOM.span({className: (!(i % 2) ? 'r' : 'b')}, ".") })
       })
       i++
-    }, 150)
+    }, this), 150)
+  },
+
+  componentDidUpdate: function() {
+    setTimeout(_.bind(function(){
+      clearInterval( this.loadingInterval )
+    }, this), 3000)
   },
 
   getDefaultProps: function() {
