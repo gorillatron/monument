@@ -78,7 +78,7 @@ var Tiles = React.createClass({
               return bit.type == 'PODCAST' ? <Podcast bit={bit} track={bit.data} onClick={this.podcastOnClick} /> :
                      bit.type == 'SOCIAL'  ? <Social type={bit.data.type} url={bit.data.url} /> :
                                              <li className='tile'></li>
-            })}
+            }, this)}
           </ul>
 
         :

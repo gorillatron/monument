@@ -16,11 +16,11 @@ var Monument = React.createClass({
   },
 
   logoPulse: function() {
-    var setColor = function() {
+    var setColor = _.bind(function() {
       this.setState({
         logoclass: this.logoClassNameSequence[getRandomInt(0, this.logoClassNameSequence.length)]
       })
-    }
+    }, this)
     setInterval(setColor, 1500)
     setColor()
   },
