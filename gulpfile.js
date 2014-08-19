@@ -44,6 +44,7 @@ gulp.task('build-www-js', function() {
     .pipe( gulp.dest(paths.build.www) )
 })
 
+
 gulp.task('build-www-css', function() {
   gulp.src( paths.client.mainless )
     .pipe(less() )
@@ -51,14 +52,17 @@ gulp.task('build-www-css', function() {
     .pipe( gulp.dest(paths.build.www) )
 })
 
+
 gulp.task('build-www-moveassets', function() {
   gulp.src( paths.client.assets )
     .pipe( gulp.dest(paths.build.www) )
 })
 
+
 gulp.task('build-www-movehtml', function() {
   gulp.src( paths.client.indexhtml )
     .pipe( gulp.dest(paths.build.www) )
 })
+
 
 gulp.task('build-www', ['build-www-js', 'build-www-css', 'build-www-moveassets', 'build-www-movehtml'])

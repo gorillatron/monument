@@ -187,7 +187,9 @@ mprogress.inc()
 
 SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
 
+  var i = tracks.length
   var bits = tracks.map(function(track) {
+    track.title = track.title.replace('Monument', '')
     return { type:'PODCAST', data: track }
   })
 
