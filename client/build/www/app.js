@@ -17,11 +17,11 @@ var Monument = React.createClass({displayName: 'Monument',
   },
 
   logoPulse: function() {
-    var setColor = function() {
+    var setColor = _.bind(function() {
       this.setState({
         logoclass: this.logoClassNameSequence[getRandomInt(0, this.logoClassNameSequence.length)]
       })
-    }
+    }, this)
     setInterval(setColor, 1500)
     setColor()
   },
@@ -131,7 +131,7 @@ var Tiles = React.createClass({displayName: 'Tiles',
               return bit.type == 'PODCAST' ? Podcast({bit: bit, track: bit.data, onClick: this.podcastOnClick}) :
                      bit.type == 'SOCIAL'  ? Social({type: bit.data.type, url: bit.data.url}) :
                                              React.DOM.li({className: "tile"})
-            })
+            }, this)
           )
 
         :
