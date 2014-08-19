@@ -23,7 +23,7 @@ function compileSrc( path ) {
 
 function compileLess() {
   return new Promise(function( resolve, reject ) {
-    fs.readFile( './client/less/main.less', 'utf8', function( err, lessSrc ) {
+    fs.readFile( './client/src/less/main.less', 'utf8', function( err, lessSrc ) {
       less.render( lessSrc, function( err, css ) {
         if( err )
           return reject( err )
@@ -36,11 +36,11 @@ function compileLess() {
 
 const app = koa()
 
-app.use( serve('./static') )
+app.use( serve('./client/assets') )
 app.use( router(app) )
 
 app.get('/', function *(){
-  this.body = yield fs.readFileAsync( './client/templates/index.html', 'utf8' )
+  this.body = yield fs.readFileAsync( '.client/index.html', 'utf8' )
 })
 
 app.get('/app.js', function*() {

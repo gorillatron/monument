@@ -25,6 +25,6 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
     monumentComponent.setProps({
       bits: bits
     })
-  }, 1500)
+  }, 800)
 
 })
