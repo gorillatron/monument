@@ -1,6 +1,6 @@
+var path        = require( 'path' )
 var koa         = require( 'koa' )
 var router      = require( 'koa-router' )
-var path        = require( 'path' )
 var serve       = require( 'koa-static' )
 var Promise     = require( 'bluebird' )
 var fs          = Promise.promisifyAll( require('fs') )
@@ -40,7 +40,7 @@ app.use( serve('./client/assets') )
 app.use( router(app) )
 
 app.get('/', function *(){
-  this.body = yield fs.readFileAsync( '.client/index.html', 'utf8' )
+  this.body = yield fs.readFileAsync( path.join(__dirname,'client/index.html'), 'utf8' )
 })
 
 app.get('/app.js', function*() {
