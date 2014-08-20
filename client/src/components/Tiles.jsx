@@ -49,7 +49,7 @@ var Social = React.createClass({
 var ImageTile = React.createClass({
 
   componentDidMount: function() {
-    setTimeout(_.bind(this.rumble, this), 2500)
+    setTimeout(_.bind(this.rumble, this), 4500)
   },
 
   rumble: function() {

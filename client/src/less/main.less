@@ -15,7 +15,16 @@
     100% {-webkit-transform: translate(0px, 2px) rotate(0deg);}
 }
 
+@-moz-keyframes rumble {
+    0% {-moz-transform: rotate(0deg);}
+    25% {-moz-transform: translate(2px, 0px) rotate(-2deg);}
+    50% {-moz-transform: translate(0px, -1px) rotate(0deg);}
+    75% {-moz-transform: translate(-1px, 0px) rotate(2deg);}
+    100% {-moz-transform: translate(0px, 2px) rotate(0deg);}
+}
+
 .rumble {
+  -moz-animation: rumble .0825s infinite linear;
   -webkit-animation: rumble .0825s infinite linear;
 }
 

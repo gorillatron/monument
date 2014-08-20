@@ -98,7 +98,7 @@ var Social = React.createClass({displayName: 'Social',
 var ImageTile = React.createClass({displayName: 'ImageTile',
 
   componentDidMount: function() {
-    setTimeout(_.bind(this.rumble, this), 2500)
+    setTimeout(_.bind(this.rumble, this), 4500)
   },
 
   rumble: function() {
