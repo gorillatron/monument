@@ -44,6 +44,15 @@ var Social = React.createClass({
 
 })
 
+var ImageTile = React.createClass({
+
+  render: function(){ return (
+    <li className="tile logo" id="logotile">
+      <img src={this.props.url} />
+    </li>
+  )}
+
+})
 
 var Tiles = React.createClass({
 
@@ -83,6 +92,7 @@ var Tiles = React.createClass({
             {_.map(this.props.bits, function(bit) {
               return bit.type == 'PODCAST' ? <Podcast bit={bit} track={bit.data} onClick={this.podcastOnClick} /> :
                      bit.type == 'SOCIAL'  ? <Social type={bit.data.type} url={bit.data.url} /> :
+                     bit.type == 'IMAGE' ?   <ImageTile url={bit.data.url}/> :
                                              <li className='tile'></li>
             }, this)}
           </ul>

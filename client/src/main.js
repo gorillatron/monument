@@ -18,6 +18,9 @@ var monumentComponent = React.renderComponent( new Monument(), document.getEleme
 
 mprogress.inc()
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
 
@@ -36,6 +39,11 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
   bits.splice(4,0, {
     type:'SOCIAL',
     data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }
+  })
+
+  bits.splice(getRandomInt(3,6),0, {
+    type:'IMAGE',
+    data: { url: "/pictures/klistremerke_2_crop.png" }
   })
 
   setTimeout(function(){
