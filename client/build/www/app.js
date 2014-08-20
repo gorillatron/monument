@@ -97,6 +97,15 @@ var Social = React.createClass({displayName: 'Social',
 
 })
 
+var ImageTile = React.createClass({displayName: 'ImageTile',
+
+  render: function(){ return (
+    React.DOM.li({className: "tile logo", id: "logotile"}, 
+      React.DOM.img({src: this.props.url})
+    )
+  )}
+
+})
 
 var Tiles = React.createClass({displayName: 'Tiles',
 
@@ -136,6 +145,7 @@ var Tiles = React.createClass({displayName: 'Tiles',
             _.map(this.props.bits, function(bit) {
               return bit.type == 'PODCAST' ? Podcast({bit: bit, track: bit.data, onClick: this.podcastOnClick}) :
                      bit.type == 'SOCIAL'  ? Social({type: bit.data.type, url: bit.data.url}) :
+                     bit.type == 'IMAGE' ?   ImageTile({url: bit.data.url}) :
                                              React.DOM.li({className: "tile"})
             }, this)
           )
@@ -184,6 +194,9 @@ var monumentComponent = React.renderComponent( new Monument(), document.getEleme
 
 mprogress.inc()
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
 
@@ -195,13 +208,18 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
 
   mprogress.inc()
 
-  bits.splice(1,0, {
+  bits.splice(getRandomInt(1,8),0, {
     type:'SOCIAL',
     data: { type: 'facebook', url: 'https://www.facebook.com/MonuMnt' }
   })
-  bits.splice(4,0, {
+  bits.splice(getRandomInt(1,8),0, {
     type:'SOCIAL',
     data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }
+  })
+
+  bits.splice(getRandomInt(1,8),0, {
+    type:'IMAGE',
+    data: { url: "/pictures/klistremerke_2_crop.png" }
   })
 
   setTimeout(function(){

@@ -237,6 +237,12 @@ body {
   margin-bottom: 2%;
   margin-right: 2%;
 }
+#app .tiles ul li.tile.logo img {
+  height: 100%;
+  width: auto;
+  margin: 0px auto;
+  display: block;
+}
 #app .tiles ul li.tile:first-child {
   height: 53%;
   width: 49%;
