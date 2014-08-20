@@ -46,6 +46,16 @@ var Social = React.createClass({
 })
 
 
+var Logo = React.createClass({
+
+  render: function(){ return (
+    <li className="tile logo" id="logotile">
+      <img src="/pictures/klistremerke_2_crop.png" />
+    </li>
+  )}
+
+})
+
 var Tiles = React.createClass({
 
   getInitialState: function() {
@@ -103,12 +113,10 @@ var Tiles = React.createClass({
         this.props.bits && this.props.bits.length ?
 
           <ul>
-            <li className="tile" id="logotile">
-              <img src="/pictures/klistremerke_2_crop.png" />
-            </li>
             {_.map(this.props.bits, function(bit) {
               return bit.type == 'PODCAST' ? <Podcast bit={bit} track={bit.data} onClick={this.podcastOnClick} /> :
                      bit.type == 'SOCIAL'  ? <Social type={bit.data.type} url={bit.data.url} /> :
+                     bit.type == 'LOGO'    ? <Logo/> :
                                              <li className='tile'></li>
             }, this)}
           </ul>
