@@ -102,38 +102,51 @@ body {
         margin-bottom: 2%;
         margin-right: 2%;
 
-        &:first-child {
+        &:first-child{
           height: 53%;
           width: 49%;
           float: left;
           margin-bottom: 0%;
           transform: scale(1)!important;
+          text-align: center;
+          img {
+            height: 100%;
+            width: auto;
+            margin: 0px auto;
+            display: block;
+          }
         }
 
-        &:nth-child(3) {
-          margin-right: 0%;
-          margin-left: 0%;
-        }
-
-        &:nth-child(4) {
-          margin-bottom: 2%;
-          margin-right: 2%;
-        }
-
-        &:nth-child(5) {
-          margin-right: 0%;
-          margin-left: 0%;
-        }
-
-        &:nth-child(4n + 5) {
-          margin-right: 0%;
-          margin-left: 0%;
-        }
 
         &:hover, &.active {
           opacity: 1;
           transform: scale(1.1);
           z-index: 2;
+        }
+
+        &:first-child, &:nth-child(2) {
+          height: 53%;
+          width: 49%;
+          transform: scale(1)!important;
+          img {
+            height: 100%;
+            width: auto;
+            margin: 0px auto;
+          }
+        }
+
+        &:first-child {
+          margin-right: 1%;
+        }
+
+        &:nth-child(2) {
+          margin-left: 1%;
+          margin-right: 0%;
+        }
+
+        &:nth-child(4n + 6) {
+          margin-right: 0%;
+
         }
 
         &.active {

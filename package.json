@@ -15,6 +15,7 @@
     "bluebird": "^2.2.2",
     "browserify": "^4.2.3",
     "browserify-typescript": "0.0.1",
+    "jbone": "^1.0.18",
     "koa": "^0.8.1",
     "koa-router": "^3.2.3",
     "koa-static": "^1.4.5",

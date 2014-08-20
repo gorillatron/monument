@@ -33,13 +33,13 @@ var Monument = React.createClass({
 
   render: function() { return (
     <div id="container">
-      <header className={this.state.headerclass}>
+      {/*<header className={this.state.headerclass}>
         <div className={ 'logo ' + this.state.logoclass }>
           <div className='icon'></div>
           <span className="r">onument</span>
           <span className="b">onument</span>
         </div>
-      </header>
+      </header>*/}
       <Tiles bits={this.props ? this.props.bits : []} />
     </div>
   )}
