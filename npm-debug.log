@@ -1,0 +1,83 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'png2ico',
+1 verbose cli   '-g',
+1 verbose cli   '-i',
+1 verbose cli   'client/assets/pictures/1.png',
+1 verbose cli   '-o',
+1 verbose cli   'client/assets/pictures/' ]
+2 info using npm@1.4.9
+3 info using node@v0.11.12
+4 verbose cache add [ 'png2ico', null ]
+5 verbose cache add name=undefined spec="png2ico" args=["png2ico",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'png2ico',
+6 verbose parsed url   path: 'png2ico',
+6 verbose parsed url   href: 'png2ico' }
+7 verbose cache add [ 'client/assets/pictures/1.png', null ]
+8 verbose cache add name=undefined spec="client/assets/pictures/1.png" args=["client/assets/pictures/1.png",null]
+9 verbose parsed url { protocol: null,
+9 verbose parsed url   slashes: null,
+9 verbose parsed url   auth: null,
+9 verbose parsed url   host: null,
+9 verbose parsed url   port: null,
+9 verbose parsed url   hostname: null,
+9 verbose parsed url   hash: null,
+9 verbose parsed url   search: null,
+9 verbose parsed url   query: null,
+9 verbose parsed url   pathname: 'client/assets/pictures/1.png',
+9 verbose parsed url   path: 'client/assets/pictures/1.png',
+9 verbose parsed url   href: 'client/assets/pictures/1.png' }
+10 verbose cache add [ 'client/assets/pictures/', null ]
+11 verbose cache add name=undefined spec="client/assets/pictures/" args=["client/assets/pictures/",null]
+12 verbose parsed url { protocol: null,
+12 verbose parsed url   slashes: null,
+12 verbose parsed url   auth: null,
+12 verbose parsed url   host: null,
+12 verbose parsed url   port: null,
+12 verbose parsed url   hostname: null,
+12 verbose parsed url   hash: null,
+12 verbose parsed url   search: null,
+12 verbose parsed url   query: null,
+12 verbose parsed url   pathname: 'client/assets/pictures/',
+12 verbose parsed url   path: 'client/assets/pictures/',
+12 verbose parsed url   href: 'client/assets/pictures/' }
+13 silly lockFile 31e6a823-png2ico png2ico
+14 verbose lock png2ico /Users/gorillatron/.npm/31e6a823-png2ico.lock
+15 silly lockFile 6f5cbd42-client-assets-pictures-1-png client/assets/pictures/1.png
+16 verbose lock client/assets/pictures/1.png /Users/gorillatron/.npm/6f5cbd42-client-assets-pictures-1-png.lock
+17 silly lockFile 9c919447-client-assets-pictures client/assets/pictures/
+18 verbose lock client/assets/pictures/ /Users/gorillatron/.npm/9c919447-client-assets-pictures.lock
+19 silly lockFile 31e6a823-png2ico png2ico
+20 silly lockFile 31e6a823-png2ico png2ico
+21 verbose addNamed [ 'png2ico', '' ]
+22 verbose addNamed [ null, '*' ]
+23 silly lockFile 7a0aed85-png2ico png2ico@
+24 verbose lock png2ico@ /Users/gorillatron/.npm/7a0aed85-png2ico.lock
+25 silly addNameRange { name: 'png2ico', range: '*', hasData: false }
+26 silly lockFile 9c919447-client-assets-pictures client/assets/pictures/
+27 silly lockFile 9c919447-client-assets-pictures client/assets/pictures/
+28 error addLocal Could not install client/assets/pictures/
+29 error Error: ENOENT, open 'client/assets/pictures/package.json'
+30 error If you need help, you may report this *entire* log,
+30 error including the npm and node versions, at:
+30 error     <http://github.com/npm/npm/issues>
+31 error System Darwin 13.3.0
+32 error command "/usr/local/bin/node" "/usr/local/bin/npm" "install" "png2ico" "-g" "-i" "client/assets/pictures/1.png" "-o" "client/assets/pictures/"
+33 error cwd /Users/gorillatron/progg/mnmt
+34 error node -v v0.11.12
+35 error npm -v 1.4.9
+36 error path client/assets/pictures/package.json
+37 error code ENOENT
+38 error errno -2
+39 verbose exit [ -2, true ]

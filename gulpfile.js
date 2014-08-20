@@ -8,7 +8,6 @@ var rimraf      = require( 'rimraf' )
 var rename      = require( 'gulp-rename' )
 
 
-
 var paths = {
   client: {
     mainless:   path.join(__dirname, 'client/src/less/main.less'),
@@ -20,18 +19,6 @@ var paths = {
     www:        path.join(__dirname, 'client/build/www/')
   }
 }
-
-
-function compileJs(path, cb) {
-  browserify( path )
-    .transform({ extension: 'jsx', harmony: true }, reactify )
-    .bundle(function( err, programm ) {
-      if( err )
-        return cb( err )
-      cb( null, programm )
-    })
-}
-
 
 
 gulp.task('build-www-js', function() {
@@ -65,4 +52,4 @@ gulp.task('build-www-movehtml', function() {
 })
 
 
-gulp.task('build-www', ['build-www-js', 'build-www-css', 'build-www-moveassets', 'build-www-movehtml'])
+gulp.task('default', ['build-www-js', 'build-www-css', 'build-www-moveassets', 'build-www-movehtml'])
