@@ -107,7 +107,7 @@ var ImageTile = React.createClass({displayName: 'ImageTile',
     setTimeout(function() {
       $tile.attr('class', $tile.attr('class').replace('rumble', '') )
     }, getRandomInt(150, 330))
-    setTimeout( _.bind(this.rumble, this), getRandomInt(3900, 15000) )
+    setTimeout( _.bind(this.rumble, this), getRandomInt(7900, 23000) )
   },
 
   render: function(){ return (
