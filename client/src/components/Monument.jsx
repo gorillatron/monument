@@ -1,11 +1,7 @@
-var React     = require( 'react' )
-var _         = require( 'underscore')
-var Tiles     = require( './Tiles.jsx' )
-
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+var React        = require( 'react' )
+var _            = require( 'underscore')
+var Tiles        = require( './Tiles.jsx' )
+var getRandomInt = require( '../lib/getRandomInt' )
 
 var Monument = React.createClass({
 

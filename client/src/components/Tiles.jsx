@@ -1,5 +1,7 @@
-var React = require( 'react' )
-var _     = require( 'underscore')
+var React         = require( 'react' )
+var _             = require( 'underscore')
+var $             = require( 'jbone' )
+var getRandomInt = require( '../lib/getRandomInt' )
 
 
 var Podcast = React.createClass({
@@ -45,6 +47,19 @@ var Social = React.createClass({
 })
 
 var ImageTile = React.createClass({
+
+  componentDidMount: function() {
+    setTimeout(_.bind(this.rumble, this), 2500)
+  },
+
+  rumble: function() {
+    var $tile = $( this.getDOMNode() )
+    $tile.attr('class', $tile.attr('class') + ' rumble')
+    setTimeout(function() {
+      $tile.attr('class', $tile.attr('class').replace('rumble', '') )
+    }, getRandomInt(150, 330))
+    setTimeout( _.bind(this.rumble, this), getRandomInt(3900, 15000) )
+  },
 
   render: function(){ return (
     <li className="tile logo" id="logotile">
