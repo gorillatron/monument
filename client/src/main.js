@@ -36,6 +36,7 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
     type:'SOCIAL',
     data: { type: 'facebook', url: 'https://www.facebook.com/MonuMnt' }
   })
+  
   bits.splice(getRandomInt(1,7),0, {
     type:'SOCIAL',
     data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }

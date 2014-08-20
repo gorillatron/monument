@@ -37,7 +37,7 @@ var Social = React.createClass({
         <a href={this.props.url} target='blank'>
         {
           this.props.type == 'facebook'   ? <div className='text'>Support Monument on Facebook</div> :
-          this.props.type == 'soundcloud' ? <div className='text'>... and Soundcloud to :)</div> :
+          this.props.type == 'soundcloud' ? <div className='text'></div> :
                                             <div className='text'>YO</div>
           }
         </a>

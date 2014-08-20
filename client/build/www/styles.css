@@ -383,5 +383,5 @@ body {
 #app .tiles ul li.tile.social.soundcloud {
   background-color: #f85a0f;
   background-image: url(https://a-v2.sndcdn.com/assets/images/header/logo@2x-6b187759.png);
-  background-position: 20px 5px;
+  background-position: center center;
 }

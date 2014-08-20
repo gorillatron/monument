@@ -86,7 +86,7 @@ var Social = React.createClass({displayName: 'Social',
         React.DOM.a({href: this.props.url, target: "blank"}, 
         
           this.props.type == 'facebook'   ? React.DOM.div({className: "text"}, "Support Monument on Facebook") :
-          this.props.type == 'soundcloud' ? React.DOM.div({className: "text"}, "... and Soundcloud to :)") :
+          this.props.type == 'soundcloud' ? React.DOM.div({className: "text"}) :
                                             React.DOM.div({className: "text"}, "YO")
           
         )
@@ -223,6 +223,7 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
     type:'SOCIAL',
     data: { type: 'facebook', url: 'https://www.facebook.com/MonuMnt' }
   })
+  
   bits.splice(getRandomInt(1,7),0, {
     type:'SOCIAL',
     data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }
