@@ -1,75 +1,10 @@
 var React         = require( 'react' )
 var _             = require( 'underscore')
-var $             = require( 'jbone' )
-var getRandomInt = require( '../lib/getRandomInt' )
+var getRandomInt  = require( '../lib/getRandomInt' )
+var Podcast       = require( './Podcast.jsx' )
+var ImageTile     = require( './ImageTile.jsx' )
+var Social        = require( './Social.jsx' )
 
-
-var Podcast = React.createClass({
-
-  getInitialState: function() {
-    return { active: false }
-  },
-
-  onClick: function( event ) {
-    this.props.onClick( event, this )
-  },
-
-  render: function(){ return (
-    <li className={'tile ' + (this.state.active ? 'active' : '')} onClick={this.onClick}>
-      <div className="cover" style={{ 'background-image': 'url(' +this.props.track.artwork_url.replace('large', 't500x500')+ ')' }}>
-      </div>
-      <div className="cover-overlay">
-        <h1 className='title'> {this.props.track.title} </h1>
-        {this.state.active ?
-          <iframe width="100%" height="100%" scrolling="no" frameborder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" +this.props.track.id+ "&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"}></iframe> :
-          ''}
-      </div>
-    </li>
-  )}
-
-})
-
-
-var Social = React.createClass({
-
-  render: function(){ return (
-      <li className={ 'tile social ' + this.props.type}>
-        <div className="cover">
-          <a href={this.props.url} target='blank'>
-          {
-            this.props.type == 'facebook'   ? <div className='text'>Monument: Social Experiment</div> :
-            this.props.type == 'soundcloud' ? <div className='text'></div> :
-                                              <div className='text'>YO</div>
-            }
-          </a>
-        </div>
-      </li>
-  )}
-
-})
-
-var ImageTile = React.createClass({
-
-  componentDidMount: function() {
-    setTimeout(_.bind(this.rumble, this), 4500)
-  },
-
-  rumble: function() {
-    var $tile = $( this.getDOMNode() )
-    $tile.attr('class', $tile.attr('class') + ' rumble')
-    setTimeout(function() {
-      $tile.attr('class', $tile.attr('class').replace('rumble', '') )
-    }, getRandomInt(150, 330))
-    setTimeout( _.bind(this.rumble, this), getRandomInt(7900, 23000) )
-  },
-
-  render: function(){ return (
-    <li className="tile logo" id="logotile">
-      <img src={this.props.url} />
-    </li>
-  )}
-
-})
 
 var Tiles = React.createClass({
 
