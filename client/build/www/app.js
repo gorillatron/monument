@@ -83,12 +83,14 @@ var Social = React.createClass({displayName: 'Social',
 
   render: function(){ return (
       React.DOM.li({className:  'tile social ' + this.props.type}, 
-        React.DOM.a({href: this.props.url, target: "blank"}, 
-        
-          this.props.type == 'facebook'   ? React.DOM.div({className: "text"}, "Monument: Social Experiment") :
-          this.props.type == 'soundcloud' ? React.DOM.div({className: "text"}) :
-                                            React.DOM.div({className: "text"}, "YO")
+        React.DOM.div({className: "cover"}, 
+          React.DOM.a({href: this.props.url, target: "blank"}, 
           
+            this.props.type == 'facebook'   ? React.DOM.div({className: "text"}, "Monument: Social Experiment") :
+            this.props.type == 'soundcloud' ? React.DOM.div({className: "text"}) :
+                                              React.DOM.div({className: "text"}, "YO")
+            
+          )
         )
       )
   )}

@@ -382,8 +382,12 @@ body {
 }
 #app .tiles ul li.tile.social.soundcloud {
   background-color: #f85a0f;
+}
+#app .tiles ul li.tile.social.soundcloud .cover {
   background-image: url(https://a-v2.sndcdn.com/assets/images/header/logo@2x-6b187759.png);
   background-position: center center;
+  background-size: auto;
+  background-repeat: no-repeat;
   -moz-transform: rotateY(180deg) rotateX(180deg);
   -o-transform: rotateY(180deg) rotateX(180deg);
   -webkit-transform: rotateY(180deg) rotateX(180deg);
