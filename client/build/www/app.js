@@ -213,7 +213,6 @@ SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
   var bits = tracks.map(function(track) {
     track.title = track.title
       .replace('Monument', '')
-      .replace(/e/g, '3')
       .toLowerCase()
     return { type:'PODCAST', data: track }
   })
