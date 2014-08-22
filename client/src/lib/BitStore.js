@@ -36,7 +36,7 @@ BitStore.prototype.fetchPodcasts = function () {
         track.title = track.title
           .replace('Monument', '')
           .toLowerCase()
-        return { type:'PODCAST', data: track }
+        return { type:'PODCAST', data: {track: track} }
       })
 
       this.bits = this.bits.concat( bits )
@@ -57,7 +57,7 @@ BitStore.prototype.insertSocialIcons = function() {
   })
   this.bits.splice(getRandomInt(1,7),0, {
     type:'IMAGE',
-    data: { url: "/pictures/klistremerke_2_crop.png" }
+    data: { url: "/pictures/klistremerke_2_crop.png", utterance: '7' }
   })
   return Promise.resolve( this.bits )
 }

@@ -42,9 +42,9 @@ var Tiles = React.createClass({
 
           <ul>
             {_.map(this.props.bits, function(bit) {
-              return bit.type == 'PODCAST' ? <Podcast bit={bit} track={bit.data} onClick={this.podcastOnClick} /> :
-                     bit.type == 'SOCIAL'  ? <Social type={bit.data.type} url={bit.data.url} /> :
-                     bit.type == 'IMAGE' ?   <ImageTile url={bit.data.url}/> :
+              return bit.type == 'PODCAST' ? <Podcast bit={bit} onClick={this.podcastOnClick} /> :
+                     bit.type == 'SOCIAL'  ? <Social bit={bit} /> :
+                     bit.type == 'IMAGE' ?   <ImageTile bit={bit}/> :
                                              <li className='tile'></li>
             }, this)}
           </ul>

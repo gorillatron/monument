@@ -1,8 +1,43 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/** @jsx React.DOM */var React           = require( 'react' )
+var _               = require( 'underscore')
+var getRandomInt    = require( '../lib/getRandomInt' )
+var RumbleAnimation = require( './mixins/RumbleAnimation' )
+var alex            = require( '../lib/Alex' )
+
+
+
+var ImageTile = React.createClass({displayName: 'ImageTile',
+
+  mixins: [
+    new RumbleAnimation({
+      initialdelay: 4500,
+      rumbleDuration: [150, 330],
+      interval: [7900, 23000]
+    })
+  ],
+
+  render: function(){ return (
+    React.DOM.li({className: "tile logo", id: "logotile", onClick: this.onClick}, 
+      React.DOM.img({src: this.props.bit.data.url})
+    )
+  )},
+
+  onClick: function() {
+    alex.speak( this.props.bit.data.utterance || '' )
+  }
+
+})
+
+
+module.exports = ImageTile
+
+},{"../lib/Alex":8,"../lib/getRandomInt":11,"./mixins/RumbleAnimation":6,"react":199,"underscore":200}],2:[function(require,module,exports){
 /** @jsx React.DOM */var React        = require( 'react' )
 var _            = require( 'underscore')
 var Tiles        = require( './Tiles.jsx' )
 var getRandomInt = require( '../lib/getRandomInt' )
+
 
 var Monument = React.createClass({displayName: 'Monument',
 
@@ -46,10 +81,9 @@ var Monument = React.createClass({displayName: 'Monument',
 
 module.exports = Monument
 
-},{"../lib/getRandomInt":5,"./Tiles.jsx":2,"react":188,"underscore":189}],2:[function(require,module,exports){
+},{"../lib/getRandomInt":11,"./Tiles.jsx":5,"react":199,"underscore":200}],3:[function(require,module,exports){
 /** @jsx React.DOM */var React         = require( 'react' )
 var _             = require( 'underscore')
-var $             = require( 'jbone' )
 var getRandomInt = require( '../lib/getRandomInt' )
 
 
@@ -65,12 +99,12 @@ var Podcast = React.createClass({displayName: 'Podcast',
 
   render: function(){ return (
     React.DOM.li({className: 'tile ' + (this.state.active ? 'active' : ''), onClick: this.onClick}, 
-      React.DOM.div({className: "cover", style: { 'background-image': 'url(' +this.props.track.artwork_url.replace('large', 't500x500')+ ')'}}
+      React.DOM.div({className: "cover", style: { 'background-image': 'url(' +this.props.bit.data.track.artwork_url.replace('large', 't500x500')+ ')'}}
       ), 
       React.DOM.div({className: "cover-overlay"}, 
-        React.DOM.h1({className: "title"}, " ", this.props.track.title, " "), 
+        React.DOM.h1({className: "title"}, " ", this.props.bit.data.track.title, " "), 
         this.state.active ?
-          React.DOM.iframe({width: "100%", height: "100%", scrolling: "no", frameborder: "no", src: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" +this.props.track.id+ "&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"}) :
+          React.DOM.iframe({width: "100%", height: "100%", scrolling: "no", frameborder: "no", src: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" +this.props.bit.data.track.id+ "&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"}) :
           ''
       )
     )
@@ -79,16 +113,23 @@ var Podcast = React.createClass({displayName: 'Podcast',
 })
 
 
+module.exports = Podcast
+
+},{"../lib/getRandomInt":11,"react":199,"underscore":200}],4:[function(require,module,exports){
+/** @jsx React.DOM */var React         = require( 'react' )
+var _             = require( 'underscore')
+
+
 var Social = React.createClass({displayName: 'Social',
 
   render: function(){ return (
-      React.DOM.li({className:  'tile social ' + this.props.type}, 
+      React.DOM.li({className:  'tile social ' + this.props.bit.data.type}, 
         React.DOM.div({className: "cover"}, 
-          React.DOM.a({href: this.props.url, target: "blank"}, 
+          React.DOM.a({href: this.props.bit.data.url, target: "blank"}, 
           
-            this.props.type == 'facebook'   ? React.DOM.div({className: "text"}, "Monument: Social Experiment") :
-            this.props.type == 'soundcloud' ? React.DOM.div({className: "text"}) :
-                                              React.DOM.div({className: "text"}, "YO")
+            this.props.bit.data.type == 'facebook'   ? React.DOM.div({className: "text"}, "Monument: Social Experiment") :
+            this.props.bit.data.type == 'soundcloud' ? React.DOM.div({className: "text"}) :
+                                                       React.DOM.div({className: "text"}, "FAIL")
             
           )
         )
@@ -97,28 +138,17 @@ var Social = React.createClass({displayName: 'Social',
 
 })
 
-var ImageTile = React.createClass({displayName: 'ImageTile',
 
-  componentDidMount: function() {
-    setTimeout(_.bind(this.rumble, this), 4500)
-  },
+module.exports = Social
 
-  rumble: function() {
-    var $tile = $( this.getDOMNode() )
-    $tile.attr('class', $tile.attr('class') + ' rumble')
-    setTimeout(function() {
-      $tile.attr('class', $tile.attr('class').replace('rumble', '') )
-    }, getRandomInt(150, 330))
-    setTimeout( _.bind(this.rumble, this), getRandomInt(7900, 23000) )
-  },
+},{"react":199,"underscore":200}],5:[function(require,module,exports){
+/** @jsx React.DOM */var React         = require( 'react' )
+var _             = require( 'underscore')
+var getRandomInt  = require( '../lib/getRandomInt' )
+var Podcast       = require( './Podcast.jsx' )
+var ImageTile     = require( './ImageTile.jsx' )
+var Social        = require( './Social.jsx' )
 
-  render: function(){ return (
-    React.DOM.li({className: "tile logo", id: "logotile"}, 
-      React.DOM.img({src: this.props.url})
-    )
-  )}
-
-})
 
 var Tiles = React.createClass({displayName: 'Tiles',
 
@@ -156,9 +186,9 @@ var Tiles = React.createClass({displayName: 'Tiles',
 
           React.DOM.ul(null, 
             _.map(this.props.bits, function(bit) {
-              return bit.type == 'PODCAST' ? Podcast({bit: bit, track: bit.data, onClick: this.podcastOnClick}) :
-                     bit.type == 'SOCIAL'  ? Social({type: bit.data.type, url: bit.data.url}) :
-                     bit.type == 'IMAGE' ?   ImageTile({url: bit.data.url}) :
+              return bit.type == 'PODCAST' ? Podcast({bit: bit, onClick: this.podcastOnClick}) :
+                     bit.type == 'SOCIAL'  ? Social({bit: bit}) :
+                     bit.type == 'IMAGE' ?   ImageTile({bit: bit}) :
                                              React.DOM.li({className: "tile"})
             }, this)
           )
@@ -186,72 +216,208 @@ var Tiles = React.createClass({displayName: 'Tiles',
 
 module.exports = Tiles
 
-},{"../lib/getRandomInt":5,"jbone":43,"react":188,"underscore":189}],3:[function(require,module,exports){
+},{"../lib/getRandomInt":11,"./ImageTile.jsx":1,"./Podcast.jsx":3,"./Social.jsx":4,"react":199,"underscore":200}],6:[function(require,module,exports){
+var _             = require( 'underscore' )
+var $             = require( 'jbone' )
+var getRandomInt = require( '../../lib/getRandomInt' )
+
+function RumbleAnimation( options ) {
+
+  this.options = _.extend({
+    initialdelay: 4500,
+    rumbleDuration: [150, 330],
+    interval: [7900, 23000]
+  }, options)
+
+  this.componentDidMount = function() {
+    setTimeout(_.bind(this.rumble, this), this.options.initialdelay)
+  }
+
+  this.rumble = function( options ) {
+    var $tile = $( this.getDOMNode() )
+    $tile.attr('class', $tile.attr('class') + ' rumble')
+    setTimeout(function() {
+      $tile.attr('class', $tile.attr('class').replace('rumble', '') )
+    }, getRandomInt(this.options.rumbleDuration[0], this.options.rumbleDuration[1]))
+    setTimeout( _.bind(this.rumble, this), getRandomInt(this.options.interval[0], this.options.interval[1]) )
+  }
+
+}
+
+
+module.exports = RumbleAnimation
+
+},{"../../lib/getRandomInt":11,"jbone":53,"underscore":200}],7:[function(require,module,exports){
+var _                     = require( 'underscore' )
+var R                     = require( 'ramda' )
 var Promise               = require( 'bluebird' )
 var React                 = require( 'react' )
 var Monument              = require( './components/Monument.jsx' )
-var SoundCloud            = require( './lib/SoundCloud' )
 var mprogress             = require( './lib/mprogress' )
-var getRandomInt          = require( './lib/getRandomInt')
-
+var BitStore              = require( './lib/BitStore' )
+var alex                  = require( './lib/Alex' )
 
 mprogress.start()
 
-
-SoundCloud.initialize({
-  client_id: "84f2b368d96bdc044dafced637dbce4b",
-  redirect_uri: "http://local.com:3000/#scauthredirect"
-})
-
+var bitStore = new BitStore()
 
 var monumentComponent = React.renderComponent( new Monument(), document.getElementById('app') )
 
 mprogress.inc()
 
-
-SoundCloud.get('/users/monument-podcast/tracks', function( tracks ) {
-
-  var i = tracks.length
-  var bits = tracks.map(function(track) {
-    track.title = track.title
-      .replace('Monument', '')
-      .toLowerCase()
-    return { type:'PODCAST', data: track }
-  })
+bitStore.fetch().then(function( bits ) {
 
   mprogress.inc()
 
-  bits.splice(getRandomInt(1,4),0, {
-    type:'SOCIAL',
-    data: { type: 'facebook', url: 'https://www.facebook.com/MonuMnt' }
+  setTimeout(function() {
+    monumentComponent.setProps({ bits: bits })
+  }, 600)
+
+  setTimeout( _.bind(mprogress.done, mprogress), 1200 )
+
+  bitstore.on('change', function( bits ) {
+    monumentComponent.setProps({ bits: bits })
   })
 
-  bits.splice(getRandomInt(1,6),0, {
-    type:'SOCIAL',
-    data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }
-  })
 
-  bits.splice(getRandomInt(1,7),0, {
-    type:'IMAGE',
-    data: { url: "/pictures/klistremerke_2_crop.png" }
-  })
 
-  setTimeout(function(){
-    monumentComponent.setProps({
-      bits: bits
-    })
+})
+//alex.listen()
 
-    mprogress.inc()
+},{"./components/Monument.jsx":2,"./lib/Alex":8,"./lib/BitStore":9,"./lib/mprogress":12,"bluebird":15,"ramda":55,"react":199,"underscore":200}],8:[function(require,module,exports){
+var R            = require( 'ramda')
+var EventEmitter = require( 'events' ).EventEmitter
 
-    setTimeout(function() {
-      mprogress.done()
-    }, 500)
 
-  }, 800)
+module.exports = alex = R.mixin(new EventEmitter(), {
+
+
+  resultsBuffer: [],
+
+
+  listen: function() {
+    this.recognition = new webkitSpeechRecognition()
+    this.recognition.continuous = true
+    this.recognition.interimResults = true
+    this.recognition.onresult = function( event ) {
+      alex.processResults( event.results )
+    }
+    this.recognition.start()
+  },
+
+
+  processResults: function( results ) {
+    var transcript = pickTranscript( results )
+    console.log(transcript)
+  },
+
+  firstWord: true,
+
+  speak: function( sentence, callback ) {
+    if( this.firstWord ) {
+      this.firstWord = false
+      setTimeout(this.speak.bind(this, sentence), 400)
+    }
+    else {
+      var msg = new SpeechSynthesisUtterance()
+      msg.voice = speechSynthesis.getVoices()[30]
+      msg.voiceURI = 'native'
+      msg.volume = 1
+      msg.rate = 0.85
+      msg.pitch = 1.04
+      msg.text = sentence
+      msg.lang = 'en-US'
+
+      msg.onend = function(e) {
+        if( typeof callback === 'function' )
+          callback( sentence )
+      }
+
+      window.speechSynthesis.speak( msg )
+    }
+  }
+
+
 
 })
 
-},{"./components/Monument.jsx":1,"./lib/SoundCloud":4,"./lib/getRandomInt":5,"./lib/mprogress":6,"bluebird":9,"react":188}],4:[function(require,module,exports){
+var pickTranscript = R.map(function( result ) {
+  return result.transcript
+})
+
+},{"events":48,"ramda":55}],9:[function(require,module,exports){
+var _            = require( 'underscore' )
+var EventEmitter = require( 'events' ).EventEmitter
+var inherits     = require( 'util' ).inherits
+var Promise      = require( 'bluebird' )
+var SoundCloud   = require( './SoundCloud' )
+var getRandomInt = require( './getRandomInt')
+
+
+function BitStore() {
+  EventEmitter.apply( this, arguments )
+  this.bits = []
+  this.initializeSoundCloud({
+    client_id: "84f2b368d96bdc044dafced637dbce4b",
+    redirect_uri: "http://local.com:3000/#scauthredirect"
+  })
+}
+
+inherits( BitStore, EventEmitter )
+
+BitStore.prototype.fetch = function() {
+  this.emit('syncing')
+  return this.fetchPodcasts().then(_.bind(function( bits ) {
+    return this.insertSocialIcons().then(_.bind(function( bits ) {
+      this.emit('synced')
+      return bits
+    }, this))
+  },this))
+}
+
+BitStore.prototype.fetchPodcasts = function () {
+  return new Promise(_.bind(function( resolve, reject ){
+    SoundCloud.get('/users/monument-podcast/tracks', _.bind(function( tracks ) {
+
+      var i = tracks.length
+      var bits = tracks.map(function(track) {
+        track.title = track.title
+          .replace('Monument', '')
+          .toLowerCase()
+        return { type:'PODCAST', data: {track: track} }
+      })
+
+      this.bits = this.bits.concat( bits )
+
+      resolve( this.bits )
+    }, this))
+  }, this))
+}
+
+BitStore.prototype.insertSocialIcons = function() {
+  this.bits.splice(getRandomInt(1,4),0, {
+    type:'SOCIAL',
+    data: { type: 'facebook', url: 'https://www.facebook.com/MonuMnt' }
+  })
+  this.bits.splice(getRandomInt(1,6),0, {
+    type:'SOCIAL',
+    data: { type: 'soundcloud', url: 'https://soundcloud.com/monument-podcast' }
+  })
+  this.bits.splice(getRandomInt(1,7),0, {
+    type:'IMAGE',
+    data: { url: "/pictures/klistremerke_2_crop.png", utterance: '7' }
+  })
+  return Promise.resolve( this.bits )
+}
+
+BitStore.prototype.initializeSoundCloud = function( credentials ) {
+  SoundCloud.initialize( credentials )
+}
+
+
+module.exports = BitStore
+
+},{"./SoundCloud":10,"./getRandomInt":11,"bluebird":15,"events":48,"underscore":200,"util":52}],10:[function(require,module,exports){
 var Recorder={swfObject:null,_callbacks:{},_events:{},_initialized:false,options:{},initialize:function(options){this.options=options||{};if(!this.options.flashContainer){this._setupFlashContainer()}this.bind("initialized",function(){Recorder._initialized=true;options.initialized()});this.bind("showFlash",this.options.onFlashSecurity||this._defaultOnShowFlash);this._loadFlash()},clear:function(){Recorder._events={}},record:function(options){options=options||{};this.clearBindings("recordingStart");this.clearBindings("recordingProgress");this.clearBindings("recordingCancel");this.bind("recordingStart",this._defaultOnHideFlash);this.bind("recordingCancel",this._defaultOnHideFlash);this.bind("recordingCancel",this._loadFlash);this.bind("recordingStart",options["start"]);this.bind("recordingProgress",options["progress"]);this.bind("recordingCancel",options["cancel"]);this.flashInterface().record()},stop:function(){return this.flashInterface()._stop()},play:function(options){options=options||{};this.clearBindings("playingProgress");this.bind("playingProgress",options["progress"]);this.bind("playingStop",options["finished"]);this.flashInterface()._play()},upload:function(options){options.audioParam=options.audioParam||"audio";options.params=options.params||{};this.clearBindings("uploadSuccess");this.bind("uploadSuccess",function(responseText){options.success(Recorder._externalInterfaceDecode(responseText))});this.flashInterface().upload(options.url,options.audioParam,options.params)},audioData:function(){return this.flashInterface().audioData().split(";")},request:function(method,uri,contentType,data,callback){var callbackName=this.registerCallback(callback);this.flashInterface().request(method,uri,contentType,data,callbackName)},clearBindings:function(eventName){Recorder._events[eventName]=[]},bind:function(eventName,fn){if(!Recorder._events[eventName]){Recorder._events[eventName]=[]}Recorder._events[eventName].push(fn)},triggerEvent:function(eventName,arg0,arg1){Recorder._executeInWindowContext(function(){for(var cb in Recorder._events[eventName]){if(Recorder._events[eventName][cb]){Recorder._events[eventName][cb].apply(Recorder,[arg0,arg1])}}})},triggerCallback:function(name,args){Recorder._executeInWindowContext(function(){Recorder._callbacks[name].apply(null,args)})},registerCallback:function(fn){var name="CB"+parseInt(Math.random()*999999,10);Recorder._callbacks[name]=fn;return name},flashInterface:function(){if(!this.swfObject){return null}else if(this.swfObject.record){return this.swfObject}else if(this.swfObject.children[3].record){return this.swfObject.children[3]}},_executeInWindowContext:function(fn){window.setTimeout(fn,1)},_setupFlashContainer:function(){this.options.flashContainer=document.createElement("div");this.options.flashContainer.setAttribute("id","recorderFlashContainer");this.options.flashContainer.setAttribute("style","position: fixed; left: -9999px; top: -9999px; width: 230px; height: 140px; margin-left: 10px; border-top: 6px solid rgba(128, 128, 128, 0.6); border-bottom: 6px solid rgba(128, 128, 128, 0.6); border-radius: 5px 5px; padding-bottom: 1px; padding-right: 1px;");document.body.appendChild(this.options.flashContainer)},_clearFlash:function(){var flashElement=this.options.flashContainer.children[0];if(flashElement){this.options.flashContainer.removeChild(flashElement)}},_loadFlash:function(){this._clearFlash();var flashElement=document.createElement("div");flashElement.setAttribute("id","recorderFlashObject");this.options.flashContainer.appendChild(flashElement);swfobject.embedSWF(this.options.swfSrc,"recorderFlashObject","231","141","10.1.0",undefined,undefined,{allowscriptaccess:"always"},undefined,function(e){if(e.success){Recorder.swfObject=e.ref;Recorder._checkForFlashBlock()}else{Recorder._showFlashRequiredDialog()}})},_defaultOnShowFlash:function(){var flashContainer=Recorder.options.flashContainer;flashContainer.style.left=(window.innerWidth||document.body.offsetWidth)/2-115+"px";flashContainer.style.top=(window.innerHeight||document.body.offsetHeight)/2-70+"px"},_defaultOnHideFlash:function(){var flashContainer=Recorder.options.flashContainer;flashContainer.style.left="-9999px";flashContainer.style.top="-9999px"},_checkForFlashBlock:function(){window.setTimeout(function(){if(!Recorder._initialized){Recorder.triggerEvent("showFlash")}},500)},_showFlashRequiredDialog:function(){Recorder.options.flashContainer.innerHTML="<p>Adobe Flash Player 10.1 or newer is required to use this feature.</p><p><a href='http://get.adobe.com/flashplayer' target='_top'>Get it on Adobe.com.</a></p>";Recorder.options.flashContainer.style.color="white";Recorder.options.flashContainer.style.backgroundColor="#777";Recorder.options.flashContainer.style.textAlign="center";Recorder.triggerEvent("showFlash")},_externalInterfaceDecode:function(data){return data.replace(/%22/g,'"').replace(/%5c/g,"\\").replace(/%26/g,"&").replace(/%25/g,"%")}};if(swfobject==undefined){var swfobject=function(){var D="undefined",r="object",S="Shockwave Flash",W="ShockwaveFlash.ShockwaveFlash",q="application/x-shockwave-flash",R="SWFObjectExprInst",x="onreadystatechange",O=window,j=document,t=navigator,T=false,U=[h],o=[],N=[],I=[],l,Q,E,B,J=false,a=false,n,G,m=true,M=function(){var aa=typeof j.getElementById!=D&&typeof j.getElementsByTagName!=D&&typeof j.createElement!=D,ah=t.userAgent.toLowerCase(),Y=t.platform.toLowerCase(),ae=Y?/win/.test(Y):/win/.test(ah),ac=Y?/mac/.test(Y):/mac/.test(ah),af=/webkit/.test(ah)?parseFloat(ah.replace(/^.*webkit\/(\d+(\.\d+)?).*$/,"$1")):false,X=!+"1",ag=[0,0,0],ab=null;if(typeof t.plugins!=D&&typeof t.plugins[S]==r){ab=t.plugins[S].description;if(ab&&!(typeof t.mimeTypes!=D&&t.mimeTypes[q]&&!t.mimeTypes[q].enabledPlugin)){T=true;X=false;ab=ab.replace(/^.*\s+(\S+\s+\S+$)/,"$1");ag[0]=parseInt(ab.replace(/^(.*)\..*$/,"$1"),10);ag[1]=parseInt(ab.replace(/^.*\.(.*)\s.*$/,"$1"),10);ag[2]=/[a-zA-Z]/.test(ab)?parseInt(ab.replace(/^.*[a-zA-Z]+(.*)$/,"$1"),10):0}}else{if(typeof O.ActiveXObject!=D){try{var ad=new ActiveXObject(W);if(ad){ab=ad.GetVariable("$version");if(ab){X=true;ab=ab.split(" ")[1].split(",");ag=[parseInt(ab[0],10),parseInt(ab[1],10),parseInt(ab[2],10)]}}}catch(Z){}}}return{w3:aa,pv:ag,wk:af,ie:X,win:ae,mac:ac}}(),k=function(){if(!M.w3){return}if(typeof j.readyState!=D&&j.readyState=="complete"||typeof j.readyState==D&&(j.getElementsByTagName("body")[0]||j.body)){f()}if(!J){if(typeof j.addEventListener!=D){j.addEventListener("DOMContentLoaded",f,false)}if(M.ie&&M.win){j.attachEvent(x,function(){if(j.readyState=="complete"){j.detachEvent(x,arguments.callee);f()}});if(O==top){!function(){if(J){return}try{j.documentElement.doScroll("left")}catch(X){setTimeout(arguments.callee,0);return}f()}()}}if(M.wk){!function(){if(J){return}if(!/loaded|complete/.test(j.readyState)){setTimeout(arguments.callee,0);return}f()}()}s(f)}}();function f(){if(J){return}try{var Z=j.getElementsByTagName("body")[0].appendChild(C("span"));Z.parentNode.removeChild(Z)}catch(aa){return}J=true;var X=U.length;for(var Y=0;Y<X;Y++){U[Y]()}}function K(X){if(J){X()}else{U[U.length]=X}}function s(Y){if(typeof O.addEventListener!=D){O.addEventListener("load",Y,false)}else{if(typeof j.addEventListener!=D){j.addEventListener("load",Y,false)}else{if(typeof O.attachEvent!=D){i(O,"onload",Y)}else{if(typeof O.onload=="function"){var X=O.onload;O.onload=function(){X();Y()}}else{O.onload=Y}}}}}function h(){if(T){V()}else{H()}}function V(){var X=j.getElementsByTagName("body")[0];var aa=C(r);aa.setAttribute("type",q);var Z=X.appendChild(aa);if(Z){var Y=0;!function(){if(typeof Z.GetVariable!=D){var ab=Z.GetVariable("$version");if(ab){ab=ab.split(" ")[1].split(",");M.pv=[parseInt(ab[0],10),parseInt(ab[1],10),parseInt(ab[2],10)]}}else{if(Y<10){Y++;setTimeout(arguments.callee,10);return}}X.removeChild(aa);Z=null;H()}()}else{H()}}function H(){var ag=o.length;if(ag>0){for(var af=0;af<ag;af++){var Y=o[af].id;var ab=o[af].callbackFn;var aa={success:false,id:Y};if(M.pv[0]>0){var ae=c(Y);if(ae){if(F(o[af].swfVersion)&&!(M.wk&&M.wk<312)){w(Y,true);if(ab){aa.success=true;aa.ref=z(Y);ab(aa)}}else{if(o[af].expressInstall&&A()){var ai={};ai.data=o[af].expressInstall;ai.width=ae.getAttribute("width")||"0";ai.height=ae.getAttribute("height")||"0";if(ae.getAttribute("class")){ai.styleclass=ae.getAttribute("class")}if(ae.getAttribute("align")){ai.align=ae.getAttribute("align")}var ah={};var X=ae.getElementsByTagName("param");var ac=X.length;for(var ad=0;ad<ac;ad++){if(X[ad].getAttribute("name").toLowerCase()!="movie"){ah[X[ad].getAttribute("name")]=X[ad].getAttribute("value")}}P(ai,ah,Y,ab)}else{p(ae);if(ab){ab(aa)}}}}}else{w(Y,true);if(ab){var Z=z(Y);if(Z&&typeof Z.SetVariable!=D){aa.success=true;aa.ref=Z}ab(aa)}}}}}function z(aa){var X=null;var Y=c(aa);if(Y&&Y.nodeName=="OBJECT"){if(typeof Y.SetVariable!=D){X=Y}else{var Z=Y.getElementsByTagName(r)[0];if(Z){X=Z}}}return X}function A(){return!a&&F("6.0.65")&&(M.win||M.mac)&&!(M.wk&&M.wk<312)}function P(aa,ab,X,Z){a=true;E=Z||null;B={success:false,id:X};var ae=c(X);if(ae){if(ae.nodeName=="OBJECT"){l=g(ae);Q=null}else{l=ae;Q=X}aa.id=R;if(typeof aa.width==D||!/%$/.test(aa.width)&&parseInt(aa.width,10)<310){aa.width="310"}if(typeof aa.height==D||!/%$/.test(aa.height)&&parseInt(aa.height,10)<137){aa.height="137"}j.title=j.title.slice(0,47)+" - Flash Player Installation";var ad=M.ie&&M.win?"ActiveX":"PlugIn",ac="MMredirectURL="+encodeURI(O.location).toString().replace(/&/g,"%26")+"&MMplayerType="+ad+"&MMdoctitle="+j.title;if(typeof ab.flashvars!=D){ab.flashvars+="&"+ac}else{ab.flashvars=ac}if(M.ie&&M.win&&ae.readyState!=4){var Y=C("div");X+="SWFObjectNew";Y.setAttribute("id",X);ae.parentNode.insertBefore(Y,ae);ae.style.display="none";!function(){if(ae.readyState==4){ae.parentNode.removeChild(ae)}else{setTimeout(arguments.callee,10)}}()}u(aa,ab,X)}}function p(Y){if(M.ie&&M.win&&Y.readyState!=4){var X=C("div");Y.parentNode.insertBefore(X,Y);X.parentNode.replaceChild(g(Y),X);Y.style.display="none";!function(){if(Y.readyState==4){Y.parentNode.removeChild(Y)}else{setTimeout(arguments.callee,10)}}()}else{Y.parentNode.replaceChild(g(Y),Y)}}function g(ab){var aa=C("div");if(M.win&&M.ie){aa.innerHTML=ab.innerHTML}else{var Y=ab.getElementsByTagName(r)[0];if(Y){var ad=Y.childNodes;if(ad){var X=ad.length;for(var Z=0;Z<X;Z++){if(!(ad[Z].nodeType==1&&ad[Z].nodeName=="PARAM")&&!(ad[Z].nodeType==8)){aa.appendChild(ad[Z].cloneNode(true))}}}}}return aa}function u(ai,ag,Y){var X,aa=c(Y);if(M.wk&&M.wk<312){return X}if(aa){if(typeof ai.id==D){ai.id=Y}if(M.ie&&M.win){var ah="";for(var ae in ai){if(ai[ae]!=Object.prototype[ae]){if(ae.toLowerCase()=="data"){ag.movie=ai[ae]}else{if(ae.toLowerCase()=="styleclass"){ah+=' class="'+ai[ae]+'"'}else{if(ae.toLowerCase()!="classid"){ah+=" "+ae+'="'+ai[ae]+'"'}}}}}var af="";for(var ad in ag){if(ag[ad]!=Object.prototype[ad]){af+='<param name="'+ad+'" value="'+ag[ad]+'" />'}}aa.outerHTML='<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"'+ah+">"+af+"</object>";N[N.length]=ai.id;X=c(ai.id)}else{var Z=C(r);Z.setAttribute("type",q);for(var ac in ai){if(ai[ac]!=Object.prototype[ac]){if(ac.toLowerCase()=="styleclass"){Z.setAttribute("class",ai[ac])}else{if(ac.toLowerCase()!="classid"){Z.setAttribute(ac,ai[ac])}}}}for(var ab in ag){if(ag[ab]!=Object.prototype[ab]&&ab.toLowerCase()!="movie"){e(Z,ab,ag[ab])}}aa.parentNode.replaceChild(Z,aa);X=Z}}return X}function e(Z,X,Y){var aa=C("param");aa.setAttribute("name",X);aa.setAttribute("value",Y);Z.appendChild(aa)}function y(Y){var X=c(Y);if(X&&X.nodeName=="OBJECT"){if(M.ie&&M.win){X.style.display="none";!function(){if(X.readyState==4){b(Y)}else{setTimeout(arguments.callee,10)}}()}else{X.parentNode.removeChild(X)}}}function b(Z){var Y=c(Z);if(Y){for(var X in Y){if(typeof Y[X]=="function"){Y[X]=null}}Y.parentNode.removeChild(Y)}}function c(Z){var X=null;try{X=j.getElementById(Z)}catch(Y){}return X}function C(X){return j.createElement(X)}function i(Z,X,Y){Z.attachEvent(X,Y);I[I.length]=[Z,X,Y]}function F(Z){var Y=M.pv,X=Z.split(".");X[0]=parseInt(X[0],10);X[1]=parseInt(X[1],10)||0;X[2]=parseInt(X[2],10)||0;return Y[0]>X[0]||Y[0]==X[0]&&Y[1]>X[1]||Y[0]==X[0]&&Y[1]==X[1]&&Y[2]>=X[2]?true:false}function v(ac,Y,ad,ab){if(M.ie&&M.mac){return}var aa=j.getElementsByTagName("head")[0];if(!aa){return}var X=ad&&typeof ad=="string"?ad:"screen";if(ab){n=null;G=null}if(!n||G!=X){var Z=C("style");Z.setAttribute("type","text/css");Z.setAttribute("media",X);n=aa.appendChild(Z);if(M.ie&&M.win&&typeof j.styleSheets!=D&&j.styleSheets.length>0){n=j.styleSheets[j.styleSheets.length-1]}G=X}if(M.ie&&M.win){if(n&&typeof n.addRule==r){n.addRule(ac,Y)}}else{if(n&&typeof j.createTextNode!=D){n.appendChild(j.createTextNode(ac+" {"+Y+"}"))}}}function w(Z,X){if(!m){return}var Y=X?"visible":"hidden";if(J&&c(Z)){c(Z).style.visibility=Y}else{v("#"+Z,"visibility:"+Y)}}function L(Y){var Z=/[\\\"<>\.;]/;var X=Z.exec(Y)!=null;return X&&typeof encodeURIComponent!=D?encodeURIComponent(Y):Y}var d=function(){if(M.ie&&M.win){window.attachEvent("onunload",function(){var ac=I.length;for(var ab=0;ab<ac;ab++){I[ab][0].detachEvent(I[ab][1],I[ab][2])}var Z=N.length;for(var aa=0;aa<Z;aa++){y(N[aa])}for(var Y in M){M[Y]=null}M=null;for(var X in swfobject){swfobject[X]=null}swfobject=null})}}();return{registerObject:function(ab,X,aa,Z){if(M.w3&&ab&&X){var Y={};Y.id=ab;Y.swfVersion=X;Y.expressInstall=aa;Y.callbackFn=Z;o[o.length]=Y;w(ab,false)}else{if(Z){Z({success:false,id:ab})}}},getObjectById:function(X){if(M.w3){return z(X)}},embedSWF:function(ab,ah,ae,ag,Y,aa,Z,ad,af,ac){var X={success:false,id:ah};if(M.w3&&!(M.wk&&M.wk<312)&&ab&&ah&&ae&&ag&&Y){w(ah,false);K(function(){ae+="";ag+="";var aj={};if(af&&typeof af===r){for(var al in af){aj[al]=af[al]}}aj.data=ab;aj.width=ae;aj.height=ag;var am={};if(ad&&typeof ad===r){for(var ak in ad){am[ak]=ad[ak]}}if(Z&&typeof Z===r){for(var ai in Z){if(typeof am.flashvars!=D){am.flashvars+="&"+ai+"="+Z[ai]}else{am.flashvars=ai+"="+Z[ai]}}}if(F(Y)){var an=u(aj,am,ah);if(aj.id==ah){w(ah,true)}X.success=true;X.ref=an}else{if(aa&&A()){aj.data=aa;P(aj,am,ah,ac);return}else{w(ah,true)}}if(ac){ac(X)}})}else{if(ac){ac(X)}}},switchOffAutoHideShow:function(){m=false},ua:M,getFlashPlayerVersion:function(){return{major:M.pv[0],minor:M.pv[1],release:M.pv[2]}},hasFlashPlayerVersion:F,createSWF:function(Z,Y,X){if(M.w3){return u(Z,Y,X)}else{return undefined}},showExpressInstall:function(Z,aa,X,Y){if(M.w3&&A()){P(Z,aa,X,Y)}},removeSWF:function(X){if(M.w3){y(X)}},createCSS:function(aa,Z,Y,X){if(M.w3){v(aa,Z,Y,X)}},addDomLoadEvent:K,addLoadEvent:s,getQueryParamValue:function(aa){var Z=j.location.search||j.location.hash;if(Z){if(/\?/.test(Z)){Z=Z.split("?")[1]}if(aa==null){return L(Z)}var Y=Z.split("&");for(var X=0;X<Y.length;X++){if(Y[X].substring(0,Y[X].indexOf("="))==aa){return L(Y[X].substring(Y[X].indexOf("=")+1))}}}return""},expressInstallCallback:function(){if(a){var X=c(R);if(X&&l){X.parentNode.replaceChild(l,X);if(Q){w(Q,true);if(M.ie&&M.win){l.style.display="block"}}if(E){E(B)}}a=false}}}}()}var __hasProp=Object.prototype.hasOwnProperty;window.SC=window.SC||{};window.SC.URI=function(uri,options){var AUTHORITY_REGEXP,URI_REGEXP;if(uri==null){uri=""}if(options==null){options={}}URI_REGEXP=/^(?:([^:\/?\#]+):)?(?:\/\/([^\/?\#]*))?([^?\#]*)(?:\?([^\#]*))?(?:\#(.*))?/;AUTHORITY_REGEXP=/^(?:([^@]*)@)?([^:]*)(?::(\d*))?/;this.scheme=this.user=this.password=this.host=this.port=this.path=this.query=this.fragment=null;this.toString=function(){var str;str="";if(this.isAbsolute()){str+=this.scheme;str+="://";if(this.user!=null){str+=this.user+":"+this.password+"@"}str+=this.host;if(this.port!=null){str+=":"+this.port}}str+=this.path;if(this.path===""&&(this.query!=null||this.fragment!=null)){str+="/"}if(this.query!=null){str+=this.encodeParamsWithPrepend(this.query,"?")}if(this.fragment!=null){str+=this.encodeParamsWithPrepend(this.fragment,"#")}return str};this.isRelative=function(){return!this.isAbsolute()};this.isAbsolute=function(){return this.host!=null};this.decodeParams=function(string){var key,params,part,splitted,value,_i,_len,_ref;if(string==null){string=""}params={};_ref=string.split("&");for(_i=0,_len=_ref.length;_i<_len;_i++){part=_ref[_i];if(part!==""){splitted=part.split("=");key=decodeURIComponent(splitted[0]);value=decodeURIComponent(splitted[1]||"").replace(/\+/g," ");this.normalizeParams(params,key,value)}}return params};this.normalizeParams=function(params,name,v){var after,child_key,k,lastP,result,result_i;if(v==null){v=NULL}result=name.match(/^[\[\]]*([^\[\]]+)\]*(.*)/);k=result[1]||"";after=result[2]||"";if(after===""){params[k]=v}else if(after==="[]"){params[k]||(params[k]=[]);params[k].push(v)}else if(result_i=after.match(/^\[\]\[([^\[\]]+)\]$/)||(result_i=after.match(/^\[\](.+)$/))){child_key=result_i[1];params[k]||(params[k]=[]);lastP=params[k][params[k].length-1];if(lastP!=null&&lastP.constructor===Object&&!(lastP[child_key]!=null)){this.normalizeParams(lastP,child_key,v)}else{params[k].push(this.normalizeParams({},child_key,v))}}else{params[k]||(params[k]={});params[k]=this.normalizeParams(params[k],after,v)}return params};this.encodeParamsWithPrepend=function(params,prepend){var encoded;encoded=this.encodeParams(params);if(encoded!==""){return prepend+encoded}else{return""}};this.encodeParams=function(params){var flattened,key,keyValueStrings,kv,paramString,value,_i,_len;paramString="";if(params.constructor===String){return paramString=params}else{flattened=this.flattenParams(params);keyValueStrings=[];for(_i=0,_len=flattened.length;_i<_len;_i++){kv=flattened[_i];key=kv[0];value=kv[1];if(value===null){keyValueStrings.push(key)}else{keyValueStrings.push(key+"="+encodeURIComponent(value))}}return paramString=keyValueStrings.join("&")}};this.flattenParams=function(params,prefix,paramsArray){var key,prefixedKey,value,_i,_len;if(prefix==null){prefix=""}if(paramsArray==null){paramsArray=[]}if(!(params!=null)){if(prefix!=null){paramsArray.push([prefix,null])}}else if(params.constructor===Object){for(key in params){if(!__hasProp.call(params,key))continue;value=params[key];if(prefix!==""){prefixedKey=prefix+"["+key+"]"}else{prefixedKey=key}this.flattenParams(value,prefixedKey,paramsArray)}}else if(params.constructor===Array){for(_i=0,_len=params.length;_i<_len;_i++){value=params[_i];this.flattenParams(value,prefix+"[]",paramsArray)}}else if(prefix!==""){paramsArray.push([prefix,params])}return paramsArray};this.parse=function(uri,options){var authority,authority_result,nullIfBlank,result,userinfo;if(uri==null){uri=""}if(options==null){options={}}nullIfBlank=function(str){if(str===""){return null}else{return str}};result=uri.match(URI_REGEXP);this.scheme=nullIfBlank(result[1]);authority=result[2];if(authority!=null){authority_result=authority.match(AUTHORITY_REGEXP);userinfo=nullIfBlank(authority_result[1]);if(userinfo!=null){this.user=userinfo.split(":")[0];this.password=userinfo.split(":")[1]}this.host=nullIfBlank(authority_result[2]);this.port=parseInt(authority_result[3],10)||null}this.path=result[3];this.query=nullIfBlank(result[4]);if(options.decodeQuery){this.query=this.decodeParams(this.query)}this.fragment=nullIfBlank(result[5]);if(options.decodeFragment){return this.fragment=this.decodeParams(this.fragment)}};this.parse(uri.toString(),options);return this};!function(){var AbstractDialog,ConnectDialog,EchoDialog,PickerDialog,Player,_ref,_ref1,_ref2,__hasProp={}.hasOwnProperty,__extends=function(child,parent){for(var key in parent){if(__hasProp.call(parent,key))child[key]=parent[key]}function ctor(){this.constructor=child}ctor.prototype=parent.prototype;child.prototype=new ctor;child.__super__=parent.prototype;return child};window.SC||(window.SC={});SC.Helper={merge:function(a,b){var k,newObj,v,_i,_len;if(a.constructor===Array){newObj=Array.apply(null,a);for(_i=0,_len=b.length;_i<_len;_i++){v=b[_i];newObj.push(v)}return newObj}else{newObj={};for(k in a){if(!__hasProp.call(a,k))continue;v=a[k];newObj[k]=v}for(k in b){if(!__hasProp.call(b,k))continue;v=b[k];newObj[k]=v}return newObj}},groupBy:function(collection,attribute){var group,object,value,_i,_len,_name;group={};for(_i=0,_len=collection.length;_i<_len;_i++){object=collection[_i];if(value=object[attribute]){group[_name=object[attribute]]||(group[_name]=[]);group[object[attribute]].push(object)}}return group},loadJavascript:function(src,callback){var elem;elem=document.createElement("script");elem.async=true;elem.src=src;SC.Helper.attachLoadEvent(elem,callback);document.body.appendChild(elem);return elem},extractOptionsAndCallbackArguments:function(optionsOrCallback,callback){var args;args={};if(callback!=null){args.callback=callback;args.options=optionsOrCallback}else if(typeof optionsOrCallback==="function"){args.callback=optionsOrCallback;args.options={}}else{args.options=optionsOrCallback||{}}return args},openCenteredPopup:function(url,width,height){var options;options={};if(height!=null){options.width=width;options.height=height}else{options=width}options=SC.Helper.merge(options,{location:1,left:window.screenX+(window.outerWidth-options.width)/2,top:window.screenY+(window.outerHeight-options.height)/2,toolbar:"no",scrollbars:"yes"});return window.open(url,options.name,this._optionsToString(options))},_optionsToString:function(options){var k,optionsArray,v;optionsArray=[];for(k in options){if(!__hasProp.call(options,k))continue;v=options[k];optionsArray.push(k+"="+v)}return optionsArray.join(", ")},attachLoadEvent:function(element,func){if(element.addEventListener){return element.addEventListener("load",func,false)}else{return element.onreadystatechange=function(){if(this.readyState==="complete"){return func()}}}},millisecondsToHMS:function(ms){var hms,m,mPrefix,sPrefix,tc;hms={h:Math.floor(ms/(60*60*1e3)),m:Math.floor(ms/6e4%60),s:Math.floor(ms/1e3%60)};tc=[];if(hms.h>0){tc.push(hms.h)}m=hms.m;mPrefix="";sPrefix="";if(hms.m<10&&hms.h>0){mPrefix="0"}if(hms.s<10){sPrefix="0"}tc.push(mPrefix+hms.m);tc.push(sPrefix+hms.s);return tc.join(".")},setFlashStatusCodeMaps:function(query){query["_status_code_map[400]"]=200;query["_status_code_map[401]"]=200;query["_status_code_map[403]"]=200;query["_status_code_map[404]"]=200;query["_status_code_map[422]"]=200;query["_status_code_map[500]"]=200;query["_status_code_map[503]"]=200;return query["_status_code_map[504]"]=200},responseHandler:function(responseText,xhr){var error,json;json=SC.Helper.JSON.parse(responseText);error=null;if(!json){if(xhr){error={message:"HTTP Error: "+xhr.status}}else{error={message:"Unknown error"}}}else if(json.errors){error={message:json.errors&&json.errors[0].error_message}}return{json:json,error:error}},FakeStorage:function(){return{_store:{},getItem:function(key){return this._store[key]||null},setItem:function(key,value){return this._store[key]=value.toString()},removeItem:function(key){return delete this._store[key]}}},JSON:{parse:function(string){if(string[0]!=="{"&&string[0]!=="["){return null}else if(window.JSON!=null){return window.JSON.parse(string)}else{return eval(string)}}}};window.SC=SC.Helper.merge(SC||{},{_version:"2.0.0",_baseUrl:"//connect.soundcloud.com",options:{site:"soundcloud.com",baseUrl:"//connect.soundcloud.com"},connectCallbacks:{},_popupWindow:void 0,initialize:function(options){var key,value,_base;if(options==null){options={}}this.accessToken(options["access_token"]);for(key in options){if(!__hasProp.call(options,key))continue;value=options[key];this.options[key]=value}(_base=this.options).flashXHR||(_base.flashXHR=(new XMLHttpRequest).withCredentials===void 0);return this},hostname:function(subdomain){var str;str="";if(subdomain!=null){str+=subdomain+"."}str+=this.options.site;return str}});window.SC=SC.Helper.merge(SC||{},{_apiRequest:function(method,path,query,callback){var data,uri;if(callback==null){callback=query;query=void 0}query||(query={});uri=SC.prepareRequestURI(path,query);uri.query.format="json";if(SC.options.flashXHR){SC.Helper.setFlashStatusCodeMaps(uri.query)}else{uri.query["_status_code_map[302]"]=200}if(method==="PUT"||method==="DELETE"){uri.query._method=method;method="POST"}if(method!=="GET"){data=uri.encodeParams(uri.query);uri.query={}}return this._request(method,uri,"application/x-www-form-urlencoded",data,function(responseText,xhr){var response;response=SC.Helper.responseHandler(responseText,xhr);if(response.json&&response.json.status==="302 - Found"){return SC._apiRequest("GET",response.json.location,callback)}else{return callback(response.json,response.error)}})},_request:function(method,uri,contentType,data,callback){if(SC.options.flashXHR){return this._flashRequest(method,uri,contentType,data,callback)}else{return this._xhrRequest(method,uri,contentType,data,callback)}},_xhrRequest:function(method,uri,contentType,data,callback){var request;request=new XMLHttpRequest;request.open(method,uri.toString(),true);request.setRequestHeader("Content-Type",contentType);request.onreadystatechange=function(e){if(e.target.readyState===4){return callback(e.target.responseText,e.target)}};return request.send(data)},_flashRequest:function(method,uri,contentType,data,callback){return this.whenRecordingReady(function(){return Recorder.request(method,uri.toString(),contentType,data,function(data,xhr){return callback(Recorder._externalInterfaceDecode(data),xhr)})})},post:function(path,query,callback){return this._apiRequest("POST",path,query,callback)},put:function(path,query,callback){return this._apiRequest("PUT",path,query,callback)},get:function(path,query,callback){return this._apiRequest("GET",path,query,callback)},"delete":function(path,callback){return this._apiRequest("DELETE",path,{},callback)},prepareRequestURI:function(path,query){var k,uri,v;if(query==null){query={}}uri=new SC.URI(path,{decodeQuery:true});for(k in query){if(!__hasProp.call(query,k))continue;v=query[k];uri.query[k]=v}if(uri.isRelative()){uri.host=this.hostname("api");uri.scheme=window.location.protocol.slice(0,-1)}if(this.accessToken()!=null){uri.query.oauth_token=this.accessToken();uri.scheme="https"}else{uri.query.client_id=this.options.client_id}return uri},_getAll:function(path,query,callback,collection){if(collection==null){collection=[]}if(callback==null){callback=query;query=void 0}query||(query={});query.offset||(query.offset=0);query.limit||(query.limit=50);return this.get(path,query,function(objects,error){if(objects.constructor===Array&&objects.length>0){collection=SC.Helper.merge(collection,objects);query.offset+=query.limit;return SC._getAll(path,query,callback,collection)}else{return callback(collection,null)}})}});window.SC=SC.Helper.merge(SC||{},{_connectWindow:null,connect:function(optionsOrCallback){var dialog,dialogOptions,options;if(typeof optionsOrCallback==="function"){options={connected:optionsOrCallback}}else{options=optionsOrCallback}dialogOptions={client_id:options.client_id||SC.options.client_id,redirect_uri:options.redirect_uri||SC.options.redirect_uri,response_type:"code_and_token",scope:options.scope||"non-expiring",display:"popup",window:options.window,retainWindow:options.retainWindow};if(dialogOptions.client_id&&dialogOptions.redirect_uri){dialog=SC.dialog(SC.Dialog.CONNECT,dialogOptions,function(params){if(params.error!=null){throw new Error("SC OAuth2 Error: "+params.error_description)}else{SC.accessToken(params.access_token);if(options.connected!=null){options.connected()}}if(options.callback!=null){return options.callback()}});this._connectWindow=dialog.options.window;return dialog}else{throw"Options client_id and redirect_uri must be passed"}},connectCallback:function(){return SC.Dialog._handleDialogReturn(SC._connectWindow)},disconnect:function(){return this.accessToken(null)},_trigger:function(eventName,argument){if(this.connectCallbacks[eventName]!=null){return this.connectCallbacks[eventName](argument)}},accessToken:function(value){var storage,storageKey;storageKey="SC.accessToken";storage=this.storage();if(value===void 0){return storage.getItem(storageKey)}else if(value===null){return storage.removeItem(storageKey)}else{return storage.setItem(storageKey,value)}},isConnected:function(){return this.accessToken()!=null}});window.SC=SC.Helper.merge(SC||{},{_dialogsPath:"/dialogs",dialog:function(dialogName,optionsOrCallback,callback){var a,dialog,options;a=SC.Helper.extractOptionsAndCallbackArguments(optionsOrCallback,callback);options=a.options;callback=a.callback;options.callback=callback;options.redirect_uri=this.options.redirect_uri;dialog=new SC.Dialog[dialogName+"Dialog"](options);SC.Dialog._dialogs[dialog.id]=dialog;dialog.open();return dialog},Dialog:{ECHO:"Echo",CONNECT:"Connect",PICKER:"Picker",ID_PREFIX:"SoundCloud_Dialog",_dialogs:{},_isDialogId:function(id){return(id||"").match(new RegExp("^"+this.ID_PREFIX))},_getDialogIdFromWindow:function(window){var id,loc;loc=new SC.URI(window.location,{decodeQuery:true,decodeFragment:true});id=loc.query.state||loc.fragment.state;if(this._isDialogId(id)){return id}else{return null}},_handleDialogReturn:function(window){var dialog,dialogId;dialogId=this._getDialogIdFromWindow(window);dialog=this._dialogs[dialogId];if(dialog!=null){if(dialog.handleReturn()){return delete this._dialogs[dialogId]}}},_handleInPopupContext:function(){var isiOS5;if(this._getDialogIdFromWindow(window)&&!window.location.pathname.match(/\/dialogs\//)){isiOS5=navigator.userAgent.match(/OS 5(_\d)+ like Mac OS X/i);if(isiOS5){return window.opener.SC.Dialog._handleDialogReturn(window)}else if(window.opener){return window.opener.setTimeout(function(){return window.opener.SC.Dialog._handleDialogReturn(window)},1)}else if(window.top){return window.top.setTimeout(function(){return window.top.SC.Dialog._handleDialogReturn(window)},1)}}},AbstractDialog:AbstractDialog=function(){AbstractDialog.prototype.WIDTH=456;AbstractDialog.prototype.HEIGHT=510;AbstractDialog.prototype.ID_PREFIX="SoundCloud_Dialog";AbstractDialog.prototype.PARAM_KEYS=["redirect_uri"];AbstractDialog.prototype.requiresAuthentication=false;AbstractDialog.prototype.generateId=function(){return[this.ID_PREFIX,Math.ceil(Math.random()*1e6).toString(16)].join("_")};function AbstractDialog(options){this.options=options!=null?options:{};this.id=this.generateId()}AbstractDialog.prototype.buildURI=function(uri){var paramKey,_i,_len,_ref;if(uri==null){uri=new SC.URI(SC._baseUrl)}uri.scheme=window.location.protocol.slice(0,-1);uri.path+=SC._dialogsPath+"/"+this.name+"/";uri.fragment={state:this.id};if(this.requiresAuthentication){uri.fragment.access_token=SC.accessToken()}_ref=this.PARAM_KEYS;for(_i=0,_len=_ref.length;_i<_len;_i++){paramKey=_ref[_i];if(this.options[paramKey]!=null){uri.fragment[paramKey]=this.options[paramKey]}}uri.port=null;return uri};AbstractDialog.prototype.open=function(){var url;if(this.requiresAuthentication&&SC.accessToken()==null){return this.authenticateAndOpen()}else{url=this.buildURI();if(this.options.window!=null){return this.options.window.location=url}else{return this.options.window=SC.Helper.openCenteredPopup(url,{width:this.WIDTH,height:this.HEIGHT})}}};AbstractDialog.prototype.authenticateAndOpen=function(){var connectDialog,_this=this;return connectDialog=SC.connect({retainWindow:true,window:this.options.window,connected:function(){_this.options.window=connectDialog.options.window;return _this.open()}})};AbstractDialog.prototype.paramsFromWindow=function(){var params,url;url=new SC.URI(this.options.window.location,{decodeFragment:true,decodeQuery:true});return params=SC.Helper.merge(url.query,url.fragment)};AbstractDialog.prototype.handleReturn=function(){var params;params=this.paramsFromWindow();if(!this.options.retainWindow){this.options.window.close()}return this.options.callback(params)};return AbstractDialog}(),EchoDialog:EchoDialog=function(_super){__extends(EchoDialog,_super);function EchoDialog(){_ref=EchoDialog.__super__.constructor.apply(this,arguments);return _ref}EchoDialog.prototype.PARAM_KEYS=["client_id","redirect_uri","hello"];EchoDialog.prototype.name="echo";return EchoDialog}(AbstractDialog),PickerDialog:PickerDialog=function(_super){__extends(PickerDialog,_super);
 function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,arguments);return _ref1}PickerDialog.prototype.PARAM_KEYS=["client_id","redirect_uri"];PickerDialog.prototype.name="picker";PickerDialog.prototype.requiresAuthentication=true;PickerDialog.prototype.handleReturn=function(){var params,_this=this;params=this.paramsFromWindow();if(params.action==="logout"){SC.accessToken(null);this.open();return false}else if(params.track_uri!=null){if(!this.options.retainWindow){this.options.window.close()}SC.get(params.track_uri,function(track){return _this.options.callback({track:track})});return true}};return PickerDialog}(AbstractDialog),ConnectDialog:ConnectDialog=function(_super){__extends(ConnectDialog,_super);function ConnectDialog(){_ref2=ConnectDialog.__super__.constructor.apply(this,arguments);return _ref2}ConnectDialog.prototype.PARAM_KEYS=["client_id","redirect_uri","client_secret","response_type","scope","display"];ConnectDialog.prototype.name="connect";ConnectDialog.prototype.buildURI=function(){var uri;uri=ConnectDialog.__super__.buildURI.apply(this,arguments);uri.scheme="https";uri.host="soundcloud.com";uri.path="/connect";uri.query=uri.fragment;uri.fragment={};return uri};return ConnectDialog}(AbstractDialog)}});SC.Dialog._handleInPopupContext();window.SC=SC.Helper.merge(SC||{},{Loader:{States:{UNLOADED:1,LOADING:2,READY:3},Package:function(name,loadFunction){return{name:name,callbacks:[],loadFunction:loadFunction,state:SC.Loader.States.UNLOADED,addCallback:function(fn){return this.callbacks.push(fn)},runCallbacks:function(){var callback,_i,_len,_ref3;_ref3=this.callbacks;for(_i=0,_len=_ref3.length;_i<_len;_i++){callback=_ref3[_i];callback.apply(this)}return this.callbacks=[]},setReady:function(){this.state=SC.Loader.States.READY;return this.runCallbacks()},load:function(){this.state=SC.Loader.States.LOADING;return this.loadFunction.apply(this)},whenReady:function(callback){switch(this.state){case SC.Loader.States.UNLOADED:this.addCallback(callback);return this.load();case SC.Loader.States.LOADING:return this.addCallback(callback);case SC.Loader.States.READY:return callback()}}}},packages:{},registerPackage:function(pkg){return this.packages[pkg.name]=pkg}}});window.SC=SC.Helper.merge(SC||{},{oEmbed:function(trackUrl,query,callback){var element,uri,_this=this;if(callback==null){callback=query;query=void 0}query||(query={});query.url=trackUrl;uri=new SC.URI(window.location.protocol+"//"+SC.hostname()+"/oembed.json");uri.query=query;if(callback.nodeType!==void 0&&callback.nodeType===1){element=callback;callback=function(oembed){return element.innerHTML=oembed.html}}return this._request("GET",uri.toString(),null,null,function(responseText,xhr){var response;response=SC.Helper.responseHandler(responseText,xhr);return callback(response.json,response.error)})}});window.SC=SC.Helper.merge(SC||{},{_recorderSwfPath:"/recorder.js/recorder-0.9.0.swf",whenRecordingReady:function(callback){return SC.Loader.packages.recording.whenReady(callback)},record:function(options){if(options==null){options={}}return this.whenRecordingReady(function(){return Recorder.record(options)})},recordStop:function(options){if(options==null){options={}}return Recorder.stop()},recordPlay:function(options){if(options==null){options={}}return Recorder.play(options)},recordUpload:function(query,callback){var flattenedParams,uri;if(query==null){query={}}uri=SC.prepareRequestURI("/tracks",query);uri.query.format="json";SC.Helper.setFlashStatusCodeMaps(uri.query);flattenedParams=uri.flattenParams(uri.query);return Recorder.upload({method:"POST",url:"https://"+this.hostname("api")+"/tracks",audioParam:"track[asset_data]",params:flattenedParams,success:function(responseText){var response;response=SC.Helper.responseHandler(responseText);return callback(response.json,response.error)}})}});SC.Loader.registerPackage(new SC.Loader.Package("recording",function(){if(Recorder.flashInterface()){return SC.Loader.packages.recording.setReady()}else{return Recorder.initialize({swfSrc:SC._baseUrl+SC._recorderSwfPath+"?"+SC._version,initialized:function(){return SC.Loader.packages.recording.setReady()}})}}));window.SC=SC.Helper.merge(SC||{},{storage:function(){return this._fakeStorage||(this._fakeStorage=new SC.Helper.FakeStorage)}});Player=function(){function Player(_player){this._player=_player}Player.prototype.play=function(position){if(this._player.getState()==="loading"||this._player.getState()==="initialize"){return this._player.on("stateChange",function(state){if(state==="idle"){return this.play()}})}else{return this._player.play()}};Player.prototype.stop=function(){this._player.pause();return this._player.seek(0)};Player.prototype.pause=function(){return this._player.pause()};Player.prototype.seek=function(ms){return this._player.seek(ms)};Player.prototype.setVolume=function(volume){return this._player.setVolume(volume)};Player.prototype.getVolume=function(){return this._player.getVolume()};Player.prototype.getType=function(){return this._player.getType()};Player.prototype.getCurrentPosition=function(){return this._player.getCurrentPosition()};Player.prototype.getLoadedPosition=function(){return this._player.getLoadedPosition()};Player.prototype.getDuration=function(){return this._player.getDuration()};Player.prototype.getState=function(){return this._player.getState()};return Player}();window.SC=SC.Helper.merge(SC||{},{whenStreamingReady:function(callback){return SC.Loader.packages.streaming.whenReady(callback)},_isNumeric:function(idOrUrl){return idOrUrl.toString().match(/^\d.*$/)},_prepareTrackUrl:function(idOrUrl){var preparedUrl,url;url=this._isNumeric(idOrUrl)?"/tracks/"+idOrUrl:idOrUrl;preparedUrl=SC.prepareRequestURI(url);return preparedUrl.toString()},_prepareStreamUrl:function(idOrUrl){var preparedUrl,url;url=this._isNumeric(idOrUrl)?"/tracks/"+idOrUrl:idOrUrl;preparedUrl=SC.prepareRequestURI(url);if(!preparedUrl.path.match(/\/stream/)){preparedUrl.path+="/streams"}return preparedUrl.toString()},_setOnPositionListenersForComments:function(player,comments,callback){var group;group=SC.Helper.groupBy(comments,"timestamp");return player._player.on("positionChange",function(current,loaded,duration){var collection,key,_i,_len,_ref3;collection=[];_ref3=Object.keys(group);for(_i=0,_len=_ref3.length;_i<_len;_i++){key=_ref3[_i];if(key>parseInt(current,10)){break}collection.push(group[key]);delete group[key]}collection=[].concat.apply([],collection);return callback(collection)})},stream:function(idOrUrl,optionsOrCallback,callback){var a,options,stream_url,track_url;a=SC.Helper.extractOptionsAndCallbackArguments(optionsOrCallback,callback);options=a.options;callback=a.callback;options.id="T"+idOrUrl+"-"+Math.random();track_url=this._prepareTrackUrl(idOrUrl);stream_url=this._prepareStreamUrl(idOrUrl);return SC.whenStreamingReady(function(){return SC.get(track_url,function(track){options.duration=track.duration;return SC.get(stream_url,function(streams){var createAndCallback,ontimedcommentsCallback,_this=this;options.src=streams.http_mp3_128_url||streams.rtmp_mp3_128_url;createAndCallback=function(options){var player;player=new Player(audioManager.createAudioPlayer(options));if(callback!=null){callback(player)}return player};if(ontimedcommentsCallback=options.ontimedcomments){delete options.ontimedcomments;return SC._getAll(track_url+"/comments",function(comments){var player;player=createAndCallback(options);return SC._setOnPositionListenersForComments(player,comments,ontimedcommentsCallback)})}else{return createAndCallback(options)}})})})},streamStopAll:function(){var player,_i,_len,_ref3,_results;if(window.audioManager!=null){_ref3=window.audioManager._players;_results=[];for(_i=0,_len=_ref3.length;_i<_len;_i++){player=_ref3[_i];player.pause();_results.push(player.seek(0))}return _results}}});SC.Loader.registerPackage(new SC.Loader.Package("streaming",function(){var audioManagerURL;if(window.audioManager!=null){return SC.Loader.packages.streaming.setReady()}else{audioManagerURL=SC._baseUrl+"/audiomanager";return SC.Helper.loadJavascript(audioManagerURL+"/audiomanager.js",function(){window.audioManager=new AudioManager({flashAudioPath:SC._baseUrl+"/audiomanager/flashAudio.swf"});return SC.Loader.packages.streaming.setReady()})}}))}.call(this);
 
@@ -259,13 +425,13 @@ var SoundCloud = window.SC
 
 module.exports = SoundCloud
 
-},{}],5:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 
 module.exports = function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-},{}],6:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var _         = require( 'underscore' )
 var Promise   = require( 'bluebird' )
 var nprogress = require( 'nprogress' )
@@ -365,7 +531,7 @@ mprogress.log = function( message ) {
   console.log( 'mprogress:', message )
 }
 
-},{"bluebird":9,"nprogress":44,"underscore":189}],7:[function(require,module,exports){
+},{"bluebird":15,"nprogress":54,"underscore":200}],13:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -413,7 +579,7 @@ Promise.prototype.any = function Promise$any() {
 
 };
 
-},{}],8:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014 Petka Antonov
@@ -528,7 +694,7 @@ Async.prototype._reset = function Async$_reset() {
 module.exports = new Async();
 
 }).call(this,require("oMfpAn"))
-},{"./queue.js":31,"./schedule.js":34,"./util.js":41,"oMfpAn":42}],9:[function(require,module,exports){
+},{"./queue.js":37,"./schedule.js":40,"./util.js":47,"oMfpAn":50}],15:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -554,7 +720,7 @@ module.exports = new Async();
 "use strict";
 var Promise = require("./promise.js")();
 module.exports = Promise;
-},{"./promise.js":26}],10:[function(require,module,exports){
+},{"./promise.js":32}],16:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -675,7 +841,7 @@ Promise.prototype.get = function Promise$get(propertyName) {
 };
 };
 
-},{"./util.js":41}],11:[function(require,module,exports){
+},{"./util.js":47}],17:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -752,7 +918,7 @@ function Promise$fork(didFulfill, didReject, didProgress) {
 };
 };
 
-},{"./async.js":8,"./errors.js":16}],12:[function(require,module,exports){
+},{"./async.js":14,"./errors.js":22}],18:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -987,7 +1153,7 @@ var captureStackTrace = (function stackDetection() {
 return CapturedTrace;
 };
 
-},{"./es5.js":18,"./util.js":41}],13:[function(require,module,exports){
+},{"./es5.js":24,"./util.js":47}],19:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1083,7 +1249,7 @@ CatchFilter.prototype.doFilter = function CatchFilter$_doFilter(e) {
 return CatchFilter;
 };
 
-},{"./errors.js":16,"./es5.js":18,"./util.js":41}],14:[function(require,module,exports){
+},{"./errors.js":22,"./es5.js":24,"./util.js":47}],20:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1163,7 +1329,7 @@ function Promise$thenThrow(reason) {
 };
 };
 
-},{"./util.js":41}],15:[function(require,module,exports){
+},{"./util.js":47}],21:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1199,7 +1365,7 @@ Promise.each = function Promise$Each(promises, fn) {
 };
 };
 
-},{}],16:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1346,7 +1512,7 @@ module.exports = {
     canAttach: canAttach
 };
 
-},{"./es5.js":18,"./util.js":41}],17:[function(require,module,exports){
+},{"./es5.js":24,"./util.js":47}],23:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1386,7 +1552,7 @@ function apiRejection(msg) {
 return apiRejection;
 };
 
-},{"./errors.js":16}],18:[function(require,module,exports){
+},{"./errors.js":22}],24:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1475,7 +1641,7 @@ if (isES5) {
     };
 }
 
-},{}],19:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1511,7 +1677,7 @@ Promise.filter = function Promise$Filter(promises, fn, options) {
 };
 };
 
-},{}],20:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1633,7 +1799,7 @@ Promise.prototype.tap = function Promise$tap(handler) {
 };
 };
 
-},{"./util.js":41}],21:[function(require,module,exports){
+},{"./util.js":47}],27:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1786,7 +1952,7 @@ Promise.spawn = function Promise$Spawn(generatorFunction) {
 };
 };
 
-},{"./errors.js":16,"./util.js":41}],22:[function(require,module,exports){
+},{"./errors.js":22,"./util.js":47}],28:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -1910,7 +2076,7 @@ Promise.join = function Promise$Join() {
 
 };
 
-},{"./util.js":41}],23:[function(require,module,exports){
+},{"./util.js":47}],29:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2061,7 +2227,7 @@ Promise.map = function Promise$Map(promises, fn, options, _filter) {
 
 };
 
-},{"./util.js":41}],24:[function(require,module,exports){
+},{"./util.js":47}],30:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2139,7 +2305,7 @@ Promise.prototype.nodeify = function Promise$nodeify(nodeback, options) {
 };
 };
 
-},{"./async.js":8,"./util.js":41}],25:[function(require,module,exports){
+},{"./async.js":14,"./util.js":47}],31:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -2245,7 +2411,7 @@ function Promise$_progressUnchecked(progressValue) {
 };
 };
 
-},{"./async.js":8,"./errors.js":16,"./util.js":41}],26:[function(require,module,exports){
+},{"./async.js":14,"./errors.js":22,"./util.js":47}],32:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014 Petka Antonov
@@ -3295,7 +3461,7 @@ return Promise;
 };
 
 }).call(this,require("oMfpAn"))
-},{"./any.js":7,"./async.js":8,"./call_get.js":10,"./cancel.js":11,"./captured_trace.js":12,"./catch_filter.js":13,"./direct_resolve.js":14,"./each.js":15,"./errors.js":16,"./errors_api_rejection":17,"./filter.js":19,"./finally.js":20,"./generators.js":21,"./join.js":22,"./map.js":23,"./nodeify.js":24,"./progress.js":25,"./promise_array.js":27,"./promise_resolver.js":28,"./promisify.js":29,"./props.js":30,"./race.js":32,"./reduce.js":33,"./settle.js":35,"./some.js":36,"./synchronous_inspection.js":37,"./thenables.js":38,"./timers.js":39,"./using.js":40,"./util.js":41,"oMfpAn":42}],27:[function(require,module,exports){
+},{"./any.js":13,"./async.js":14,"./call_get.js":16,"./cancel.js":17,"./captured_trace.js":18,"./catch_filter.js":19,"./direct_resolve.js":20,"./each.js":21,"./errors.js":22,"./errors_api_rejection":23,"./filter.js":25,"./finally.js":26,"./generators.js":27,"./join.js":28,"./map.js":29,"./nodeify.js":30,"./progress.js":31,"./promise_array.js":33,"./promise_resolver.js":34,"./promisify.js":35,"./props.js":36,"./race.js":38,"./reduce.js":39,"./settle.js":41,"./some.js":42,"./synchronous_inspection.js":43,"./thenables.js":44,"./timers.js":45,"./using.js":46,"./util.js":47,"oMfpAn":50}],33:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -3499,7 +3665,7 @@ function PromiseArray$getActualLength(len) {
 return PromiseArray;
 };
 
-},{"./errors.js":16,"./util.js":41}],28:[function(require,module,exports){
+},{"./errors.js":22,"./util.js":47}],34:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -3659,7 +3825,7 @@ function PromiseResolver$_setCarriedStackTrace(trace) {
 
 module.exports = PromiseResolver;
 
-},{"./async.js":8,"./errors.js":16,"./es5.js":18,"./util.js":41}],29:[function(require,module,exports){
+},{"./async.js":14,"./errors.js":22,"./es5.js":24,"./util.js":47}],35:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -3987,7 +4153,7 @@ Promise.promisifyAll = function Promise$PromisifyAll(target, options) {
 };
 
 
-},{"./errors":16,"./promise_resolver.js":28,"./util.js":41}],30:[function(require,module,exports){
+},{"./errors":22,"./promise_resolver.js":34,"./util.js":47}],36:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4097,7 +4263,7 @@ Promise.props = function Promise$Props(promises) {
 };
 };
 
-},{"./errors_api_rejection":17,"./es5.js":18,"./util.js":41}],31:[function(require,module,exports){
+},{"./errors_api_rejection":23,"./es5.js":24,"./util.js":47}],37:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4214,7 +4380,7 @@ Queue.prototype._resizeTo = function Queue$_resizeTo(capacity) {
 
 module.exports = Queue;
 
-},{}],32:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4288,7 +4454,7 @@ Promise.prototype.race = function Promise$race() {
 
 };
 
-},{"./errors_api_rejection.js":17,"./util.js":41}],33:[function(require,module,exports){
+},{"./errors_api_rejection.js":23,"./util.js":47}],39:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4471,7 +4637,7 @@ Promise.reduce = function Promise$Reduce(promises, fn, initialValue, _each) {
 };
 };
 
-},{"./util.js":41}],34:[function(require,module,exports){
+},{"./util.js":47}],40:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014 Petka Antonov
@@ -4536,7 +4702,7 @@ else throw new Error("no async scheduler available");
 module.exports = schedule;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":42}],35:[function(require,module,exports){
+},{"oMfpAn":50}],41:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4605,7 +4771,7 @@ Promise.prototype.settle = function Promise$settle() {
 };
 };
 
-},{"./util.js":41}],36:[function(require,module,exports){
+},{"./util.js":47}],42:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4768,7 +4934,7 @@ Promise.prototype.some = function Promise$some(howMany) {
 Promise._SomePromiseArray = SomePromiseArray;
 };
 
-},{"./errors.js":16,"./util.js":41}],37:[function(require,module,exports){
+},{"./errors.js":22,"./util.js":47}],43:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4846,7 +5012,7 @@ Promise.prototype.isResolved = function Promise$isResolved() {
 Promise.PromiseInspection = PromiseInspection;
 };
 
-},{}],38:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -4981,7 +5147,7 @@ function Promise$_doThenable(x, then, originalPromise) {
 return Promise$_Cast;
 };
 
-},{"./errors.js":16,"./util.js":41}],39:[function(require,module,exports){
+},{"./errors.js":22,"./util.js":47}],45:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5074,7 +5240,7 @@ Promise.prototype.timeout = function Promise$timeout(ms, message) {
 
 };
 
-},{"./errors.js":16,"./errors_api_rejection":17,"./util.js":41}],40:[function(require,module,exports){
+},{"./errors.js":22,"./errors_api_rejection":23,"./util.js":47}],46:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5250,7 +5416,7 @@ module.exports = function (Promise, apiRejection, cast) {
 
 };
 
-},{"./errors.js":16,"./util.js":41}],41:[function(require,module,exports){
+},{"./errors.js":22,"./util.js":47}],47:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Petka Antonov
  * 
@@ -5520,7 +5686,337 @@ var ret = {
 
 module.exports = ret;
 
-},{"./es5.js":18}],42:[function(require,module,exports){
+},{"./es5.js":24}],48:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events)
+    this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        throw TypeError('Uncaught, unspecified "error" event.');
+      }
+      return false;
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        len = arguments.length;
+        args = new Array(len - 1);
+        for (i = 1; i < len; i++)
+          args[i - 1] = arguments[i];
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    len = arguments.length;
+    args = new Array(len - 1);
+    for (i = 1; i < len; i++)
+      args[i - 1] = arguments[i];
+
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    var m;
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  var ret;
+  if (!emitter._events || !emitter._events[type])
+    ret = 0;
+  else if (isFunction(emitter._events[type]))
+    ret = 1;
+  else
+    ret = emitter._events[type].length;
+  return ret;
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+},{}],49:[function(require,module,exports){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],50:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -5585,7 +6081,604 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],43:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
+module.exports = function isBuffer(arg) {
+  return arg && typeof arg === 'object'
+    && typeof arg.copy === 'function'
+    && typeof arg.fill === 'function'
+    && typeof arg.readUInt8 === 'function';
+}
+},{}],52:[function(require,module,exports){
+(function (process,global){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var formatRegExp = /%[sdj%]/g;
+exports.format = function(f) {
+  if (!isString(f)) {
+    var objects = [];
+    for (var i = 0; i < arguments.length; i++) {
+      objects.push(inspect(arguments[i]));
+    }
+    return objects.join(' ');
+  }
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function(x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+    switch (x) {
+      case '%s': return String(args[i++]);
+      case '%d': return Number(args[i++]);
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+      default:
+        return x;
+    }
+  });
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (isNull(x) || !isObject(x)) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+  return str;
+};
+
+
+// Mark that a method should not be used.
+// Returns a modified function which warns once by default.
+// If --no-deprecation is set, then it is a no-op.
+exports.deprecate = function(fn, msg) {
+  // Allow for deprecating things in the process of starting up.
+  if (isUndefined(global.process)) {
+    return function() {
+      return exports.deprecate(fn, msg).apply(this, arguments);
+    };
+  }
+
+  if (process.noDeprecation === true) {
+    return fn;
+  }
+
+  var warned = false;
+  function deprecated() {
+    if (!warned) {
+      if (process.throwDeprecation) {
+        throw new Error(msg);
+      } else if (process.traceDeprecation) {
+        console.trace(msg);
+      } else {
+        console.error(msg);
+      }
+      warned = true;
+    }
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+};
+
+
+var debugs = {};
+var debugEnviron;
+exports.debuglog = function(set) {
+  if (isUndefined(debugEnviron))
+    debugEnviron = process.env.NODE_DEBUG || '';
+  set = set.toUpperCase();
+  if (!debugs[set]) {
+    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
+      var pid = process.pid;
+      debugs[set] = function() {
+        var msg = exports.format.apply(exports, arguments);
+        console.error('%s %d: %s', set, pid, msg);
+      };
+    } else {
+      debugs[set] = function() {};
+    }
+  }
+  return debugs[set];
+};
+
+
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Object} opts Optional options object that alters the output.
+ */
+/* legacy: obj, showHidden, depth, colors*/
+function inspect(obj, opts) {
+  // default options
+  var ctx = {
+    seen: [],
+    stylize: stylizeNoColor
+  };
+  // legacy...
+  if (arguments.length >= 3) ctx.depth = arguments[2];
+  if (arguments.length >= 4) ctx.colors = arguments[3];
+  if (isBoolean(opts)) {
+    // legacy...
+    ctx.showHidden = opts;
+  } else if (opts) {
+    // got an "options" object
+    exports._extend(ctx, opts);
+  }
+  // set default options
+  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
+  if (isUndefined(ctx.depth)) ctx.depth = 2;
+  if (isUndefined(ctx.colors)) ctx.colors = false;
+  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
+  if (ctx.colors) ctx.stylize = stylizeWithColor;
+  return formatValue(ctx, obj, ctx.depth);
+}
+exports.inspect = inspect;
+
+
+// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+inspect.colors = {
+  'bold' : [1, 22],
+  'italic' : [3, 23],
+  'underline' : [4, 24],
+  'inverse' : [7, 27],
+  'white' : [37, 39],
+  'grey' : [90, 39],
+  'black' : [30, 39],
+  'blue' : [34, 39],
+  'cyan' : [36, 39],
+  'green' : [32, 39],
+  'magenta' : [35, 39],
+  'red' : [31, 39],
+  'yellow' : [33, 39]
+};
+
+// Don't use 'blue' not visible on cmd.exe
+inspect.styles = {
+  'special': 'cyan',
+  'number': 'yellow',
+  'boolean': 'yellow',
+  'undefined': 'grey',
+  'null': 'bold',
+  'string': 'green',
+  'date': 'magenta',
+  // "name": intentionally not styling
+  'regexp': 'red'
+};
+
+
+function stylizeWithColor(str, styleType) {
+  var style = inspect.styles[styleType];
+
+  if (style) {
+    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
+           '\u001b[' + inspect.colors[style][1] + 'm';
+  } else {
+    return str;
+  }
+}
+
+
+function stylizeNoColor(str, styleType) {
+  return str;
+}
+
+
+function arrayToHash(array) {
+  var hash = {};
+
+  array.forEach(function(val, idx) {
+    hash[val] = true;
+  });
+
+  return hash;
+}
+
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (ctx.customInspect &&
+      value &&
+      isFunction(value.inspect) &&
+      // Filter out the util module, it's inspect function is special
+      value.inspect !== exports.inspect &&
+      // Also filter out any prototype objects using the circular check.
+      !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes, ctx);
+    if (!isString(ret)) {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+    return ret;
+  }
+
+  // Primitive types cannot have properties
+  var primitive = formatPrimitive(ctx, value);
+  if (primitive) {
+    return primitive;
+  }
+
+  // Look up the keys of the object.
+  var keys = Object.keys(value);
+  var visibleKeys = arrayToHash(keys);
+
+  if (ctx.showHidden) {
+    keys = Object.getOwnPropertyNames(value);
+  }
+
+  // IE doesn't make error fields non-enumerable
+  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
+  if (isError(value)
+      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    return formatError(value);
+  }
+
+  // Some type of object without properties can be shortcutted.
+  if (keys.length === 0) {
+    if (isFunction(value)) {
+      var name = value.name ? ': ' + value.name : '';
+      return ctx.stylize('[Function' + name + ']', 'special');
+    }
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toString.call(value), 'date');
+    }
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '', array = false, braces = ['{', '}'];
+
+  // Make Array say that they are Array
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  }
+
+  // Make functions say that they are functions
+  if (isFunction(value)) {
+    var n = value.name ? ': ' + value.name : '';
+    base = ' [Function' + n + ']';
+  }
+
+  // Make RegExps say that they are RegExps
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  }
+
+  // Make dates with properties first say the date
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  }
+
+  // Make error with message first say the error
+  if (isError(value)) {
+    base = ' ' + formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+
+  var output;
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function(key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+
+  return reduceToSingleString(output, base, braces);
+}
+
+
+function formatPrimitive(ctx, value) {
+  if (isUndefined(value))
+    return ctx.stylize('undefined', 'undefined');
+  if (isString(value)) {
+    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                             .replace(/'/g, "\\'")
+                                             .replace(/\\"/g, '"') + '\'';
+    return ctx.stylize(simple, 'string');
+  }
+  if (isNumber(value))
+    return ctx.stylize('' + value, 'number');
+  if (isBoolean(value))
+    return ctx.stylize('' + value, 'boolean');
+  // For some reason typeof null is "object", so special case here.
+  if (isNull(value))
+    return ctx.stylize('null', 'null');
+}
+
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (hasOwnProperty(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+  keys.forEach(function(key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          key, true));
+    }
+  });
+  return output;
+}
+
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str, desc;
+  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
+  if (desc.get) {
+    if (desc.set) {
+      str = ctx.stylize('[Getter/Setter]', 'special');
+    } else {
+      str = ctx.stylize('[Getter]', 'special');
+    }
+  } else {
+    if (desc.set) {
+      str = ctx.stylize('[Setter]', 'special');
+    }
+  }
+  if (!hasOwnProperty(visibleKeys, key)) {
+    name = '[' + key + ']';
+  }
+  if (!str) {
+    if (ctx.seen.indexOf(desc.value) < 0) {
+      if (isNull(recurseTimes)) {
+        str = formatValue(ctx, desc.value, null);
+      } else {
+        str = formatValue(ctx, desc.value, recurseTimes - 1);
+      }
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function(line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function(line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+  if (isUndefined(name)) {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+    name = JSON.stringify('' + key);
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'")
+                 .replace(/\\"/g, '"')
+                 .replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function(prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] +
+           (base === '' ? '' : base + '\n ') +
+           ' ' +
+           output.join(',\n  ') +
+           ' ' +
+           braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+}
+
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+function isArray(ar) {
+  return Array.isArray(ar);
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return isObject(re) && objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return isObject(d) && objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return isObject(e) &&
+      (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = require('./support/isBuffer');
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
+}
+
+
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec'];
+
+// 26 Feb 16:19:34
+function timestamp() {
+  var d = new Date();
+  var time = [pad(d.getHours()),
+              pad(d.getMinutes()),
+              pad(d.getSeconds())].join(':');
+  return [d.getDate(), months[d.getMonth()], time].join(' ');
+}
+
+
+// log is just a thin wrapper to console.log that prepends a timestamp
+exports.log = function() {
+  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+};
+
+
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+exports.inherits = require('inherits');
+
+exports._extend = function(origin, add) {
+  // Don't do anything if add isn't an object
+  if (!add || !isObject(add)) return origin;
+
+  var keys = Object.keys(add);
+  var i = keys.length;
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+  return origin;
+};
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+}).call(this,require("oMfpAn"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./support/isBuffer":51,"inherits":49,"oMfpAn":50}],53:[function(require,module,exports){
 /*!
  * jBone v1.0.18 - 2014-07-08 - Library for DOM manipulation
  *
@@ -6432,7 +7525,7 @@ else if (typeof define === "function" && define.amd) {
 
 }(window));
 
-},{}],44:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 /* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
  * @license MIT */
 
@@ -6910,7 +8003,3989 @@ else if (typeof define === "function" && define.amd) {
 });
 
 
-},{}],45:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
+//     ramda.js 0.3.0
+//     https://github.com/CrossEye/ramda
+//     (c) 2013-2014 Scott Sauyet and Michael Hurley
+//     Ramda may be freely distributed under the MIT license.
+
+// Ramda
+// -----
+// A practical functional library for Javascript programmers.  Ramda is a collection of tools to make it easier to
+// use Javascript as a functional programming language.  (The name is just a silly play on `lambda`.)
+
+// Basic Setup
+// -----------
+// Uses a technique from the [Universal Module Definition][umd] to wrap this up for use in Node.js or in the browser,
+// with or without an AMD-style loader.
+//
+//  [umd]: https://github.com/umdjs/umd/blob/master/returnExports.js
+
+(function (root, factory) {if (typeof exports === 'object') {module.exports = factory(root);} else if (typeof define === 'function' && define.amd) {define(factory);} else {root.ramda = factory(root);}}(this, function (global) {
+
+    "use strict";
+    return  (function() {
+        // This object is what is actually returned, with all the exposed functions attached as properties.
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        var R = {};
+
+        // Internal Functions and Properties
+        // ---------------------------------
+
+        /**
+         * Creates an alias for a public function.
+         *
+         * @private
+         * @category Internal
+         * @param {string} oldName The name of the public function to alias.
+         * @return {Function} A function decorated with the `is`, `are`, and `and` methods. Create
+         * an alias for the `oldName function by invoking any of these methods an passing it a
+         * string with the `newName` parameter.
+         * @example
+         *
+         * // Create an alias for `each` named `forEach`
+         * aliasFor('each').is('forEach');
+         */
+        var aliasFor = function (oldName) {
+            var fn = function (newName) {
+                R[newName] = R[oldName];
+                return fn;
+            };
+            fn.is = fn.are = fn.and = fn;
+            return fn;
+        };
+
+        /**
+         * An optimized, private array `slice` implementation.
+         *
+         * @private
+         * @category Internal
+         * @param {Arguments|Array} args The array or arguments object to consider.
+         * @param {number} [from=0] The array index to slice from, inclusive.
+         * @param {number} [to=args.length] The array index to slice to, exclusive.
+         * @return {Array} A new, sliced array.
+         * @example
+         *
+         * _slice([1, 2, 3, 4, 5], 1, 3); //=> [2, 3]
+         *
+         * var firstThreeArgs = function(a, b, c, d) {
+         *   return _slice(arguments, 0, 3);
+         * };
+         * firstThreeArgs(1, 2, 3, 4); //=> [1, 2, 3]
+         */
+        function _slice(args, from, to) {
+            from = (typeof from === "number" ) ? from : 0;
+            to = (typeof to === "number" ) ? to : args.length;
+            var length = to - from,
+                arr = new Array(length),
+                i = -1;
+
+            while (++i < length) {
+                arr[i] = args[from + i];
+            }
+            return arr;
+        }
+
+        /**
+         * Private `concat` function to merge two array-like objects.
+         *
+         * @private
+         * @category Internal
+         * @param {Array|Arguments} [set1=[]] An array-like object.
+         * @param {Array|Arguments} [set2=[]] An array-like object.
+         * @return {Array} A new, merged array.
+         * @example
+         *
+         * concat([4, 5, 6], [1, 2, 3]); //=> [4, 5, 6, 1, 2, 3]
+         */
+        var concat = function _concat(set1, set2) {
+            set1 = set1 || [];
+            set2 = set2 || [];
+            var length1 = set1.length,
+                length2 = set2.length,
+                result = new Array(length1 + length2);
+
+            for (var i = 0; i < length1; i++) {
+                result[i] = set1[i];
+            }
+            for (i = 0; i < length2; i++) {
+                result[i + length1] = set2[i];
+            }
+            return result;
+        };
+
+        // Private reference to toString function.
+        var toString = Object.prototype.toString;
+
+        /**
+         * Tests whether or not an object is an array.
+         *
+         * @private
+         * @category Internal
+         * @param {*} val The object to test.
+         * @return {boolean} `true` if `val` is an array, `false` otherwise.
+         * @example
+         *
+         * isArray([]); //=> true
+         * isArray(true); //=> false
+         * isArray({}); //=> false
+         */
+        var isArray = Array.isArray || function _isArray(val) {
+            return val && val.length >= 0 && toString.call(val) === "[object Array]";
+        };
+
+        /**
+         * Tests whether or not an object is similar to an array.
+         *
+         * @private
+         * @category Internal
+         * @param {*} val The object to test.
+         * @return {boolean} `true` if `val` has a numeric length property; `false` otherwise.
+         * @example
+         *
+         * isArrayLike([]); //=> true
+         * isArrayLike(true); //=> false
+         * isArrayLike({}); //=> false
+         * isArrayLike({length: 10}); //=> true
+         */
+        var isArrayLike = function(x) {
+            return x != null && x.length >= 0 && (isArray(x) || !R.is(String, x));
+        };
+
+        /**
+         * Creates a new version of `fn` that, when invoked, will return either:
+         * - A new function ready to accept one or more of `fn`'s remaining arguments, if all of
+         * `fn`'s expected arguments have not yet been provided
+         * - `fn`'s result if all of its expected arguments have been provided
+         *
+         * Optionally, you may provide an arity for the returned function.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to curry.
+         * @param {number} [fnArity=fn.length] An optional arity for the returned function.
+         * @return {Function} A new, curried function.
+         * @example
+         *
+         * var addFourNumbers = function(a, b, c, d) {
+         *   return a + b + c + d;
+         * };
+         *
+         * var curriedAddFourNumbers = curry(addFourNumbers);
+         * var f = curriedAddFourNumbers(1, 2);
+         * var g = f(3);
+         * g(4);//=> 10
+         */
+        var curry = R.curry = function _curry(fn, fnArity) {
+            fnArity = typeof fnArity === "number" ? fnArity : fn.length;
+            function recurry(args) {
+                return arity(Math.max(fnArity - (args && args.length || 0), 0), function () {
+                    if (arguments.length === 0) { throw NO_ARGS_EXCEPTION; }
+                    var newArgs = concat(args, arguments);
+                    if (newArgs.length >= fnArity) {
+                        return fn.apply(this, newArgs);
+                    }
+                    else {
+                        return recurry(newArgs);
+                    }
+                });
+            }
+
+            return recurry([]);
+        };
+
+        var NO_ARGS_EXCEPTION = new TypeError('Function called with no arguments');
+
+        /**
+         * Optimized internal two-arity curry function.
+         *
+         * @private
+         * @category Function
+         * @param {Function} fn The function to curry.
+         * @return {Function} curried function
+         * @example
+         *
+         * var addTwo = function(a, b) {
+         *   return a + b;
+         * };
+         * var curriedAddTwo = curry2(addTwo);
+         */
+        function curry2(fn) {
+            return function(a, b) {
+                switch (arguments.length) {
+                    case 0: throw NO_ARGS_EXCEPTION;
+                    case 1: return function(b) {
+                        return fn(a, b);
+                    };
+                }
+                return fn(a, b);
+            };
+        }
+
+        /**
+         * Optimized internal three-arity curry function.
+         *
+         * @private
+         * @category Function
+         * @param {Function} fn The function to curry.
+         * @return {Function} curried function
+         * @example
+         *
+         * var addThree = function(a, b, c) {
+         *   return a + b + c;
+         * };
+         * var curriedAddThree = curry3(addThree);
+         */
+        function curry3(fn) {
+            return function(a, b, c) {
+                switch (arguments.length) {
+                    case 0: throw NO_ARGS_EXCEPTION;
+                    case 1: return curry2(function(b, c) {
+                        return fn(a, b, c);
+                    });
+                    case 2: return function(c) {
+                        return fn(a, b, c);
+                    };
+                }
+                return fn(a, b, c);
+            };
+        }
+
+        /**
+         * Private function that determines whether or not a provided object has a given method.
+         * Does not ignore methods stored on the object's prototype chain. Used for dynamically
+         * dispatching Ramda methods to non-Array objects.
+         *
+         * @private
+         * @category Internal
+         * @param {string} methodName The name of the method to check for.
+         * @param {Object} obj The object to test.
+         * @return {boolean} `true` has a given method, `false` otherwise.
+         * @example
+         *
+         * var person = { name: 'John' };
+         * person.shout = function() { alert(this.name); };
+         *
+         * hasMethod('shout', person); //=> true
+         * hasMethod('foo', person); //=> false
+         */
+        var hasMethod = function _hasMethod(methodName, obj) {
+            return obj && !isArray(obj) && typeof obj[methodName] === 'function';
+        };
+
+        /**
+         * Similar to hasMethod, this checks whether a function has a [methodname]
+         * function. If it isn't an array it will execute that function otherwise it will
+         * default to the ramda implementation.
+         *
+         * @private
+         * @category Internal
+         * @param {Function} func ramda implemtation
+         * @param {String} methodname property to check for a custom implementation
+         * @return {Object} whatever the return value of the method is
+         */
+        function checkForMethod(methodname, func) {
+            return function(a, b, c) {
+                var length = arguments.length;
+                var obj = arguments[length - 1],
+                    callBound = obj && !isArray(obj) && typeof obj[methodname] === 'function';
+                switch (arguments.length) {
+                    case 0: return func();
+                    case 1: return callBound ? obj[methodname]() : func(a);
+                    case 2: return callBound ? obj[methodname](a) : func(a, b);
+                    case 3: return callBound ? obj[methodname](a, b) : func(a, b, c);
+                    case 4: return callBound ? obj[methodname](a, b, c) : func(a, b, c, obj);
+                }
+            };
+        }
+
+        /**
+         * Private function that generates a parameter list based on the paremeter count passed in.
+         *
+         * @private
+         * @category Internal
+         * @param {number} n The number of parameters
+         * @return {string} The parameter list
+         * @example
+         *
+         * mkArgStr(1); //= "arg1"
+         * mkArgStr(2); //= "arg1, arg2"
+         * mkArgStr(3); //= "arg1, arg2, arg3"
+         */
+        var mkArgStr = function _makeArgStr(n) {
+            var arr = [], idx = -1;
+            while (++idx < n) {
+                arr[idx] = "arg" + idx;
+            }
+            return arr.join(", ");
+        };
+
+        /**
+         * Wraps a function of any arity (including nullary) in a function that accepts exactly `n`
+         * parameters. Any extraneous parameters will not be passed to the supplied function.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {number} n The desired arity of the new function.
+         * @param {Function} fn The function to wrap.
+         * @return {Function} A new function wrapping `fn`. The new function is guaranteed to be of
+         * arity `n`.
+         * @example
+         *
+         * var takesTwoArgs = function(a, b) {
+         *   return [a, b];
+         * };
+         * takesTwoArgs.length; //=> 2
+         * takesTwoArgs(1, 2); //=> [1, 2]
+         *
+         * var takesOneArg = ramda.nAry(1, takesTwoArgs);
+         * takesOneArg.length; //=> 1
+         * // Only `n` arguments are passed to the wrapped function
+         * takesOneArg(1, 2); //=> [1, undefined]
+         */
+        var nAry = R.nAry = (function () {
+            var cache = {
+                0: function (func) {
+                    return function () {
+                        return func.call(this);
+                    };
+                },
+                1: function (func) {
+                    return function (arg0) {
+                        return func.call(this, arg0);
+                    };
+                },
+                2: function (func) {
+                    return function (arg0, arg1) {
+                        return func.call(this, arg0, arg1);
+                    };
+                },
+                3: function (func) {
+                    return function (arg0, arg1, arg2) {
+                        return func.call(this, arg0, arg1, arg2);
+                    };
+                }
+            };
+
+
+            //     For example:
+            //     cache[5] = function(func) {
+            //         return function(arg0, arg1, arg2, arg3, arg4) {
+            //             return func.call(this, arg0, arg1, arg2, arg3, arg4);
+            //         }
+            //     };
+
+            var makeN = function (n) {
+                var fnArgs = mkArgStr(n);
+                var body = [
+                        "    return function(" + fnArgs + ") {",
+                        "        return func.call(this" + (fnArgs ? ", " + fnArgs : "") + ");",
+                    "    }"
+                ].join("\n");
+                return new Function("func", body);
+            };
+
+            return function _nAry(n, fn) {
+                return (cache[n] || (cache[n] = makeN(n)))(fn);
+            };
+        }());
+
+        /**
+         * Wraps a function of any arity (including nullary) in a function that accepts exactly 1
+         * parameter. Any extraneous parameters will not be passed to the supplied function.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to wrap.
+         * @return {Function} A new function wrapping `fn`. The new function is guaranteed to be of
+         * arity 1.
+         * @example
+         *
+         * var takesTwoArgs = function(a, b) {
+         *   return [a, b];
+         * };
+         * takesTwoArgs.length; //=> 2
+         * takesTwoArgs(1, 2); //=> [1, 2]
+         *
+         * var takesOneArg = ramda.unary(1, takesTwoArgs);
+         * takesOneArg.length; //=> 1
+         * // Only 1 argument is passed to the wrapped function
+         * takesOneArg(1, 2); //=> [1, undefined]
+         */
+        R.unary = function _unary(fn) {
+            return nAry(1, fn);
+        };
+
+        /**
+         * Wraps a function of any arity (including nullary) in a function that accepts exactly 2
+         * parameters. Any extraneous parameters will not be passed to the supplied function.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to wrap.
+         * @return {Function} A new function wrapping `fn`. The new function is guaranteed to be of
+         * arity 2.
+         * @example
+         *
+         * var takesThreeArgs = function(a, b, c) {
+         *   return [a, b, c];
+         * };
+         * takesThreeArgs.length; //=> 3
+         * takesThreeArgs(1, 2, 3); //=> [1, 2, 3]
+         *
+         * var takesTwoArgs = ramda.binary(1, takesThreeArgs);
+         * takesTwoArgs.length; //=> 2
+         * // Only 2 arguments are passed to the wrapped function
+         * takesTwoArgs(1, 2, 3); //=> [1, 2, undefined]
+         */
+        var binary = R.binary = function _binary(fn) {
+            return nAry(2, fn);
+        };
+
+        /**
+         * Wraps a function of any arity (including nullary) in a function that accepts exactly `n`
+         * parameters. Unlike `nAry`, which passes only `n` arguments to the wrapped function,
+         * functions produced by `arity` will pass all provided arguments to the wrapped function.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {number} n The desired arity of the returned function.
+         * @param {Function} fn The function to wrap.
+         * @return {Function} A new function wrapping `fn`. The new function is guaranteed to be of
+         * arity `n`.
+         * @example
+         *
+         * var takesTwoArgs = function(a, b) {
+         *   return [a, b];
+         * };
+         * takesTwoArgs.length; //=> 2
+         * takesTwoArgs(1, 2); //=> [1, 2]
+         *
+         * var takesOneArg = ramda.unary(1, takesTwoArgs);
+         * takesOneArg.length; //=> 1
+         * // All arguments are passed through to the wrapped function
+         * takesOneArg(1, 2); //=> [1, 2]
+         */
+        var arity = R.arity = (function () {
+            var cache = {
+                0: function (func) {
+                    return function () {
+                        return func.apply(this, arguments);
+                    };
+                },
+                1: function (func) {
+                    return function (arg0) {
+                        return func.apply(this, arguments);
+                    };
+                },
+                2: function (func) {
+                    return function (arg0, arg1) {
+                        return func.apply(this, arguments);
+                    };
+                },
+                3: function (func) {
+                    return function (arg0, arg1, arg2) {
+                        return func.apply(this, arguments);
+                    };
+                }
+            };
+
+            //     For example:
+            //     cache[5] = function(func) {
+            //         return function(arg0, arg1, arg2, arg3, arg4) {
+            //             return func.apply(this, arguments);
+            //         }
+            //     };
+
+            var makeN = function (n) {
+                var fnArgs = mkArgStr(n);
+                var body = [
+                        "    return function(" + fnArgs + ") {",
+                    "        return func.apply(this, arguments);",
+                    "    }"
+                ].join("\n");
+                return new Function("func", body);
+            };
+
+            return function _arity(n, fn) {
+                return (cache[n] || (cache[n] = makeN(n)))(fn);
+            };
+        }());
+
+        /**
+         * Turns a named method of an object (or object prototype) into a function that can be
+         * called directly. Passing the optional `len` parameter restricts the returned function to
+         * the initial `len` parameters of the method.
+         *
+         * The returned function is curried and accepts `len + 1` parameters (or `method.length + 1`
+         * when `len` is not specified), and the final parameter is the target object.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {string} name The name of the method to wrap.
+         * @param {Object} obj The object to search for the `name` method.
+         * @param [len] The desired arity of the wrapped method.
+         * @return {Function} A new function or `undefined` if the specified method is not found.
+         * @example
+         *
+         *
+         * var charAt = ramda.invoker('charAt', String.prototype);
+         * charAt(6, 'abcdefghijklm'); //=> 'g'
+         *
+         * var join = ramda.invoker('join', Array.prototype);
+         * var firstChar = charAt(0);
+         * join('', ramda.map(firstChar, ["light", "ampliifed", "stimulated", "emission", "radiation"]));
+         * //=> 'laser'
+         */
+        var invoker = R.invoker = function _invoker(name, obj, len) {
+            var method = obj[name];
+            var length = len === void 0 ? method.length : len;
+            return method && curry(function () {
+                if (arguments.length) {
+                    var target = Array.prototype.pop.call(arguments);
+                    var targetMethod = target[name];
+                    if (targetMethod == method) {
+                        return targetMethod.apply(target, arguments);
+                    }
+                }
+            }, length + 1);
+        };
+
+        /**
+         * Accepts a function `fn` and any number of transformer functions and returns a new
+         * function. When the new function is invoked, it calls the function `fn` with parameters
+         * consisting of the result of calling each supplied handler on successive arguments to the
+         * new function. For example:
+         *
+         * ```javascript
+         *   var useWithExample = invoke(someFn, transformerFn1, transformerFn2);
+         *
+         *   // This invocation:
+         *   useWithExample('x', 'y');
+         *   // Is functionally equivalent to:
+         *   someFn(transformerFn1('x'), transformerFn2('y'))
+         * ```
+         *
+         * If more arguments are passed to the returned function than transformer functions, those
+         * arguments are passed directly to `fn` as additional parameters. If you expect additional
+         * arguments that don't need to be transformed, although you can ignore them, it's best to
+         * pass an identity function so that the new function reports the correct arity.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to wrap.
+         * @param {...Function} transformers A variable number of transformer functions
+         * @return {Function} The wrapped function.
+         * @example
+         *
+         * var double = function(y) { return y * 2; };
+         * var square = function(x) { return x * x; };
+         * var add = function(a, b) { return a + b; };
+         * // Adds any number of arguments together
+         * var addAll = function() {
+         *   return ramda.reduce(add, 0, arguments);
+         * };
+         *
+         * // Basic example
+         * var addDoubleAndSquare = ramda.useWith(addAll, double, square);
+         *
+         * addDoubleAndSquare(10, 5); //≅ addAll(double(10), square(5));
+         * //=> 125
+         *
+         * // Example of passing more arguments than transformers
+         * addDoubleAndSquare(10, 5, 100); //≅ addAll(double(10), square(5), 100);
+         * //=> 225
+         *
+         * // But if you're expecting additional arguments that don't need transformation, it's best
+         * // to pass transformer functions so the resulting function has the correct arity
+         * var addDoubleAndSquareWithExtraParams = ramda.useWith(addAll, double, square, ramda.identity);
+         * addDoubleAndSquare(10, 5, 100); //≅ addAll(double(10), square(5), ramda.identity(100));
+         * //=> 225
+         */
+        var useWith = R.useWith = function _useWith(fn /*, transformers */) {
+            var transformers = _slice(arguments, 1);
+            var tlen = transformers.length;
+            return curry(arity(tlen, function () {
+                var args = [], idx = -1;
+                while (++idx < tlen) {
+                    args.push(transformers[idx](arguments[idx]));
+                }
+                return fn.apply(this, args.concat(_slice(arguments, tlen)));
+            }));
+        };
+        aliasFor('useWith').is('disperseTo');
+
+        /**
+         * Iterate over an input `list`, calling a provided function `fn` for each element in the
+         * list.
+         *
+         * `fn` receives one argument: *(value)*.
+         *
+         * Note: `ramda.each` does not skip deleted or unassigned indices (sparse arrays), unlike
+         * the native `Array.prototype.forEach` method. For more details on this behavior, see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Description
+         *
+         * Also note that, unlike `Array.prototype.forEach`, Ramda's `each` returns the original
+         * array.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function to invoke. Receives one argument, `value`.
+         * @param {Array} list The list to iterate over.
+         * @return {Array} The original list.
+         * @example
+         *
+         * ramda.each(function(num) {
+         *   console.log(num + 100);
+         * }, [1, 2, 3]); //=> [1, 2, 3]
+         * //-> 101
+         * //-> 102
+         * //-> 103
+         */
+        function each(fn, list) {
+            var idx = -1, len = list.length;
+            while (++idx < len) {
+                fn(list[idx]);
+            }
+            // i can't bear not to return *something*
+            return list;
+        }
+        R.each = curry2(each);
+
+        /**
+         * Like `each`, but but passes additional parameters to the predicate function.
+         *
+         * `fn` receives three arguments: *(value, index, list)*.
+         *
+         * Note: `ramda.each.idx` does not skip deleted or unassigned indices (sparse arrays),
+         * unlike the native `Array.prototype.forEach` method. For more details on this behavior,
+         * see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#Description
+         *
+         * Also note that, unlike `Array.prototype.forEach`, Ramda's `each` returns the original
+         * array.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @alias forEach
+         * @param {Function} fn The function to invoke. Receives three arguments: (`value`, `index`,
+         * `list`).
+         * @param {Array} list The list to iterate over.
+         * @return {Array} The original list.
+         * @example
+         *
+         * // Note that having access to the original `list` allows for mutation. While you *can* do
+         * // this, it's very un-functional behavior:
+         * ramda.each.idx(function(num, idx, list) {
+         *   list[idx] = num + 100;
+         * }, [1, 2, 3]); //=> [101, 102, 103]
+         */
+        R.each.idx = curry2(function eachIdx(fn, list) {
+            var idx = -1, len = list.length;
+            while (++idx < len) {
+                fn(list[idx], idx, list);
+            }
+            // i can't bear not to return *something*
+            return list;
+        });
+        aliasFor("each").is("forEach");
+
+        /**
+         * Creates a shallow copy of an array.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @param {Array} list The list to clone.
+         * @return {Array} A new copy of the original list.
+         * @example
+         *
+         * var numbers = [1, 2, 3];
+         * var numbersClone = ramda.clone(numbers); //=> [1, 2, 3]
+         * numbers === numbersClone; //=> false
+         *
+         * // Note that this is a shallow clone--it does not clone complex values:
+         * var objects = [{}, {}, {}];
+         * var objectsClone = ramda.clone(objects);
+         * objects[0] === objectsClone[0]; //=> true
+         */
+        var clone = R.clone = function _clone(list) {
+            return _slice(list);
+        };
+
+        // Core Functions
+        // --------------
+        //
+
+        /**
+         * Reports whether an array is empty.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @param {Array} arr The array to consider.
+         * @return {boolean} `true` if the `arr` argument has a length of 0 or if `arr` is a falsy
+         * value (e.g. undefined).
+         * @example
+         *
+         * ramda.isEmpty([1, 2, 3]); //=> false
+         * ramda.isEmpty([]); //=> true
+         * ramda.isEmpty(); //=> true
+         * ramda.isEmpty(null); //=> true
+         */
+        function isEmpty(arr) {
+            return !arr || !arr.length;
+        }
+        R.isEmpty = isEmpty;
+
+        /**
+         * Returns a new list with the given element at the front, followed by the contents of the
+         * list.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @alias cons
+         * @param {*} el The item to add to the head of the output list.
+         * @param {Array} arr The array to add to the tail of the output list.
+         * @return {Array} A new array.
+         * @example
+         *
+         * ramda.prepend('fee', ['fi', 'fo', 'fum']); //=> ['fee', 'fi', 'fo', 'fum']
+         */
+        function prepend(el, arr) {
+            return concat([el], arr);
+        }
+        R.prepend = prepend;
+        aliasFor("prepend").is("cons");
+
+        /**
+         * Returns the first element in a list.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @alias car, first
+         * @param {Array} [arr=[]] The array to consider.
+         * @return {*} The first element of the list, or `undefined` if the list is empty.
+         * @example
+         *
+         * ramda.head(['fi', 'fo', 'fum']); //=> 'fi'
+         */
+        var head = R.head = function _car(arr) {
+            arr = arr || [];
+            return arr[0];
+        };
+
+        aliasFor("head").is("car").and("first");
+
+        /**
+         * Returns the last element from a list.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @param {Array} [arr=[]] The array to consider.
+         * @return {*} The last element of the list, or `undefined` if the list is empty.
+         * @example
+         *
+         * ramda.last(['fi', 'fo', 'fum']); //=> 'fum'
+         */
+        R.last = function _last(arr) {
+            arr = arr || [];
+            return arr[arr.length - 1];
+        };
+
+        /**
+         * Returns all but the first element of a list. If the list provided has the `tail` method,
+         * it will instead return `list.tail()`.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @alias cdr
+         * @param {Array} [arr=[]] The array to consider.
+         * @return {Array} A new array containing all but the first element of the input list, or an
+         * empty list if the input list is a falsy value (e.g. `undefined`).
+         * @example
+         *
+         * ramda.tail(['fi', 'fo', 'fum']); //=> ['fo', 'fum']
+         */
+        var tail = R.tail = checkForMethod('tail', function(arr) {
+            arr = arr || [];
+            return (arr.length > 1) ? _slice(arr, 1) : [];
+        });
+
+        aliasFor("tail").is("cdr");
+
+        /**
+         * Returns `true` if the argument is an atom; `false` otherwise. An atom is defined as any
+         * value that is not an array, `undefined`, or `null`.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @param {*} x The element to consider.
+         * @return {boolean} `true` if `x` is an atom, and `false` otherwise.
+         * @example
+         *
+         * ramda.isAtom([]); //=> false
+         * ramda.isAtom(null); //=> false
+         * ramda.isAtom(undefined); //=> false
+         *
+         * ramda.isAtom(0); //=> true
+         * ramda.isAtom(''); //=> true
+         * ramda.isAtom('test'); //=> true
+         * ramda.isAtom({}); //=> true
+         */
+        R.isAtom = function _isAtom(x) {
+            return x != null && !isArray(x);
+        };
+
+        /**
+         * Returns a new list containing the contents of the given list, followed by the given
+         * element.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @alias push
+         * @param {*} el The element to add to the end of the new list.
+         * @param {Array} list The list whose contents will be added to the beginning of the output
+         * list.
+         * @return {Array} A new list containing the contents of the old list followed by `el`.
+         * @example
+         *
+         * ramda.append('tests', ['write', 'more']); //=> ['write', 'more', 'tests']
+         * ramda.append('tests', []); //=> ['tests']
+         * ramda.append(['tests'], ['write', 'more']); //=> ['write', 'more', ['tests']]
+         */
+        var append = R.append = function _append(el, list) {
+            return concat(list, [el]);
+        };
+
+        aliasFor("append").is("push");
+
+        /**
+         * Returns a new list consisting of the elements of the first list followed by the elements
+         * of the second.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @param {Array} list1 The first list to merge.
+         * @param {Array} list2 The second set to merge.
+         * @return {Array} A new array consisting of the contents of `list1` followed by the
+         * contents of `list2`. If, instead of an {Array} for `list1`, you pass an object with a `concat`
+         * method on it, `concat` will call `list1.concat` and it the value of `list2`.
+         * @example
+         *
+         * ramda.concat([], []); //=> []
+         * ramda.concat([4, 5, 6], [1, 2, 3]); //=> [4, 5, 6, 1, 2, 3]
+         * ramda.concat("ABC", "DEF"); // "ABCDEF"
+         */
+        R.concat = curry2(function(set1, set2) {
+            return (hasMethod('concat', set1)) ? set1.concat(set2) : concat(set1, set2);
+        });
+
+        /**
+         * A function that does nothing but return the parameter supplied to it. Good as a default
+         * or placeholder function.
+         *
+         * @static
+         * @memberOf R
+         * @category Core
+         * @alias I
+         * @param {*} x The value to return.
+         * @return {*} The input value, `x`.
+         * @example
+         *
+         * ramda.identity(1); //=> 1
+         *
+         * var obj = {};
+         * ramda.identity(obj) === obj; //=> true
+         */
+        var identity = R.identity = function _I(x) {
+            return x;
+        };
+        aliasFor("identity").is("I");
+
+        /**
+         * Calls an input function `n` times, returning an array containing the results of those
+         * function calls.
+         *
+         * `fn` is passed one argument: The current value of `n`, which begins at `0` and is
+         * gradually incremented to `n - 1`.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function to invoke. Passed one argument, the current value of `n`.
+         * @param {number} n A value between `0` and `n - 1`. Increments after each function call.
+         * @return {Array} An array containing the return values of all calls to `fn`.
+         * @example
+         *
+         * ramda.times(function(n) { return n; }, 5); //=> [0, 1, 2, 3, 4]
+         */
+        R.times = curry2(function _times(fn, n) {
+            var arr = new Array(n);
+            var i = -1;
+            while (++i < n) {
+                arr[i] = fn(i);
+            }
+            return arr;
+        });
+
+
+        /**
+         * Returns a fixed list of size `n` containing a specified identical value.
+         *
+         * @static
+         * @memberOf R
+         * @category Array
+         * @param {*} value The value to repeat.
+         * @param {number} n The desired size of the output list.
+         * @return {Array} A new array containing `n` `value`s.
+         * @example
+         *
+         * ramda.repeatN('hi', 5); //=> ['hi', 'hi', 'hi', 'hi', 'hi']
+         *
+         * var obj = {};
+         * var repeatedObjs = ramda.repeatN(obj, 5); //=> [{}, {}, {}, {}, {}]
+         * repeatedObjs[0] === repeatedObjs[1]; //=> true
+         */
+        R.repeatN = curry2(function _repeatN(value, n) {
+            return R.times(R.always(value), n);
+        });
+
+
+        // Function functions :-)
+        // ----------------------
+        //
+        // These functions make new functions out of old ones.
+
+        /**
+         * Returns a new function which partially applies a value to a given function, where the
+         * function is a variadic function that cannot be curried.
+         *
+         * @private
+         * @category Function
+         * @param {Function} f The function to partially apply `a` onto.
+         * @param {*} a The argument to partially apply onto `f`.
+         * @return {Function} A new function.
+         * @example
+         *
+         * var addThree = function(a, b, c) {
+         *   return a + b + c;
+         * };
+         * var partialAdd = partially(add, 1);
+         * partialAdd(2, 3); //=> 6
+         *
+         * // partialAdd is invoked immediately, even though it expects three arguments. This is
+         * // because, unlike many functions here, the result of `partially` is not a curried
+         * // function.
+         * partialAdd(2); //≅ addThree(1, 2, undefined) => NaN
+         */
+        function partially(f, a){
+            return function() {
+                return f.apply(this, concat([a], arguments));
+            };
+        }
+
+        // --------
+
+        /**
+         * Basic, right-associative composition function. Accepts two functions and returns the
+         * composite function; this composite function represents the operation `var h = f(g(x))`,
+         * where `f` is the first argument, `g` is the second argument, and `x` is whatever
+         * argument(s) are passed to `h`.
+         *
+         * This function's main use is to build the more general `compose` function, which accepts
+         * any number of functions.
+         *
+         * @private
+         * @category Function
+         * @param {Function} f A function.
+         * @param {Function} g A function.
+         * @return {Function} A new function that is the equivalent of `f(g(x))`.
+         * @example
+         *
+         * var double = function(x) { return x * 2; };
+         * var square = function(x) { return x * x; };
+         * var squareThenDouble = internalCompose(double, square);
+         *
+         * squareThenDouble(5); //≅ double(square(5)) => 50
+         */
+        function internalCompose(f, g) {
+            return function() {
+                return f.call(this, g.apply(this, arguments));
+            };
+        }
+
+        /**
+         * Creates a new function that runs each of the functions supplied as parameters in turn,
+         * passing the return value of each function invocation to the next function invocation,
+         * beginning with whatever arguments were passed to the initial invocation.
+         *
+         * Note that `compose` is a right-associative function, which means the functions provided
+         * will be invoked in order from right to left. In the example `var h = compose(f, g)`,
+         * the function `h` is equivalent to `f( g(x) )`, where `x` represents the arguments
+         * originally passed to `h`.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {...Function} functions A variable number of functions.
+         * @return {Function} A new function which represents the result of calling each of the
+         * input `functions`, passing the result of each function call to the next, from right to
+         * left.
+         * @example
+         *
+         * var triple = function(x) { return x * 3; };
+         * var double = function(x) { return x * 2; };
+         * var square = function(x) { return x * x; };
+         * var squareThenDoubleThenTriple = ramda.compose(triple, double, square);
+         *
+         * squareThenDoubleThenTriple(5); //≅ triple(double(square(5))) => 150
+         */
+        var compose = R.compose = function _compose() {  // TODO: type check of arguments?
+            switch (arguments.length) {
+                case 0: throw NO_ARGS_EXCEPTION;
+                case 1: return arguments[0];
+                default:
+                    var idx = arguments.length - 1, func = arguments[idx], fnArity = func.length;
+                    while (idx--) {
+                        func = internalCompose(arguments[idx], func);
+                    }
+                    return arity(fnArity, func);
+            }
+        };
+
+        /**
+         * Creates a new function that runs each of the functions supplied as parameters in turn,
+         * passing the return value of each function invocation to the next function invocation,
+         * beginning with whatever arguments were passed to the initial invocation.
+         *
+         * `pipe` is the mirror version of `compose`. `pipe` is left-associative, which means that
+         * each of the functions provided is executed in order from left to right.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {...Function} functions A variable number of functions.
+         * @return {Function} A new function which represents the result of calling each of the
+         * input `functions`, passing the result of each function call to the next, from right to
+         * left.
+         * @example
+         *
+         * var triple = function(x) { return x * 3; };
+         * var double = function(x) { return x * 2; };
+         * var square = function(x) { return x * x; };
+         * var squareThenDoubleThenTriple = ramda.pipe(square, double, triple);
+         *
+         * squareThenDoubleThenTriple(5); //≅ triple(double(square(5))) => 150
+         */
+        R.pipe = function _pipe() {  // TODO: type check of arguments?
+            if (arguments.length == 1) {
+                return partially (R.pipe, arguments[0]);
+            }
+            return compose.apply(this, _slice(arguments).reverse());
+        };
+        aliasFor("pipe").is("sequence");
+
+        /**
+         * Returns a new function much like the supplied one, except that the first two arguments'
+         * order is reversed.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to invoke with its first two parameters reversed.
+         * @return {*} The result of invoking `fn` with its first two parameters' order reversed.
+         * @example
+         *
+         * var mergeThree = function(a, b, c) {
+         *   ([]).concat(a, b, c);
+         * };
+         * var numbers = [1, 2, 3];
+         *
+         * mergeThree(numbers); //=> [1, 2, 3]
+         *
+         * ramda.flip([1, 2, 3]); //=> [2, 1, 3]
+         */
+        var flip = R.flip = function _flip(fn) {
+            return function (a, b) {
+                return arguments.length < 2 ?
+                  function(b) { return fn.apply(this, [b, a].concat(_slice(arguments, 1))); } :
+                  fn.apply(this, [b, a].concat(_slice(arguments, 2)));
+            };
+        };
+
+        /**
+         * Accepts as its arguments a function and any number of values and returns a function that,
+         * when invoked, calls the original function with all of the values prepended to the
+         * original function's arguments list.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to invoke.
+         * @param {...*} [args] Arguments to prepend to `fn` when the returned function is invoked.
+         * @return {Function} A new function wrapping `fn`. When invoked, it will call `fn`
+         * with `args` prepended to `fn`'s arguments list.
+         * @example
+         *
+         * var multiply = function(a, b) { return a * b; };
+         * var double = ramda.lPartial(multiply, 2);
+         *
+         * double(2); //=> 4
+         *
+         *
+         * var greet = function(salutation, title, firstName, lastName) {
+         *   return salutation + ', ' + title + ' ' + firstName + ' ' + lastName + '!';
+         * };
+         * var sayHello = ramda.lPartial(greet, 'Hello');
+         * var sayHelloToMs = ramda.lPartial(sayHello, 'Ms.');
+         *
+         * sayHelloToMs('Jane', 'Jones'); //=> 'Hello, Ms. Jane Jones!'
+         */
+        R.lPartial = function _lPartial(fn /*, args */) {
+            var args = _slice(arguments, 1);
+            return arity(Math.max(fn.length - args.length, 0), function () {
+                return fn.apply(this, concat(args, arguments));
+            });
+        };
+        aliasFor("lPartial").is("applyLeft");
+
+        /**
+         * Accepts as its arguments a function and any number of values and returns a function that,
+         * when invoked, calls the original function with all of the values appended to the original
+         * function's arguments list.
+         *
+         * Note that `rPartial` is the opposite of `lPartial`: `rPartial` fills `fn`'s arguments
+         * from the right to the left.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to invoke.
+         * @param {...*} [args] Arguments to append to `fn` when the returned function is invoked.
+         * @return {Function} A new function wrapping `fn`. When invoked, it will call `fn` with
+         * `args` appended to `fn`'s arguments list.
+         * @example
+         *
+         * var greet = function(salutation, title, firstName, lastName) {
+         *   return salutation + ', ' + title + ' ' + firstName + ' ' + lastName + '!';
+         * };
+         * var greetMsJaneJones = ramda.rPartial(greet, 'Ms.', 'Jane', 'Jones');
+         *
+         * greetMsJaneJones('Hello'); //=> 'Hello, Ms. Jane Jones!'
+         */
+        R.rPartial = function _rPartial(fn) {
+            var args = _slice(arguments, 1);
+            return arity(Math.max(fn.length - args.length, 0), function() {
+                return fn.apply(this, concat(arguments, args));
+            });
+        };
+        aliasFor("rPartial").is("applyRight");
+
+        /**
+         * Creates a new function that, when invoked, caches the result of calling `fn` for a given
+         * argument set and returns the result. Subsequent calls to the memoized `fn` with the same
+         * argument set will not result in an additional call to `fn`; instead, the cached result
+         * for that set of arguments will be returned.
+         *
+         * Note that this version of `memoize` effectively handles only string and number
+         * parameters.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to be wrapped by `memoize`.
+         * @return {Function}  Returns a memoized version of `fn`.
+         * @example
+         *
+         * var numberOfCalls = 0;
+         * var tracedAdd = function(a, b) {
+         *   numberOfCalls += 1;
+         *   return a + b;
+         * };
+         * var memoTrackedAdd = ramda.memoize(trackedAdd);
+         *
+         * memoAdd(1, 2); //=> 3 (numberOfCalls => 1)
+         * memoAdd(1, 2); //=> 3 (numberOfCalls => 1)
+         * memoAdd(2, 3); //=> 5 (numberOfCalls => 2)
+         *
+         * // Note that argument order matters
+         * memoAdd(2, 1); //=> 3 (numberOfCalls => 3)
+         */
+        R.memoize = function _memoize(fn) {
+            var cache = {};
+            return function () {
+                var position = foldl(function (cache, arg) {
+                        return cache[arg] || (cache[arg] = {});
+                    }, cache,
+                    _slice(arguments, 0, arguments.length - 1));
+                var arg = arguments[arguments.length - 1];
+                return (position[arg] || (position[arg] = fn.apply(this, arguments)));
+            };
+        };
+
+        /**
+         * Accepts a function `fn` and returns a function that guards invocation of `fn` such that
+         * `fn` can only ever be called once, no matter how many times the returned function is
+         * invoked.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to wrap in a call-only-once wrapper.
+         * @return {Function} The wrapped function.
+         * @example
+         *
+         * var alertOnce = ramda.once(alert);
+         * alertOnce('Hello!'); // Alerts 'Hello!'
+         * alertOnce('Nothing'); // Doesn't alert
+         * alertOnce('Again'); // Doesn't alert
+         */
+        R.once = function _once(fn) {
+            var called = false, result;
+            return function () {
+                if (called) {
+                    return result;
+                }
+                called = true;
+                result = fn.apply(this, arguments);
+                return result;
+            };
+        };
+
+        /**
+         * Wrap a function inside another to allow you to make adjustments to the parameters, or do
+         * other processing either before the internal function is called or with its results.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} fn The function to wrap.
+         * @param {Function} wrapper The wrapper function.
+         * @return {Function} The wrapped function.
+         * @example
+         *
+         * var slashify = wrap(flip(add)('/'), function(f, x) {
+         *  return match(/\/$/)(x) ? x : f(x)
+         * });
+         *
+         * slashify("a") //= "a/"
+         * slashify("a/") //= "a/"
+         */
+        R.wrap = function _wrap(fn, wrapper) {
+            return function() {
+                return wrapper.apply(this, concat([fn], arguments));
+            };
+        };
+
+        /**
+         * Wraps a constructor function inside a curried function that can be called with the same
+         * arguments and returns the same type.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Function} Fn The constructor function to wrap.
+         * @return {Function} A wrapped, curried constructor function.
+         * @example
+         *
+         * // Constructor function
+         * var Widget = function(config) {
+         *   // ...
+         * };
+         * Widget.prototype = {
+         *   // ...
+         * };
+         * map(construct(Widget), allConfigs); //=> a list of Widgets
+         */
+        R.construct = function _construct(Fn) {
+            var f = function () {
+                var obj = new Fn();
+                Fn.apply(obj, arguments);
+                return obj;
+            };
+            return Fn.length > 1 ? curry(nAry(Fn.length, f)) : f;
+        };
+
+        /**
+         * Accepts three functions and returns a new function. When invoked, this new function will
+         * invoke the first function, `after`, passing as its arguments the results of invoking the
+         * second and third functions with whatever arguments are passed to the new function.
+         *
+         * For example, a function produced by `fork` is equivalent to:
+         *
+         * ```javascript
+         *   var h = ramda.fork(e, f, g);
+         *   h(1, 2); //≅ e( f(1, 2), g(1, 2) )
+         * ```
+         *
+         * @static
+         * @memberOf R
+         * @category
+         * @param {Function} after A function. `after` will be invoked with the return values of
+         * `fn1` and `fn2` as its arguments.
+         * @param {Function} fn1 A function. It will be invoked with the arguments passed to the
+         * returned function. Afterward, its resulting value will be passed to `after` as its first
+         * argument.
+         * @param {Function} fn2 A function. It will be invoked with the arguments passed to the
+         * returned function. Afterward, its resulting value will be passed to `after` as its second
+         * argument.
+         * @return {Function} A new function.
+         * @example
+         *
+         * var add = function(a, b) { return a + b; };
+         * var multiply = function(a, b) { return a * b; };
+         * var subtract = function(a, b) { return a - b; };
+         *
+         * ramda.fork(multiply, add, subtract)(1, 2);
+         * //≅ multiply( add(1, 2), subtract(1, 2) );
+         * //=> -3
+         */
+        R.fork = function (after) {
+            var fns = _slice(arguments, 1);
+            return function () {
+                var args = arguments;
+                return after.apply(this, map(function (fn) {
+                    return fn.apply(this, args);
+                }, fns));
+            };
+        };
+        aliasFor('fork').is('distributeTo');
+
+        // List Functions
+        // --------------
+        //
+        // These functions operate on logical lists, here plain arrays.  Almost all of these are curried, and the list
+        // parameter comes last, so you can create a new function by supplying the preceding arguments, leaving the
+        // list parameter off.  For instance:
+        //
+        //     // skip third parameter
+        //     var checkAllPredicates = reduce(andFn, alwaysTrue);
+        //     // ... given suitable definitions of odd, lt20, gt5
+        //     var test = checkAllPredicates([odd, lt20, gt5]);
+        //     // test(7) => true, test(9) => true, test(10) => false,
+        //     // test(3) => false, test(21) => false,
+
+        // --------
+
+        /**
+         * Returns a single item by iterating through the list, successively calling the iterator
+         * function and passing it an accumulator value and the current value from the array, and
+         * then passing the result to the next call.
+         *
+         * The iterator function receives two values: *(acc, value)*
+         *
+         * Note: `ramda.foldl` does not skip deleted or unassigned indices (sparse arrays), unlike
+         * the native `Array.prototype.reduce` method. For more details on this behavior, see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#Description
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @alias reduce
+         * @param {Function} fn The iterator function. Receives two values, the accumulator and the
+         * current element from the array.
+         * @param {*} acc The accumulator value.
+         * @param {Array} list The list to iterate over.
+         * @return {*} The final, accumulated value.
+         * @example
+         *
+         * var numbers = [1, 2, 3];
+         * var add = function(a, b) {
+         *   return a + b;
+         * };
+         *
+         * foldl(numbers, add, 10); //=> 16
+         */
+        var foldl = R.foldl =  curry3(checkForMethod('foldl', function(fn, acc, list) {
+            var idx = -1, len = list.length;
+            while (++idx < len) {
+                acc = fn(acc, list[idx]);
+            }
+            return acc;
+        }));
+        aliasFor("foldl").is("reduce");
+
+        /**
+         * Like `foldl`, but passes additional parameters to the predicate function.
+         *
+         * The iterator function receives four values: *(acc, value, index, list)*
+         *
+         * Note: `ramda.foldl.idx` does not skip deleted or unassigned indices (sparse arrays),
+         * unlike the native `Array.prototype.reduce` method. For more details on this behavior,
+         * see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#Description
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The iterator function. Receives four values: the accumulator, the
+         * current element from `list`, that element's index, and the entire `list` itself.
+         * @param {*} acc The accumulator value.
+         * @param {Array} list The list to iterate over.
+         * @return {*} The final, accumulated value.
+         * @example
+         *
+         * var letters = ['a', 'b', 'c'];
+         * var objectify = function(accObject, elem, idx, list) {
+         *   return accObject[elem] = idx;
+         * };
+         *
+         * foldl.idx(letters, objectify, {}); //=> { 'a': 0, 'b': 1, 'c': 2 }
+         */
+        R.foldl.idx = curry3(checkForMethod('foldl', function(fn, acc, list) {
+            var idx = -1, len = list.length;
+            while (++idx < len) {
+                acc = fn(acc, list[idx], idx, list);
+            }
+            return acc;
+        }));
+
+        /**
+         * Returns a single item by iterating through the list, successively calling the iterator
+         * function and passing it an accumulator value and the current value from the array, and
+         * then passing the result to the next call.
+         *
+         * Similar to `foldl`, except moves through the input list from the right to the left.
+         *
+         * The iterator function receives two values: *(acc, value)*
+         *
+         * Note: `ramda.foldr` does not skip deleted or unassigned indices (sparse arrays), unlike
+         * the native `Array.prototype.reduce` method. For more details on this behavior, see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#Description
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @alias reduceRight
+         * @param {Function} fn The iterator function. Receives two values, the accumulator and the
+         * current element from the array.
+         * @param {*} acc The accumulator value.
+         * @param {Array} list The list to iterate over.
+         * @return {*} The final, accumulated value.
+         * @example
+         *
+         * var pairs = [ ['a', 1], ['b', 2], ['c', 3] ];
+         * var flattenPairs = function(acc, pair) {
+         *   return acc.concat(pair);
+         * };
+         *
+         * foldr(numbers, flattenPairs, []); //=> [ 'c', 3, 'b', 2, 'a', 1 ]
+         */
+        var foldr = R.foldr = curry3(checkForMethod('foldr', function(fn, acc, list) {
+            var idx = list.length;
+            while (idx--) {
+                acc = fn(acc, list[idx]);
+            }
+            return acc;
+        }));
+        aliasFor("foldr").is("reduceRight");
+
+        /**
+         * Like `foldr`, but passes additional parameters to the predicate function. Moves through
+         * the input list from the right to the left.
+         *
+         * The iterator function receives four values: *(acc, value, index, list)*.
+         *
+         * Note: `ramda.foldr.idx` does not skip deleted or unassigned indices (sparse arrays),
+         * unlike the native `Array.prototype.reduce` method. For more details on this behavior,
+         * see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#Description
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The iterator function. Receives four values: the accumulator, the
+         * current element from `list`, that element's index, and the entire `list` itself.
+         * @param {*} acc The accumulator value.
+         * @param {Array} list The list to iterate over.
+         * @return {*} The final, accumulated value.
+         * @example
+         *
+         * var letters = ['a', 'b', 'c'];
+         * var objectify = function(accObject, elem, idx, list) {
+         *   return accObject[elem] = idx;
+         * };
+         *
+         * foldr.idx(letters, objectify, {}); //=> { 'c': 2, 'b': 1, 'a': 0 }
+         */
+        R.foldr.idx = curry3(checkForMethod('foldr', function(fn, acc, list) {
+            var idx = list.length;
+            while (idx--) {
+                acc = fn(acc, list[idx], idx, list);
+            }
+            return acc;
+        }));
+
+        /**
+         * Builds a list from a seed value. Accepts an iterator function, which returns either false
+         * to stop iteration or an array of length 2 containing the value to add to the resulting
+         * list and the seed to be used in the next call to the iterator function.
+         *
+         * The iterator function receives one argument: *(seed)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The iterator function. receives one argument, `seed`, and returns
+         * either false to quit iteration or an array of length two to proceed. The element at index
+         * 0 of this array will be added to the resulting array, and the element at index 1 will be
+         * passed to the next call to `fn`.
+         * @param {*} seed The seed value.
+         * @return {Array} The final list.
+         * @example
+         *
+         * var f = function(n) { return n > 50 ? false : [-n, n + 10] };
+         * unfoldr(f, 10) //= [-10, -20, -30, -40, -50]
+         */
+        R.unfoldr = curry2(function _unfoldr(fn, seed) {
+            var pair = fn(seed);
+            var result = [];
+            while (pair && pair.length) {
+                result.push(pair[0]);
+                pair = fn(pair[1]);
+            }
+            return result;
+        });
+
+        /**
+         * Returns a new list, constructed by applying the supplied function to every element of the
+         * supplied list.
+         *
+         * Note: `ramda.map` does not skip deleted or unassigned indices (sparse arrays), unlike the
+         * native `Array.prototype.map` method. For more details on this behavior, see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map#Description
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function to be called on every element of the input `list`.
+         * @param {Array} list The list to be iterated over.
+         * @return {Array} The new list.
+         * @example
+         *
+         * var double = function(x) {
+         *   return x * 2;
+         * };
+         *
+         * ramda.map(double, [1, 2, 3]); //=> [2, 4, 6]
+         */
+        function map(fn, list) {
+            var idx = -1, len = list.length, result = new Array(len);
+            while (++idx < len) {
+                result[idx] = fn(list[idx]);
+            }
+            return result;
+        }
+        R.map = curry2(checkForMethod('map', map));
+
+        /**
+         * Like `map`, but but passes additional parameters to the predicate function.
+         *
+         * `fn` receives three arguments: *(value, index, list)*.
+         *
+         * Note: `ramda.map.idx` does not skip deleted or unassigned indices (sparse arrays), unlike
+         * the native `Array.prototype.map` method. For more details on this behavior, see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map#Description
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function to be called on every element of the input `list`.
+         * @param {Array} list The list to be iterated over.
+         * @return {Array} The new list.
+         * @example
+         *
+         * var squareEnds = function(elt, idx, list) {
+         *   if (idx === 0 || idx === list.length - 1) {
+         *     return elt * elt;
+         *   }
+         *   return elt;
+         * };
+         *
+         * ramda.map.idx(squareEnds, [8, 6, 7, 5, 3, 0, 9];
+         * //=> [64, 6, 7, 5, 3, 0, 81]
+         */
+        R.map.idx = curry2(checkForMethod('map', function _mapIdx(fn, list) {
+            var idx = -1, len = list.length, result = new Array(len);
+            while (++idx < len) {
+                result[idx] = fn(list[idx], idx, list);
+            }
+            return result;
+        }));
+
+        /**
+         * Map, but for objects. Creates an object with the same keys as `obj` and values
+         * generated by running each property of `obj` through `fn`. `fn` is passed one argument:
+         * *(value)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} fn A function called for each property in `obj`. Its return value will
+         * become a new property on the return object.
+         * @param {Object} obj The object to iterate over.
+         * @return {Object} A new object with the same keys as `obj` and values that are the result
+         * of running each property through `fn`.
+         * @example
+         *
+         * var values = { x: 1, y: 2, z: 3 };
+         * var double = function(num) {
+         *   return num * 2;
+         * };
+         *
+         * ramda.mapObj(double, values); //=> { x: 2, y: 4, z: 6 }
+         */
+        // TODO: consider mapObj.key in parallel with mapObj.idx.  Also consider folding together with `map` implementation.
+        R.mapObj = curry2(function _mapObject(fn, obj) {
+            return foldl(function (acc, key) {
+                acc[key] = fn(obj[key]);
+                return acc;
+            }, {}, keys(obj));
+        });
+
+        /**
+         * Like `mapObj`, but but passes additional arguments to the predicate function. The
+         * predicate function is passed three arguments: *(value, key, obj)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} fn A function called for each property in `obj`. Its return value will
+         * become a new property on the return object.
+         * @param {Object} obj The object to iterate over.
+         * @return {Object} A new object with the same keys as `obj` and values that are the result
+         * of running each property through `fn`.
+         * @example
+         *
+         * var values = { x: 1, y: 2, z: 3 };
+         * var double = function(num, key, obj) {
+         *   return key + num;
+         * };
+         *
+         * ramda.mapObj(double, values); //=> { x: 'x2', y: 'y4', z: 'z6' }
+         */
+        R.mapObj.idx = curry2(function mapObjectIdx(fn, obj) {
+            return foldl(function (acc, key) {
+                acc[key] = fn(obj[key], key, obj);
+                return acc;
+            }, {}, keys(obj));
+        });
+
+        /**
+         * ap applies a list of functions to a list of values.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param {Array} fns An array of functions
+         * @param {Array} vs An array of values
+         * @return the value of applying each the function `fns` to each value in `vs`
+         * @example
+         *
+         * R.ap([R.multiply(2), R.add(3), [1,2,3]); //=> [2, 4, 6, 4, 5, 6]
+         */
+        R.ap = curry2(checkForMethod('ap', function _ap(fns, vs) {
+            return foldl(function(acc, fn) {
+                return concat(acc, map(fn, vs));
+            },  [], fns);
+        }));
+
+        /**
+         *
+         * `of` wraps any object in an Array. This implementation is compatible with the
+         * Fantasy-land Applicative spec, and will work with types that implement that spec.
+         * Note this `of` is different from the ES6 `of`; See
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @param x any value
+         * @return [x]
+         * @example
+         *
+         * R.of(1); // => [1]
+         * R.of([2]); // => [[2]]
+         * R.of({}); // => [{}]
+         *
+         */
+        R.of = function _of(x, container) {
+            return (hasMethod('of', container)) ? container.of(x) : [x];
+        };
+
+        /**
+         * `empty` wraps any object in an array. This implementation is compatible with the
+         * Fantasy-land Monoid spec, and will work with types that implement that spec.
+         *
+         * @static
+         * @memberOf R
+         * @category Function
+         * @return {Array} an empty array
+         * @example
+         *
+         * R.empty([1,2,3,4,5]); // => []
+         */
+        R.empty = function _empty(x) {
+            return (hasMethod('empty', x)) ? x.empty() : [];
+        };
+
+
+        /**
+         * `chain` takes a function that maps a nested list to a nested list and a nested list.
+         * It maps the function over the nested list and then flattens the result (one level deep,
+         * i.e. not recursively).
+         * This implementatiou is compatible with the
+         * Fantasy-land Chain spec, and will work with types that implement that spec.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function}
+         * @param {Array} a nested array
+         * @return {Array}
+         *
+         * @eaxmple
+         *
+         * R.chain(R.map(R.multiply(2)), [[1,2,3], [1], [0, -3]]); // => [2,4,6,2,0,-6]
+         *
+         */
+        R.chain = curry2(checkForMethod('chain', function _chain(f, nestedList) {
+            return unnest(map(f, nestedList));
+        }));
+        aliasFor('chain').is('flatMap');
+
+        // Reports the number of elements in the list
+        /**
+         * Returns the number of elements in the array by returning `arr.length`.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} arr The array to inspect.
+         * @return {number} The size of the array.
+         * @example
+         *
+         * ramda.size([]); //=> 0
+         * ramda.size([1, 2, 3]); //=> 3
+         */
+        R.size = function _size(arr) {
+            return arr.length;
+        };
+        aliasFor('size').is('length');
+
+        /**
+         * Returns a new list containing only those items that match a given predicate function.
+         * The predicate function is passed one argument: *(value)*.
+         *
+         * Note that `ramda.filter` does not skip deleted or unassigned indices, unlike the native
+         * `Array.prototype.filter` method. For more details on this behavior, see:
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter#Description
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function called per iteration.
+         * @param {Array} list The collection to iterate over.
+         * @return {Array} The new filtered array.
+         * @example
+         *
+         * var isEven = function(n) {
+         *     return n % 2 === 0;
+         * };
+         * var evens = ramda.filter(isEven, [1, 2, 3, 4]); // => [2, 4]
+         */
+        var filter = function _filter(fn, list) {
+            var idx = -1, len = list.length, result = [];
+            while (++idx < len) {
+                if (fn(list[idx])) {
+                    result.push(list[idx]);
+                }
+            }
+            return result;
+        };
+
+        R.filter = curry2(checkForMethod('filter', filter));
+
+        /**
+         * Like `filter`, but passes additional parameters to the predicate function. The predicate
+         * function is passed three arguments: *(value, index, list)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function called per iteration.
+         * @param {Array} list The collection to iterate over.
+         * @return {Array} The new filtered array.
+         * @example
+         *
+         * var lastTwo = function(val, idx, list) {
+         *     return list.length - idx <= 2;
+         * };
+         * ramda.filter.idx(lastTwo, [8, 6, 7, 5, 3, 0, 9]); //=> [0, 9]
+         */
+        function filterIdx(fn, list) {
+            var idx = -1, len = list.length, result = [];
+            while (++idx < len) {
+                if (fn(list[idx], idx, list)) {
+                    result.push(list[idx]);
+                }
+            }
+            return result;
+        }
+        R.filter.idx = curry2(checkForMethod('filter', filterIdx));
+
+        /**
+         * Similar to `filter`, except that it keeps only values for which the given predicate
+         * function returns falsy. The predicate function is passed one argument: *(value)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function called per iteration.
+         * @param {Array} list The collection to iterate over.
+         * @return {Array} The new filtered array.
+         * @example
+         *
+         * var isEven = function(n) {
+         *     return n % 2 === 0;
+         * };
+         * var odds = ramda.reject(isOdd, [1, 2, 3, 4]); // => [2, 4]
+         */
+        var reject = function _reject(fn, list) {
+            return filter(not(fn), list);
+        };
+
+        R.reject = curry2(reject);
+
+        /**
+         * Like `reject`, but passes additional parameters to the predicate function. The predicate
+         * function is passed three arguments: *(value, index, list)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function called per iteration.
+         * @param {Array} list The collection to iterate over.
+         * @return {Array} The new filtered array.
+         * @example
+         *
+         * var lastTwo = function(val, idx, list) {
+         *     return list.length - idx <= 2;
+         * };
+         *
+         * reject.idx(lastTwo, [8, 6, 7, 5, 3, 0, 9]); //=> [8, 6, 7, 5, 3]
+         */
+        R.reject.idx = curry2(function _rejectIdx(fn, list) {
+            return filterIdx(not(fn), list);
+        });
+
+        /**
+         * Returns a new list containing the first `n` elements of a given list, passing each value
+         * to the supplied predicate function, and terminating when the predicate function returns
+         * `false`. Excludes the element that caused the predicate function to fail. The predicate
+         * function is passed one argument: *(value)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function called per iteration.
+         * @param {Array} list The collection to iterate over.
+         * @return {Array} A new array.
+         * @example
+         *
+         * var isNotFour = function(x) {
+         *   return !(x === 4);
+         * };
+         *
+         * takeWhile(isNotFour, [1, 2, 3, 4]); //=> [1, 2, 3]
+         */
+        R.takeWhile = curry2(checkForMethod('takeWhile', function(fn, list) {
+            var idx = -1, len = list.length;
+            while (++idx < len && fn(list[idx])) {}
+            return _slice(list, 0, idx);
+        }));
+
+
+        /**
+         * Returns a new list containing the first `n` elements of the given list.  If
+         * `n > * list.length`, returns a list of `list.length` elements.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {number} n The number of elements to return.
+         * @param {Array} list The array to query.
+         * @return {Array} A new array containing the first elements of `list`.
+         */
+        R.take = curry2(checkForMethod('take', function(n, list) {
+            return _slice(list, 0, Math.min(n, list.length));
+        }));
+
+        /**
+         * Returns a new list containing the last `n` elements of a given list, passing each value
+         * to the supplied predicate function, beginning when the predicate function returns
+         * `true`. Excludes the element that caused the predicate function to fail. The predicate
+         * function is passed one argument: *(value)*.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function called per iteration.
+         * @param {Array} list The collection to iterate over.
+         * @return {Array} A new array.
+         * @example
+         *
+         * var isNotTwo = function(x) {
+         *   return !(x === 2);
+         * };
+         *
+         * skipUntil(isNotFour, [1, 2, 3, 4]); //=> [1, 2, 3]
+         */
+        R.skipUntil = curry2(function _skipUntil(fn, list) {
+            var idx = -1, len = list.length;
+            while (++idx < len && !fn(list[idx])) {}
+            return _slice(list, idx);
+        });
+
+        /**
+         * Returns a new list containing all but the first `n` elements of the given `list`.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {number} n The number of elements of `list` to skip.
+         * @param {Array} list The array to consider.
+         * @return {Array} The last `n` elements of `list`.
+         */
+        R.skip = curry2(checkForMethod('skip', function _skip(n, list) {
+            return _slice(list, n);
+        }));
+        aliasFor('skip').is('drop');
+
+        /**
+         * Returns the first element of the list which matches the predicate, or `undefined` if no
+         * element matches.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The predicate function used to determine if the element is the
+         * desired one.
+         * @param {Array} list The array to consider.
+         * @return {Object} The element found, or `undefined`.
+         * @example
+         *
+         * var xs = [{a: 1}, {a: 2}, {a: 3}];
+         * find(propEq("a", 2))(xs); //= {a: 2}
+         * find(propEq("a", 4))(xs); //= undefined
+         */
+        // Returns the first element of the list which matches the predicate, or `undefined` if no element matches.
+        R.find = curry2(function find(fn, list) {
+            var idx = -1;
+            var len = list.length;
+            while (++idx < len) {
+                if (fn(list[idx])) {
+                    return list[idx];
+                }
+            }
+        });
+
+        /**
+         * Returns the index of the first element of the list which matches the predicate, or `-1`
+         * if no element matches.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The predicate function used to determine if the element is the
+         * desired one.
+         * @param {Array} list The array to consider.
+         * @return {number} The index of the element found, or `-1`.
+         * @example
+         *
+         * var xs = [{a: 1}, {a: 2}, {a: 3}];
+         * find(propEq("a", 2))(xs); //= 1
+         * find(propEq("a", 4))(xs); //= -1
+         */
+        // Returns the index of first element of the list which matches the predicate, or `-1` if no
+        // element matches.
+        R.findIndex = curry2(function _findIndex(fn, list) {
+            var idx = -1;
+            var len = list.length;
+            while (++idx < len) {
+                if (fn(list[idx])) {
+                    return idx;
+                }
+            }
+            return -1;
+        });
+
+        /**
+         * Returns the last element of the list which matches the predicate, or `undefined` if no
+         * element matches.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The predicate function used to determine if the element is the
+         * desired one.
+         * @param {Array} list The array to consider.
+         * @return {Object} The element found, or `undefined`.
+         * @example
+         *
+         * var xs = [{a: 1, b: 0}, {a:1, b: 1}];
+         * findLast(propEq("a", 1))(xs); //= {a: 1, b: 1}
+         * findLast(propEq("a", 4))(xs); //= undefined
+         */
+        // Returns the last element of the list which matches the predicate, or `undefined` if no
+        // element matches.
+        R.findLast = curry2(function _findLast(fn, list) {
+            var idx = list.length;
+            while (--idx) {
+                if (fn(list[idx])) {
+                    return list[idx];
+                }
+            }
+        });
+
+        /**
+         * Returns the index of the last element of the list which matches the predicate, or
+         * `-1` if no element matches.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The predicate function used to determine if the element is the
+         * desired one.
+         * @param {Array} list The array to consider.
+         * @return {number} The index of the element found, or `-1`.
+         * @example
+         *
+         * var xs = [{a: 1, b: 0}, {a:1, b: 1}];
+         * findLastIndex(propEq("a", 1))(xs); //= 1
+         * findLastIndex(propEq("a", 4))(xs); //= -1
+         */
+        // Returns the last element of the list which matches the predicate, or `undefined` if no
+        // element matches.
+        R.findLastIndex = curry2(function _findLastIndex(fn, list) {
+            var idx = list.length;
+            while (--idx) {
+                if (fn(list[idx])) {
+                    return idx;
+                }
+            }
+            return -1;
+        });
+
+        /**
+         * Returns `true` if all elements of the list match the predicate, `false` if there are any
+         * that don't.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The predicate function.
+         * @param {Array} list The array to consider.
+         * @return {boolean} `true` if the predicate is satisfied by every element, `false`
+         * otherwise
+         * @example
+         *
+         * var lessThan2 = flip(lt)(2);
+         * var lessThan3 = flip(lt)(3);
+         * var xs = range(1, 3); //= [1, 2]
+         * all(lessThan2)(xs); //= false
+         * all(lessThan3)(xs); //= true
+         */
+        // Returns `true` if all elements of the list match the predicate, `false` if there are any
+        // that don't.
+        function all(fn, list) {
+            var i = -1;
+            while (++i < list.length) {
+                if (!fn(list[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        R.all = curry2(all);
+        aliasFor("all").is("every");
+
+        /**
+         * Returns `true` if at least one of elements of the list match the predicate, `false`
+         * otherwise.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The predicate function.
+         * @param {Array} list The array to consider.
+         * @return {boolean} `true` if the predicate is satisfied by at least one element, `false`
+         * otherwise
+         * @example
+         *
+         * var lessThan0 = flip(lt)(0);
+         * var lessThan2 = flip(lt)(2);
+         * var xs = range(1, 3); //= [1, 2]
+         * any(lessThan0)(xs); //= false
+         * any(lessThan2)(xs); //= true
+         */
+        function any(fn, list) {
+            var i = -1;
+            while (++i < list.length) {
+                if (fn(list[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        R.any = curry2(any);
+        aliasFor("any").is("some");
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Internal implementations of indexOf and lastIndexOf
+
+        // Return the position of the first occurrence of an item in an array,
+        // or -1 if the item is not included in the array.
+        var indexOf = function _indexOf(array, item, from) {
+            var i = 0, length = array.length;
+            if (typeof from == 'number') {
+                i = from < 0 ? Math.max(0, length + from) : from;
+            }
+            for (; i < length; i++) {
+                if (array[i] === item) return i;
+            }
+            return -1;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        var lastIndexOf = function _lastIndexOf(array, item, from) {
+            var idx = array.length;
+            if (typeof from == 'number') {
+                idx = from < 0 ? idx + from + 1 : Math.min(idx, from + 1);
+            }
+            while (--idx >= 0) {
+                if (array[idx] === item) return idx;
+            }
+            return -1;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns the first zero-indexed position of an object in a flat list
+        R.indexOf = curry2(function _indexOf(target, list) {
+            return indexOf(list, target);
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        R.indexOf.from = curry3(function indexOfFrom(target, fromIdx, list) {
+            return indexOf(list, target, fromIdx);
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns the last zero-indexed position of an object in a flat list
+        R.lastIndexOf = curry2(function _lastIndexOf(target, list) {
+            return lastIndexOf(list, target);
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        R.lastIndexOf.from = curry3(function lastIndexOfFrom(target, fromIdx, list) {
+            return lastIndexOf(list, target, fromIdx);
+        });
+
+        /**
+         * Returns `true` if the specified item is somewhere in the list, `false` otherwise.
+         * Equivalent to `indexOf(a)(list) > -1`. Uses strict (`===`) equality checking.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Object} a The item to compare against.
+         * @param {Array} list The array to consider.
+         * @return {boolean} `true` if the item is in the list, `false` otherwise.
+         * @example
+         *
+         * contains(3)([1, 2, 3]); //= true
+         * contains(4)([1, 2, 3]); //= false
+         * contains({})([{}, {}]); //= false
+         * var obj = {};
+         * contains(obj)([{}, obj, {}]); //= true
+         */
+        // Returns `true` if the list contains the sought element, `false` if it does not.  Equality
+        // is strict here, meaning reference equality for objects and non-coercing equality for
+        // primitives.
+        function contains(a, list) {
+            return indexOf(list, a) > -1;
+        }
+        R.contains = curry2(contains);
+
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns `true` if the list contains the sought element, `false` if it does not, based upon the value
+        // returned by applying the supplied predicated to two list elements.  Equality is strict here, meaning
+        // reference equality for objects and non-coercing equality for primitives.  Probably inefficient.
+        function containsWith(pred, x, list) {
+            var idx = -1, len = list.length;
+            while (++idx < len) {
+                if (pred(x, list[idx])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        R.containsWith = curry3(containsWith);
+
+        /**
+         * Returns a new list containing only one copy of each element in the original list.
+         * Equality is strict here, meaning reference equality for objects and non-coercing equality
+         * for primitives.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} list The array to consider.
+         * @return {Array} The list of unique items.
+         * @example
+         *
+         * uniq([1, 1, 2, 1]); //= [1, 2]
+         * uniq([{}, {}]);     //= [{}, {}]
+         * uniq([1, "1"]);     //= [1, "1"]
+         */
+        // Returns a new list containing only one copy of each element in the original list.
+        // Equality is strict here, meaning reference equality for objects and non-coercing equality
+        // for primitives.
+        var uniq = R.uniq = function uniq(list) {
+            var idx = -1, len = list.length;
+            var result = [], item;
+            while (++idx < len) {
+                item = list[idx];
+                if (!contains(item, result)) {
+                    result.push(item);
+                }
+            }
+            return result;
+        };
+
+        /**
+         * Returns `true` if all elements are unique, otherwise `false`.
+         * Uniquness is determined using strict equality (`===`).
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} list The array to consider.
+         * @return {boolean} `true` if all elements are unique, else `false`.
+         * @example
+         *
+         * isSet(["1", 1]); //= true
+         * isSet([1, 1]);   //= false
+         * isSet([{}, {}]); //= true
+         */
+        // returns `true` if all of the elements in the `list` are unique.
+        R.isSet = function _isSet(list) {
+            var len = list.length;
+            var i = -1;
+            while (++i < len) {
+                if (indexOf(list, list[i], i+1) >= 0) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        /**
+         * Returns a new list containing only one copy of each element in the original list, based
+         * upon the value returned by applying the supplied predicate to two list elements. Prefers
+         * the first item if two items compare equal based on the predicate.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} list The array to consider.
+         * @return {Array} The list of unique items.
+         * @example
+         *
+         * var strEq = function(a, b) { return ("" + a) === ("" + b) };
+         * uniqWith(strEq)([1, "1", 2, 1]); //= [1, 2]
+         * uniqWith(strEq)([{}, {}]);       //= [{}]
+         * uniqWith(strEq)([1, "1", 1]);    //= [1]
+         * uniqWith(strEq)(["1", 1, 1]);    //= ["1"]
+         */
+        var uniqWith = R.uniqWith = curry2(function _uniqWith(pred, list) {
+            var idx = -1, len = list.length;
+            var result = [], item;
+            while (++idx < len) {
+                item = list[idx];
+                if (!containsWith(pred, item, result)) {
+                    result.push(item);
+                }
+            }
+            return result;
+        });
+
+
+        /**
+         * Returns a new list by plucking the same named property off all objects in the list supplied.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {string|number} key The key name to pluck off of each object.
+         * @param {Array} list The array to consider.
+         * @return {Array} The list of values for the given key.
+         * @example
+         *
+         * pluck("a")([{a: 1}, {a: 2}]); //= [1, 2]
+         * pluck(0)([[1, 2], [3, 4]]);   //= [1, 3]
+         */
+        // Returns a new list by plucking the same named property off all objects in the list supplied.
+        var pluck = R.pluck = curry2(function _pluck(p, list) {
+            return map(prop(p), list);
+        });
+
+        /**
+         * `makeFlat` is a helper function that returns a one-level or fully recursive function
+         * based on the flag passed in.
+         *
+         * @private
+         *
+         */
+        var makeFlat = function _makeFlat(recursive) {
+            return function __flatt(list) {
+                var array, value, result = [], val, i = -1, j, ilen = list.length, jlen;
+                while (++i < ilen) {
+                    array = list[i];
+                    if (isArrayLike(array)) {
+                        value = (recursive) ? __flatt(array) : array;
+                        j = -1;
+                        jlen = value.length;
+                        while (++j < jlen) {
+                            result.push(value[j]);
+                        }
+                    } else {
+                        result.push(array);
+                    }
+                }
+                return result;
+            };
+        };
+
+        /**
+         * Returns a new list by pulling every item out of it (and all its sub-arrays) and putting
+         * them in a new array, depth-first.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} list The array to consider.
+         * @return {Array} The flattened list.
+         * @example
+         *
+         * flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+         * //= [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+         */
+        // Returns a list that contains a flattened version of the supplied list.  For example:
+        //
+        //     flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]);
+        //     // => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        var flatten = R.flatten = makeFlat(true);
+        aliasFor('flatten').is('flattenDeep');
+
+        /**
+         * Returns a new list by pulling every item at the first level of nesting out, and putting
+         * them in a new array.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} list The array to consider.
+         * @return {Array} The flattened list.
+         * @example
+         *
+         * flat([1, [2], [[3]]]);
+         * //= [1, 2, [3]]
+         * flat([[1, 2], [3, 4], [5, 6]]);
+         * //= [1, 2, 3, 4, 5, 6]
+         */
+        var unnest = R.unnest = makeFlat(false);
+        aliasFor('unnest').is('flattenShallow');
+
+        /**
+         * Creates a new list out of the two supplied by applying the function to each
+         * equally-positioned pair in the lists.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function used to combine the two elements into one value.
+         * @param {Array} list1 The first array to consider.
+         * @param {Array} list2 The second array to consider.
+         * @return {Array} The list made by combining same-indexed elements of `list1` and `list2`
+         * using `fn`.
+         * @example
+         *
+         * zipWith(f, [1, 2, 3], ['a', 'b', 'c']);
+         * //= [f(1, 'a'), f(2, 'b'), f(3, 'c')]
+         */
+        // Creates a new list out of the two supplied by applying the function to each
+        // equally-positioned pair in the lists.  For example,
+        //
+        //     zipWith(f, [1, 2, 3], ['a', 'b', 'c']);
+        //     //= [f(1, 'a'), f(2, 'b'), f(3, 'c')]
+        //
+        // Note that the output list will only be as long as the length of the shorter input list.
+        R.zipWith = curry3(function _zipWith(fn, a, b) {
+            var rv = [], i = -1, len = Math.min(a.length, b.length);
+            while (++i < len) {
+                rv[i] = fn(a[i], b[i]);
+            }
+            return rv;
+        });
+
+        /**
+         * Creates a new list out of the two supplied by pairing up equally-positioned items from
+         * both lists. Note: `zip` is equivalent to `zipWith(function(a, b) { return [a, b] })`.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} list1 The first array to consider.
+         * @param {Array} list2 The second array to consider.
+         * @return {Array} The list made by pairing up same-indexed elements of `list1` and `list2`.
+         * @example
+         *
+         * zip([1, 2, 3], ['a', 'b', 'c']);
+         * //= [[1, 'a'], [2, 'b'], [3, 'c']]
+         */
+        // Creates a new list out of the two supplied by yielding the pair of each
+        // equally-positioned pair in the lists.  For example,
+        //
+        //     zip([1, 2, 3], ['a', 'b', 'c']);
+        //     //= [[1, 'a'], [2, 'b'], [3, 'c']]
+        R.zip = curry2(function _zip(a, b) {
+            var rv = [];
+            var i = -1;
+            var len = Math.min(a.length, b.length);
+            while (++i < len) {
+                rv[i] = [a[i], b[i]];
+            }
+            return rv;
+        });
+
+        /**
+         * Creates a new object out of a list of keys and a list of values.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} keys The array that will be properties on the output object.
+         * @param {Array} values The list of values on the output object.
+         * @return {Object} The object made by pairing up same-indexed elements of `keys` and `values`.
+         * @example
+         *
+         * zipObj(['a', 'b', 'c'], [1, 2, 3]);
+         * //= {a: 1, b: 2, c: 3}
+         */
+        R.zipObj = curry2(function _zipObj(keys, values) {
+            var i = -1, len = keys.length, out = {};
+            while (++i < len) {
+                out[keys[i]] = values[i];
+            }
+            return out;
+        });
+
+        /**
+         * Creates a new object out of a list key-value pairs.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} An array of two-element arrays that will be the keys and values of the ouput object.
+         * @return {Object} The object made by pairing up `keys` and `values`.
+         * @example
+         *
+         * fromPairs([['a', 1], ['b', 2],  ['c', 3]]);
+         * //= {a: 1, b: 2, c: 3}
+         */
+        R.fromPairs = function _fromPairs(pairs) {
+            var i = -1, len = pairs.length, out = {};
+            while (++i < len) {
+                if (isArray(pairs[i]) && pairs[i].length) {
+                    out[pairs[i][0]] = pairs[i][1];
+                }
+            }
+            return out;
+        };
+
+
+        /**
+         * Creates a new list out of the two supplied by applying the function
+         * to each possible pair in the lists.
+         *
+         * @see xprod
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Function} fn The function to join pairs with.
+         * @param {Array} as The first list.
+         * @param {Array} bs The second list.
+         * @return {Array} The list made by combining each possible pair from
+         * `as` and `bs` using `fn`.
+         * @example
+         *
+         * xProdWith(f, [1, 2], ['a', 'b'])
+         * //= [f(1, 'a'), f(1, 'b'), f(2, 'a'), f(2, 'b')];
+         */
+        // Creates a new list out of the two supplied by applying the function
+        // to each possible pair in the lists.  For example,
+        //
+        //     xProdWith(f, [1, 2], ['a', 'b'])
+        //     //= [f(1, 'a'), f(1, 'b'), f(2, 'a'), f(2, 'b')];
+        R.xprodWith = curry3(function _xprodWith(fn, a, b) {
+            if (isEmpty(a) || isEmpty(b)) {
+                return [];
+            }
+            // Better to push them all or to do `new Array(ilen * jlen)` and
+            // calculate indices?
+            var i = -1, ilen = a.length, j, jlen = b.length, result = [];
+            while (++i < ilen) {
+                j = -1;
+                while (++j < jlen) {
+                    result.push(fn(a[i], b[j]));
+                }
+            }
+            return result;
+        });
+
+        /**
+         * Creates a new list out of the two supplied by creating each possible
+         * pair from the lists.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} as The first list.
+         * @param {Array} bs The second list.
+         * @return {Array} The list made by combining each possible pair from
+         * `as` and `bs` into pairs (`[a, b]`).
+         * @example
+         *
+         * xProdWith(f, [1, 2], ['a', 'b'])
+         * //= [f(1, 'a'), f(1, 'b'), f(2, 'a'), f(2, 'b')];
+         */
+        // Creates a new list out of the two supplied by yielding the pair of
+        // each possible pair in the lists.  For example,
+        //
+        //     xProd([1, 2], ['a', 'b']);
+        //     //= [[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
+        R.xprod = curry2(function _xprod(a, b) { // = xprodWith(prepend); (takes about 3 times as long...)
+            if (isEmpty(a) || isEmpty(b)) {
+                return [];
+            }
+            var i = -1;
+            var ilen = a.length;
+            var j;
+            var jlen = b.length;
+            // Better to push them all or to do `new Array(ilen * jlen)` and calculate indices?
+            var result = [];
+            while (++i < ilen) {
+                j = -1;
+                while (++j < jlen) {
+                    result.push([a[i], b[j]]);
+                }
+            }
+            return result;
+        });
+
+        /**
+         * Returns a new list with the same elements as the original list, just
+         * in the reverse order.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {Array} list The list to reverse.
+         * @return {Array} A copy of the list in reverse order.
+         * @example
+         *
+         * reverse([1, 2, 3]);  //= [3, 2, 1]
+         * reverse([1, 2]);     //= [2, 1]
+         * reverse([1]);        //= [1]
+         * reverse([]);         //= []
+         */
+        // Returns a new list with the same elements as the original list, just
+        // in the reverse order.
+        R.reverse = function _reverse(list) {
+            return clone(list || []).reverse();
+        };
+
+        /**
+         * Returns a list of numbers from `from` (inclusive) to `to`
+         * (exclusive). In mathematical terms, `range(a, b)` is equivalent to
+         * the half-open interval `[a, b)`.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {number} from The first number in the list.
+         * @param {number} to One more than the last number in the list.
+         * @return {Array} The list of numbers in tthe set `[a, b)`.
+         * @example
+         *
+         * range(1, 5);     //= [1, 2, 3, 4]
+         * range(50, 53);   //= [50, 51, 52]
+         */
+        // Returns a list of numbers from `from` (inclusive) to `to` (exclusive).
+        // For example,
+        //
+        //     range(1, 5) // => [1, 2, 3, 4]
+        //     range(50, 53) // => [50, 51, 52]
+        R.range = curry2(function _range(from, to) {
+            if (from >= to) {
+                return [];
+            }
+            var idx = 0, result = new Array(Math.floor(to) - Math.ceil(from));
+            for (; from < to; idx++, from++) {
+                result[idx] = from;
+            }
+            return result;
+        });
+
+        /**
+         * Returns a string made by inserting the `separator` between each
+         * element and concatenating all the elements into a single string.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {string|number} separator The string used to separate the elements.
+         * @param {Array} xs The elements to join into a string.
+         * @return {string} The string made by concatenating `xs` with `separator`.
+         * @example
+         *
+         * var spacer = join(" ");
+         * spacer(["a", 2, 3.4]);   //= "a 2 3.4"
+         * join("|", [1, 2, 3]);    //= "1|2|3"
+         */
+        // Returns the elements of the list as a string joined by a separator.
+        R.join = invoker("join", Array.prototype);
+
+        /**
+         * Returns the elements from `xs` starting at `a` and ending at `b - 1`.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {number} a The starting index.
+         * @param {number} b One more than the ending index.
+         * @param {Array} xs The list to take elements from.
+         * @return {Array} The items from `a` to `b - 1` from `xs`.
+         * @example
+         *
+         * var xs = range(0, 10);
+         * slice(2, 5)(xs); //= [2, 3, 4]
+         */
+        // Returns the sublist of a list starting with the first index and
+        // ending before the second one.
+        R.slice = invoker("slice", Array.prototype);
+        /**
+         * Returns the elements from `xs` starting at `a` going to the end of `xs`.
+         *
+         * @static
+         * @memberOf R
+         * @category List
+         * @param {number} a The starting index.
+         * @param {Array} xs The list to take elements from.
+         * @return {Array} The items from `a` to the end of `xs`.
+         * @example
+         *
+         * var xs = range(0, 10);
+         * slice.from(2)(xs); //= [2, 3, 4, 5, 6, 7, 8, 9]
+         *
+         * var ys = range(4, 8);
+         * var tail = slice.from(1);
+         * tail(xs); //= [5, 6, 7]
+         */
+        R.slice.from = flip(R.slice)(void 0);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Removes the sub-list of `list` starting at index `start` and containing
+        // `count` elements.  _Note that this is not destructive_: it returns a
+        // copy of the list with the changes.
+        // <small>No lists have been harmed in the application of this function.</small>
+        R.remove = curry3(function _remove(start, count, list) {
+            return concat(_slice(list, 0, Math.min(start, list.length)), _slice(list, Math.min(list.length, start + count)));
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Inserts the supplied element into the list, at index `index`.  _Note
+        // that this is not destructive_: it returns a copy of the list with the changes.
+        // <small>No lists have been harmed in the application of this function.</small>
+        R.insert = curry3(function _insert(index, elt, list) {
+            index = index < list.length && index >= 0 ? index : list.length;
+            return concat(append(elt, _slice(list, 0, index)), _slice(list, index));
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Inserts the sub-list into the list, at index `index`.  _Note  that this
+        // is not destructive_: it returns a copy of the list with the changes.
+        // <small>No lists have been harmed in the application of this function.</small>
+        R.insert.all = curry3(function _insertAll(index, elts, list) {
+            index = index < list.length && index >= 0 ? index : list.length;
+            return concat(concat(_slice(list, 0, index), elts), _slice(list, index));
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Makes a comparator function out of a function that reports whether the first element is less than the second.
+        //
+        //     var cmp = comparator(function(a, b) {
+        //         return a.age < b.age;
+        //     };
+        //     sort(cmp, people);
+        var comparator = R.comparator = function _comparator(pred) {
+            return function (a, b) {
+                return pred(a, b) ? -1 : pred(b, a) ? 1 : 0;
+            };
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a copy of the list, sorted according to the comparator function, which should accept two values at a
+        // time and return a negative number if the first value is smaller, a positive number if it's larger, and zero
+        // if they are equal.  Please note that this is a **copy** of the list.  It does not modify the original.
+        var sort = R.sort = curry2(function sort(comparator, list) {
+            return clone(list).sort(comparator);
+        });
+
+        // Splits a list into sublists stored in an object, based on the result of calling a String-returning function
+        // on each element, and grouping the results according to values returned.
+        //
+        //     var byGrade = groupBy(function(student) {
+        //         var score = student.score
+        //         return (score < 65) ? 'F' : (score < 70) ? 'D' :
+        //                (score < 80) ? 'C' : (score < 90) ? 'B' : 'A';
+        //     };
+        //     var students = [{name: "Abby", score: 84} /*, ... */,
+        //                     {name: 'Jack', score: 69}];
+        //     byGrade(students);
+        //     //=> {
+        //     //   "A": [{name: 'Dianne', score: 99} /*, ... */],
+        //     //   "B": [{name: "Abby", score: 84} /*, ... */]
+        //     //   /*, ... */
+        //     //   "F": [{name: 'Eddy', score: 58}]
+        //     // }
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        R.groupBy = curry2(function _groupBy(fn, list) {
+            return foldl(function (acc, elt) {
+                var key = fn(elt);
+                acc[key] = append(elt, acc[key] || (acc[key] = []));
+                return acc;
+            }, {}, list);
+        });
+
+        // Takes a predicate and a list and returns the pair of lists of
+        // elements which do and do not satisfy the predicate, respectively.
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        R.partition = curry2(function _groupBy(pred, list) {
+            return foldl(function (acc, elt) {
+                acc[pred(elt) ? 0 : 1].push(elt);
+                return acc;
+            }, [[], []], list);
+        });
+
+        // Object Functions
+        // ----------------
+        //
+        // These functions operate on plain Javascript object, adding simple functions to test properties on these
+        // objects.  Many of these are of most use in conjunction with the list functions, operating on lists of
+        // objects.
+
+        // --------
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Runs the given function with the supplied object, then returns the object.
+        R.tap = curry2(function _tap(x, fn) {
+            if (typeof fn === "function") { fn(x); }
+            return x;
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Tests if two items are equal.  Equality is strict here, meaning reference equality for objects and
+        // non-coercing equality for primitives.
+        R.eq = function _eq(a, b) {
+            return arguments.length < 2 ? function _eq(b) { return a === b; } : a === b;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a function that when supplied an object returns the indicated property of that object, if it exists.
+        var prop = R.prop = function _prop(p, obj) {
+            return arguments.length < 2 ? function _prop(obj) { return obj[p]; } :  obj[p];
+        };
+        aliasFor("prop").is("nth").and("get"); // TODO: are we sure?  Matches some other libs, but might want to reserve for other use.
+
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a function that when supplied an object returns the result of running the indicated function on
+        // that object, if it has such a function.
+        R.func = function func(fn, obj) {
+            function _func(obj) {
+                return obj[fn].apply(obj, _slice(arguments, 1));
+            }
+            return arguments.length < 2 ? _func : _func(obj);
+        };
+
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a function that when supplied a property name returns that property on the indicated object, if it
+        // exists.
+        R.props = function _props(obj, prop) {
+            return arguments.length < 2 ? function _props(prop) { return obj && obj[prop]; } : obj && obj[prop];
+        };
+
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a function that always returns the given value.
+        var always = R.always = function _always(val) {
+            return function () {
+                return val;
+            };
+        };
+        aliasFor("always").is("constant").and("K");
+
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        var anyBlanks = R.any(function _any(val) {
+            return val == null;
+        });
+
+        var hasOwnProperty = Object.prototype.hasOwnProperty;
+        var nativeKeys = Object.keys;
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a list containing the names of all the enumerable own
+        // properties of the supplied object.
+        var keys = R.keys = function _keys(obj) {
+            if (nativeKeys) return nativeKeys(Object(obj));
+            var prop, ks = [];
+            for (prop in obj) {
+                if (hasOwnProperty.call(obj, prop)) {
+                    ks.push(prop);
+                }
+            }
+            return ks;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a list containing the names of all the
+        // properties of the supplied object, including prototype properties.
+        R.keysIn = function _keysIn(obj) {
+            var prop, ks = [];
+            for (prop in obj) {
+                ks.push(prop);
+            }
+            return ks;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a list of all the enumerable own properties of the supplied object.
+        R.values = function _values(obj) {
+            var prop, props = keys(obj),
+                length = props.length,
+                vals = new Array(length);
+            for (var i = 0; i < length; i++) {
+                vals[i] = obj[props[i]];
+            }
+            return vals;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a list of all the properties, including prototype properties,
+        // of the supplied object.
+        R.valuesIn = function _valuesIn(obj) {
+            var prop, vs = [];
+            for (prop in obj) {
+                vs.push(obj[prop]);
+            }
+            return vs;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // internal helper function
+        function pickWith(test, obj) {
+            var copy = {},
+                props = keys(obj), prop, val;
+            for (var i = 0, len = props.length; i < len; i++) {
+                prop = props[i];
+                val = obj[prop];
+                if (test(val, prop, obj)) {
+                    copy[prop] = val;
+                }
+            }
+            return copy;
+        }
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a partial copy of an object containing only the keys specified.  If the key does not exist, the
+        // property is ignored
+        R.pick = curry2(function pick(names, obj) {
+            return pickWith(function(val, key) {
+                return contains(key, names);
+            }, obj);
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns a partial copy of an object omitting the keys specified.
+        R.omit = curry2(function omit(names, obj) {
+            return pickWith(function(val, key) {
+                return !contains(key, names);
+            }, obj);
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        R.pickWith = curry2(pickWith);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Similar to `pick` except that this one includes a `key: undefined` pair for properties that don't exist.
+        var pickAll = function _pickAll(names, obj) {
+            var copy = {};
+            each(function (name) {
+                copy[name] = obj[name];
+            }, names);
+            return copy;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        R.pickAll = curry2(pickAll);
+
+
+        /**
+         * Assigns own enumerable properties of the other object to the destination
+         * object prefering items in other.
+         *
+         * @private
+         * @param {Object} object The destination object.
+         * @param {Object} other The other object to merge with destination.
+         * @returns {Object} Returns the destination object.
+         *
+         * @example
+         * extend({ 'name': 'fred', 'age': 10 }, { 'age': 40 });
+         * // => { 'name': 'fred', 'age': 40 }
+         */
+        function extend(destination, other) {
+            var props = keys(other),
+                i = -1, length = props.length;
+            while (++i < length) {
+                destination[props[i]] = other[props[i]];
+            }
+            return destination;
+        }
+
+        /**
+         * Create a new object with the own properties of a
+         * merged with the own properties of object b.
+         *
+         * @static
+         * @memberOf R
+         * @category Object
+         * @param {Object} a source object
+         * @param {Object} b object with higher precendence in output
+         * @returns {Object} Returns the destination object.
+         *
+         * @example
+         * mixin({ 'name': 'fred', 'age': 10 }, { 'age': 40 });
+         * // => { 'name': 'fred', 'age': 40 }
+         */
+        R.mixin = curry2(function _mixin(a, b) {
+            return extend(extend({}, a), b);
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Reports whether two functions have the same value for the specified property.  Useful as a curried predicate.
+        R.eqProps = curry3(function eqProps(prop, obj1, obj2) {
+            return obj1[prop] === obj2[prop];
+        });
+
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // internal helper for `where`
+        function satisfiesSpec(spec, parsedSpec, testObj) {
+            if (spec === testObj) { return true; }
+            if (testObj == null) { return false; }
+            parsedSpec.fn = parsedSpec.fn || [];
+            parsedSpec.obj = parsedSpec.obj || [];
+            var key, val, i = -1, fnLen = parsedSpec.fn.length, j = -1, objLen = parsedSpec.obj.length;
+            while (++i < fnLen) {
+                key = parsedSpec.fn[i];
+                val = spec[key];
+                //if (!hasOwnProperty.call(testObj, key)) {
+                //    return false;
+                //}
+                if (!(key in testObj)) {
+                    return false;
+                }
+                if (!val(testObj[key], testObj)) {
+                    return false;
+                }
+            }
+            while (++j < objLen) {
+                key = parsedSpec.obj[j];
+                if (spec[key] !== testObj[key]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // `where` takes a spec object and a test object and returns true if the test satisfies the spec.
+        // Any property on the spec that is not a function is interpreted as an equality
+        // relation. For example:
+        //
+        //     var spec = {x: 2};
+        //     where(spec, {w: 10, x: 2, y: 300}); // => true, x === 2
+        //     where(spec, {x: 1, y: 'moo', z: true}); // => false, x !== 2
+        //
+        // If the spec has a property mapped to a function, then `where` evaluates the function, passing in
+        // the test object's value for the property in question, as well as the whole test object. For example:
+        //
+        //     var spec = {x: function(val, obj) { return  val + obj.y > 10; };
+        //     where(spec, {x: 2, y: 7}); // => false
+        //     where(spec, {x: 3, y: 8}); // => true
+        //
+        // `where` is well suited to declarativley expressing constraints for other functions, e.g., `filter`:
+        //
+        //     var xs = [{x: 2, y: 1}, {x: 10, y: 2},
+        //               {x: 8, y: 3}, {x: 10, y: 4}];
+        //     var fxs = filter(where({x: 10}), xs);
+        //     // fxs ==> [{x: 10, y: 2}, {x: 10, y: 4}]
+        //
+        R.where = function where(spec, testObj) {
+            var parsedSpec = R.groupBy(function(key) {
+                    return typeof spec[key] === "function" ? "fn" : "obj";
+                }, keys(spec)
+            );
+            switch (arguments.length) {
+                case 0: throw NO_ARGS_EXCEPTION;
+                case 1:
+                    return function(testObj) {
+                        return satisfiesSpec(spec, parsedSpec, testObj);
+                    };
+            }
+            return satisfiesSpec(spec, parsedSpec, testObj);
+        };
+
+        // Miscellaneous Functions
+        // -----------------------
+        //
+        // A few functions in need of a good home.
+
+        // --------
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Expose the functions from ramda as properties on another object.  If the passed-in object is the
+        // global object, or the passed-in object is "falsy", then the ramda functions become global functions.
+        R.installTo = function(obj) {
+            return extend(obj || global, R);
+        };
+
+        R.is = curry2(function is(ctor, val) {
+            return val != null && Object(val) instanceof ctor;
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // A function that always returns `0`.
+        R.alwaysZero = always(0);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // A function that always returns `false`.
+        R.alwaysFalse = always(false);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // A function that always returns `true`.
+        R.alwaysTrue = always(true);
+
+
+
+        // Logic Functions
+        // ---------------
+        //
+        // These functions are very simple wrappers around the built-in logical operators, useful in building up
+        // more complex functional forms.
+
+        // --------
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // A function wrapping calls to the two functions in an `&&` operation, returning `true` or `false`.  Note that
+        // this is short-circuited, meaning that the second function will not be invoked if the first returns a false-y
+        // value.
+        R.and = curry2(function and(f, g) {
+            return function _and() {
+                return !!(f.apply(this, arguments) && g.apply(this, arguments));
+            };
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // A function wrapping calls to the two functions in an `||` operation, returning `true` or `false`.  Note that
+        // this is short-circuited, meaning that the second function will not be invoked if the first returns a truth-y
+        // value.
+        R.or = curry2(function or(f, g) {
+            return function _or() {
+                return !!(f.apply(this, arguments) || g.apply(this, arguments));
+            };
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // A function wrapping a call to the given function in a `!` operation.  It will return `true` when the
+        // underlying function would return a false-y value, and `false` when it would return a truth-y one.
+        var not = R.not = function _not(f) {
+            return function() {return !f.apply(this, arguments);};
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Create a predicate wrapper which will call a pick function (all/any) for each predicate
+        var predicateWrap = function _predicateWrap(predPicker) {
+            return function(preds /* , args */) {
+                var predIterator = function() {
+                    var args = arguments;
+                    return predPicker(function(predicate) {
+                        return predicate.apply(null, args);
+                    }, preds);
+                };
+                return arguments.length > 1 ?
+                        // Call function imediately if given arguments
+                        predIterator.apply(null, _slice(arguments, 1)) :
+                        // Return a function which will call the predicates with the provided arguments
+                        arity(max(pluck("length", preds)), predIterator);
+            };
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Given a list of predicates returns a new predicate that will be true exactly when all of them are.
+        R.allPredicates = predicateWrap(all);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Given a list of predicates returns a new predicate that will be true exactly when any one of them is.
+        R.anyPredicates = predicateWrap(any);
+
+        // Arithmetic Functions
+        // --------------------
+        //
+        // These functions wrap up the certain core arithmetic operators
+
+        // --------
+
+        /**
+         * Adds two numbers (or strings). Equivalent to `a + b` but curried.
+         *
+         * @static
+         * @memberOf R
+         * @param {number|string} a The first value.
+         * @param {number|string} b The second value.
+         * @return {number|string} The result of `a + b`.
+         * @example
+         *
+         * var increment = add(1);
+         * increment(10);   //= 11
+         * add(2, 3);       //=  5
+         * add(7)(10);      //= 17
+         */
+        // Adds two numbers (or strings). Equivalent to `a + b` but curried.
+        //
+        //     var increment = add(1);
+        //     increment(10);   //= 11
+        //     add(2, 3);       //=  5
+        //     add(7)(10);      //= 17
+        var add = R.add = function _add(a, b) {
+            return arguments.length < 2 ? function(b) { return a + b; } :  a + b;
+        };
+
+        /**
+         * Multiplies two numbers. Equivalent to `a * b` but curried.
+         *
+         * @static
+         * @memberOf R
+         * @param {number} a The first value.
+         * @param {number} b The second value.
+         * @return {number} The result of `a * b`.
+         * @example
+         *
+         * var double = multiply(2);
+         * var triple = multiply(3);
+         * double(3);       //=  6
+         * triple(4);       //= 12
+         * multiply(2, 5);  //= 10
+         */
+        // Multiplies two numbers. Equivalent to `a * b` but curried.
+        //
+        //     var double = multiply(2);
+        //     var triple = multiply(3);
+        //     double(3);       //=  6
+        //     triple(4);       //= 12
+        //     multiply(2, 5);  //= 10
+        var multiply = R.multiply = function _multiply(a, b) {
+            return arguments.length < 2 ? function(b) { return a * b; } :  a * b;
+        };
+
+        /**
+         * Subtracts two numbers. Equivalent to `a - b` but curried.
+         *
+         * @static
+         * @memberOf R
+         * @see subtractN
+         * @param {number} a The first value.
+         * @param {number} b The second value.
+         * @return {number} The result of `a - b`.
+         * @example
+         *
+         * var complementaryAngle = subtract(90);
+         * complementaryAngle(30); //= 60
+         *
+         * var theRestOf = subtract(1);
+         * theRestOf(0.25); //= 0.75
+         *
+         * subtract(10)(8); //= 2
+         */
+        // Subtracts the second parameter from the first.  This is
+        // automatically curried, and while at times the curried version might
+        // be useful, often the curried version of `subtractN` might be what's
+        // wanted.
+        //
+        //     var complementaryAngle = subtract(90);
+        //     complementaryAngle(30); //= 60
+        var subtract = R.subtract = function _subtract(a, b) {
+            return arguments.length < 2 ? function(b) { return a - b; } :  a - b;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        /**
+         * Subtracts two numbers in reverse order. Equivalent to `b - a` but
+         * curried. Probably more useful when partially applied than
+         * `subtract`.
+         *
+         * @static
+         * @memberOf R
+         * @param {number} a The first value.
+         * @param {number} b The second value.
+         * @return {number} The result of `a - b`.
+         * @example
+         *
+         * var complementaryAngle = subtract(90);
+         * complementaryAngle(30); //= 60
+         *
+         * var theRestOf = subtract(1);
+         * theRestOf(0.25); //= 0.75
+         *
+         * subtract(10)(8); //= 2
+         */
+        // Reversed version of `subtract`, where first parameter is subtracted
+        // from the second.  The curried version of this one might me more
+        // useful than that of `subtract`.  For instance:
+        //
+        //     var decrement = subtractN(1);
+        //     decrement(10);   //= 9;
+        //     subtractN(2)(5); //= 3
+        R.subtractN = flip(subtract);
+
+        /**
+         * Divides two numbers. Equivalent to `a / b`.
+         *
+         * @static
+         * @memberOf R
+         * @see divideBy
+         * @param {number} a The first value.
+         * @param {number} b The second value.
+         * @return {number} The result of `a / b`.
+         * @example
+         *
+         * var reciprocal = divide(1);
+         * reciprocal(4);   //= 0.25
+         * divide(71, 100); //= 0.71
+         */
+        // Divides the first parameter by the second.  This is automatically
+        // curried, and while at times the curried
+        // version might be useful, often the curried version of `divideBy` might be what's wanted.
+        var divide = R.divide = function _divide(a, b) {
+            return arguments.length < 2 ? function(b) { return a / b; } :  a / b;
+        };
+
+        /**
+         * Divides two numbers in reverse order. Equivalent to `b / a`.
+         *
+         * @static
+         * @memberOf R
+         * @param {number} a The second value.
+         * @param {number} b The first value.
+         * @return {number} The result of `b / a`.
+         * @example
+         *
+         * var half = divideBy(2);
+         * half(42); // => 21
+         */
+        // Reversed version of `divide`, where the second parameter is divided by the first.  The curried version of
+        // this one might be more useful than that of `divide`.  For instance:
+        //
+        //     var half = divideBy(2);
+        //     half(42); // => 21
+        R.divideBy = flip(divide);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Divides the second parameter by the first and returns the remainder.
+        var modulo = R.modulo = function _modulo(a, b) {
+            return arguments.length < 2 ? function(b) { return a % b; } :  a % b;
+        };
+
+
+        /**
+         * Determine if the passed argument is an integer.
+         *
+         * @private
+         * @param n
+         * @return {Boolean}
+         */
+        var isInteger = Number.isInteger || function isInteger(n) {
+            return (n << 0) === n;
+        };
+
+        /**
+         * mathMod behaves like the modulo operator should mathematically, unlike the `%`
+         * operator (and by extension, ramda.modulo). So while "-17 % 5" is -2,
+         * mathMod(-17, 5) is 3. mathMod requires Integer arguments, and returns NaN
+         * when the modulus is zero or negative.
+         *
+         * @static
+         * @memberOf R
+         * @param {number} m The dividend.
+         * @param {number} p the modulus.
+         * @return {number} The result of `b mod a`.
+         * @example
+         *
+         * mathMod(-17, 5)  // 3
+         * mathMod(17, 5)   // 2
+         * mathMod(17, -5)  // NaN
+         * mathMod(17, 0)   // NaN
+         * mathMod(17.2, 5) // NaN
+         * mathMod(17, 5.3) // NaN
+         */
+        R.mathMod = curry2(function _mathMod(m, p) {
+            if (!isInteger(m) || m < 1) { return NaN; }
+            if (!isInteger(p)) { return NaN; }
+            return ((m % p) + p) % p;
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Reversed version of `modulo`, where the second parameter is divided by the first.  The curried version of
+        // this one might be more useful than that of `modulo`.  For instance:
+        //
+        //     var isOdd = moduloBy(2);
+        //     isOdd(42); // => 0
+        //     isOdd(21); // => 1
+        R.moduloBy = flip(modulo);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Adds together all the elements of a list.
+        R.sum = foldl(add, 0);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Multiplies together all the elements of a list.
+        R.product = foldl(multiply, 1);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns true if the first parameter is less than the second.
+        R.lt = function _lt(a, b) {
+            return arguments.length < 2 ? function(b) { return a < b; } :  a < b;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns true if the first parameter is less than or equal to the second.
+        R.lte = function _lte(a, b) {
+            return arguments.length < 2 ? function(b) { return a <= b; } :  a <= b;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns true if the first parameter is greater than the second.
+        R.gt = function _gt(a, b) {
+            return arguments.length < 2 ? function(b) { return a > b; } :  a > b;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Returns true if the first parameter is greater than or equal to the second.
+        R.gte = function _gte(a, b) {
+            return arguments.length < 2 ? function(b) { return a >= b; } :  a >= b;
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Determines the largest of a list of numbers (or elements that can be cast to numbers)
+        var max = R.max = function _max(list) {
+            return foldl(binary(Math.max), -Infinity, list);
+        };
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Determines the largest of a list of items as determined by pairwise comparisons from the supplied comparator
+        R.maxWith = curry2(function _maxWith(keyFn, list) {
+            if (!(list && list.length > 0)) {
+               return;
+            }
+            var idx = 0, winner = list[idx], max = keyFn(winner), testKey;
+            while (++idx < list.length) {
+                testKey = keyFn(list[idx]);
+                if (testKey > max) {
+                    max = testKey;
+                    winner = list[idx];
+                }
+            }
+            return winner;
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // TODO: combine this with maxWith?
+
+        // Determines the smallest of a list of items as determined by pairwise comparisons from the supplied comparator
+        R.minWith = curry2(function _minWith(keyFn, list) {
+            if (!(list && list.length > 0)) {
+                return;
+            }
+            var idx = 0, winner = list[idx], min = keyFn(list[idx]), testKey;
+            while (++idx < list.length) {
+                testKey = keyFn(list[idx]);
+                if (testKey < min) {
+                    min = testKey;
+                    winner = list[idx];
+                }
+            }
+            return winner;
+        });
+
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Determines the smallest of a list of numbers (or elements that can be cast to numbers)
+        R.min = function _min(list) {
+            return foldl(binary(Math.min), Infinity, list);
+        };
+
+
+        // String Functions
+        // ----------------
+        //
+        // Much of the String.prototype API exposed as simple functions.
+
+        // --------
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // A substring of a String:
+        //
+        //     substring(2, 5, "abcdefghijklm"); //=> "cde"
+        var substring = R.substring = invoker("substring", String.prototype);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // The trailing substring of a String starting with the nth character:
+        //
+        //     substringFrom(8, "abcdefghijklm"); //=> "ijklm"
+        R.substringFrom = flip(substring)(void 0);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // The leading substring of a String ending before the nth character:
+        //
+        //     substringTo(8, "abcdefghijklm"); //=> "abcdefgh"
+        R.substringTo = substring(0);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // The character at the nth position in a String:
+        //
+        //     charAt(8, "abcdefghijklm"); //=> "i"
+        R.charAt = invoker("charAt", String.prototype);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // The ascii code of the character at the nth position in a String:
+        //
+        //     charCodeAt(8, "abcdefghijklm"); //=> 105
+        //     // (... 'a' ~ 97, 'b' ~ 98, ... 'i' ~ 105)
+        R.charCodeAt = invoker("charCodeAt", String.prototype);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Tests a regular expression agains a String
+        //
+        //     match(/([a-z]a)/g, "bananas"); //=> ["ba", "na", "na"]
+        R.match = invoker("match", String.prototype);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Finds the index of a substring in a string, returning -1 if it's not present
+        //
+        //     strIndexOf('c', 'abcdefg) //=> 2
+        R.strIndexOf = invoker("indexOf", String.prototype);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Finds the last index of a substring in a string, returning -1 if it's not present
+        //
+        //     strLastIndexOf('a', 'banana split') //=> 5
+        R.strLastIndexOf = invoker("lastIndexOf", String.prototype);
+
+        /**
+         * The upper case version of a string.
+         *
+         * @static
+         * @memberOf R
+         * @param {string} str The string to upper case.
+         * @return {string} The upper case version of `str`.
+         * @example
+         * toUpperCase('abc') //= 'ABC'
+         */
+        // The upper case version of a string.
+        //
+        //     toUpperCase('abc') //= 'ABC'
+        R.toUpperCase = invoker("toUpperCase", String.prototype);
+
+        /**
+         * The lower case version of a string.
+         *
+         * @static
+         * @memberOf R
+         * @param {string} str The string to lower case.
+         * @return {string} The lower case version of `str`.
+         * @example
+         * toLowerCase('XYZ') //= 'xyz'
+         */
+        // The lower case version of a string.
+        //
+        //     toLowerCase('XYZ') //= 'xyz'
+        R.toLowerCase = invoker("toLowerCase", String.prototype);
+
+
+        /**
+         * Splits a string into an array of strings based on the given
+         * separator.
+         *
+         * @static
+         * @memberOf R
+         * @param {string} sep The separator string.
+         * @param {string} str The string to separate into an array.
+         * @return {Array} The array of strings from `str` separated by `str`.
+         * @example
+         *
+         * var pathComponents = split('/');
+         * pathComponents('/usr/local/bin/node');
+         * //= ['usr', 'local', 'bin', 'node']
+         *
+         * split('.', 'a.b.c.xyz.d');
+         * //= ['a', 'b', 'c', 'xyz', 'd']
+         */
+        // Splits a string into an array of strings based on the given
+        // separator.
+        //
+        //     var pathComponents = split('/');
+        //     pathComponents('/usr/local/bin/node');
+        //     //= ['usr', 'local', 'bin', 'node']
+        //
+        //     split('.', 'a.b.c.xyz.d');
+        //     //= ['a', 'b', 'c', 'xyz', 'd']
+        R.split = invoker("split", String.prototype, 1);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // internal path function
+        // Takes an array, paths, indicating the deep set of keys
+        // to find. E.g.
+        // path(['a', 'b'], {a: {b: 2}}) // => 2
+        function path(paths, obj) {
+            var i = -1, length = paths.length, val;
+            if (obj == null) { return; }
+            val = obj;
+            while (val != null && ++i < length) {
+                val = val[paths[i]];
+            }
+            return val;
+        }
+
+        /**
+         * Retrieve a nested path on an object seperated by the specified
+         * separator value.
+         *
+         * @static
+         * @memberOf R
+         * @param {string} sep The separator to use in `path`.
+         * @param {string} path The path to use.
+         * @return {*} The data at `path`.
+         * @example
+         * pathOn('/', 'a/b/c', {a: {b: {c: 3}}}) //= 3
+         */
+        // Retrieve a nested path on an object seperated by the specified
+        // separator value.
+        //
+        //     pathOn('/', 'a/b/c', {a: {b: {c: 3}}}) //= 3
+        R.pathOn = curry3(function pathOn(sep, str, obj) {
+            return path(str.split(sep), obj);
+        });
+
+        /**
+         * Retrieve a nested path on an object seperated by periods
+         *
+         * @static
+         * @memberOf R
+         * @param {string} path The dot path to use.
+         * @return {*} The data at `path`.
+         * @example
+         * path('a.b', {a: {b: 2}}) //= 2
+         */
+        // Retrieve a nested path on an object seperated by periods
+        // R.path('a.b', {a: {b: 2}}) //= 2
+        R.path = R.pathOn('.');
+
+        // Data Analysis and Grouping Functions
+        // ------------------------------------
+        //
+        // Functions performing SQL-like actions on lists of objects.  These do
+        // not have any SQL-like optimizations performed on them, however.
+
+        // --------
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Reasonable analog to SQL `select` statement.
+        //
+        //     var abby = {name: 'Abby', age: 7, hair: 'blond', grade: 2},
+        //     var fred = {name: 'Fred', age: 12, hair: 'brown', grade: 7}
+        //     var kids = [abby, fred];
+        //     project(['name', 'grade'], kids);
+        //     //= [{name: 'Abby', grade: 2}, {name: 'Fred', grade: 7}]
+        R.project = useWith(map, R.pickAll, identity); // passing `identity` gives correct arity
+
+        /**
+         * Determines whether the given property of an object has a specific
+         * value according to strict equality (`===`).  Most likely used to
+         * filter a list:
+         *
+         * @static
+         * @memberOf R
+         * @param {string|number} name The property name (or index) to use.
+         * @param {*} val The value to compare the property with.
+         * @return {boolean} `true` if the properties are equal, `false` otherwise.
+         * @example
+         *
+         * var abby = {name: 'Abby', age: 7, hair: 'blond'};
+         * var fred = {name: 'Fred', age: 12, hair: 'brown'};
+         * var rusty = {name: 'Rusty', age: 10, hair: 'brown'};
+         * var alois = {name: 'Alois', age: 15, disposition: 'surly'};
+         * var kids = [abby, fred, rusty, alois];
+         * var hasBrownHair = propEq("hair", "brown");
+         * filter(hasBrownHair, kids); //= [fred, rusty]
+         */
+        // Determines whether the given property of an object has a specific value
+        // Most likely used to filter a list:
+        //
+        //     var abby = {name: 'Abby', age: 7, hair: 'blond'};
+        //     var fred = {name: 'Fred', age: 12, hair: 'brown'};
+        //     var rusty = {name: 'Rusty', age: 10, hair: 'brown'};
+        //     var alois = {name: 'Alois', age: 15, disposition: 'surly'};
+        //     var kids = [abby, fred, rusty, alois];
+        //     var hasBrownHair = propEq("hair", "brown");
+        //     filter(hasBrownHair, kids); //= [fred, rusty]
+        R.propEq = curry3(function propEq(name, val, obj) {
+            return obj[name] === val;
+        });
+
+        /**
+         * Combines two lists into a set (i.e. no duplicates) composed of the
+         * elements of each list.
+         *
+         * @static
+         * @memberOf R
+         * @param {Array} as The first list.
+         * @param {Array} bs The second list.
+         * @return {Array} The first and second lists concatenated, with
+         * duplicates removed.
+         * @example
+         *
+         * union([1, 2, 3], [2, 3, 4]); //= [1, 2, 3, 4]
+         */
+        // Combines two lists into a set (i.e. no duplicates) composed of the
+        // elements of each list.
+        R.union = compose(uniq, R.concat);
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Combines two lists into a set (i.e. no duplicates) composed of the elements of each list.  Duplication is
+        // determined according to the value returned by applying the supplied predicate to two list elements.
+        R.unionWith = curry3(function _unionWith(pred, list1, list2) {
+            return uniqWith(pred, concat(list1, list2));
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Finds the set (i.e. no duplicates) of all elements in the first list not contained in the second list.
+        R.difference = curry2(function _difference(first, second) {
+            return uniq(reject(flip(contains)(second), first));
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Finds the set (i.e. no duplicates) of all elements in the first list not contained in the second list.
+        // Duplication is determined according to the value returned by applying the supplied predicate to two list
+        // elements.
+        R.differenceWith = curry3(function differenceWith(pred, first, second) {
+            return uniqWith(pred)(reject(flip(R.containsWith(pred))(second), first));
+        });
+
+        // Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists.
+        R.intersection = curry2(function intersection(list1, list2) {
+            return uniq(filter(flip(contains)(list1), list2));
+        });
+
+        /**
+         * TODO: JSDoc-style documentation for this function
+         */
+        // Combines two lists into a set (i.e. no duplicates) composed of those elements common to both lists.
+        // Duplication is determined according to the value returned by applying the supplied predicate to two list
+        // elements.
+        R.intersectionWith = curry3(function intersectionWith(pred, list1, list2) {
+            var results = [], idx = -1;
+            while (++idx < list1.length) {
+                if (containsWith(pred, list1[idx], list2)) {
+                    results[results.length] = list1[idx];
+                }
+            }
+            return uniqWith(pred, results);
+        });
+
+        /**
+         * Creates a new list whose elements each have two properties: `val` is
+         * the value of the corresponding item in the list supplied, and `key`
+         * is the result of applying the supplied function to that item.
+         *
+         * @static
+         * @private
+         */
+        // Creates a new list whose elements each have two properties: `val` is
+        // the value of the corresponding item in the list supplied, and `key`
+        // is the result of applying the supplied function to that item.
+        function keyValue(fn, list) { // TODO: Should this be made public?
+            return map(function(item) {return {key: fn(item), val: item};}, list);
+        }
+
+        /**
+         * Sorts the list according to a key generated by the supplied function.
+         *
+         * @static
+         * @memberOf R
+         * @param {Function} fn The function mapping `list` items to keys.
+         * @param {Array} list The list to sort.
+         * @return {Array} A new list sorted by the keys generated by `fn`.
+         * @example
+         *
+         * var sortByFirstItem = sortBy(nth(0));
+         * var sortByNameCaseInsensitive = sortBy(compose(toLowerCase, prop("name")));
+         * var pairs = [[-1, 1], [-2, 2], [-3, 3]];
+         * sortByFirstItem(pairs); //= [[-3, 3], [-2, 2], [-1, 1]]
+         * var alice = {
+         *      name: "ALICE",
+         *      age: 101
+         * };
+         * var bob = {
+         *      name: "Bob",
+         *      age: -10
+         * };
+         * var clara = {
+         *      name: "clara",
+         *      age: 314.159
+         * };
+         * var people = [clara, bob, alice];
+         * sortByNameCaseInsensitive(people); //= [alice, bob, clara]
+         */
+        // Sorts the list according to a key generated by the supplied function.
+        R.sortBy = curry2(function sortyBy(fn, list) {
+            /*
+              return sort(comparator(function(a, b) {return fn(a) < fn(b);}), list); // clean, but too time-inefficient
+              return pluck("val", sort(comparator(function(a, b) {return a.key < b.key;}), keyValue(fn, list))); // nice, but no need to clone result of keyValue call, so...
+            */
+            return pluck("val", keyValue(fn, list).sort(comparator(function(a, b) {return a.key < b.key;})));
+        });
+
+        /**
+         * Counts the elements of a list according to how many match each value
+         * of a key generated by the supplied function. Returns an object
+         * mapping the keys produced by `fn` to the number of occurrences in
+         * the list. Note that all keys are coerced to strings because of how
+         * JavaScript objects work.
+         *
+         * @static
+         * @memberOf R
+         * @param {Function} fn The function used to map values to keys.
+         * @param {Array} list The list to count elements from.
+         * @return {Object} An object mapping keys to number of occurrences in the list.
+         * @example
+         *
+         * var numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
+         * var letters = split("", "abcABCaaaBBc");
+         * countBy(Math.floor)(numbers);    //= {"1": 3, "2": 2, "3": 1}
+         * countBy(toLowerCase)(letters);   //= {"a": 5, "b": 4, "c": 3}
+         */
+        // Counts the elements of a list according to how many match each value
+        // of a key generated by the supplied function.
+        R.countBy = curry2(function countBy(fn, list) {
+            return foldl(function(counts, obj) {
+                counts[obj.key] = (counts[obj.key] || 0) + 1;
+                return counts;
+            }, {}, keyValue(fn, list));
+        });
+
+        // All the functional goodness, wrapped in a nice little package, just for you!
+        return R;
+    }());
+}));
+
+},{}],56:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -6944,7 +12019,7 @@ var AutoFocusMixin = {
 
 module.exports = AutoFocusMixin;
 
-},{"./focusNode":150}],46:[function(require,module,exports){
+},{"./focusNode":161}],57:[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  *
@@ -7168,7 +12243,7 @@ var BeforeInputEventPlugin = {
 
 module.exports = BeforeInputEventPlugin;
 
-},{"./EventConstants":59,"./EventPropagators":64,"./ExecutionEnvironment":65,"./SyntheticInputEvent":130,"./keyOf":171}],47:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPropagators":75,"./ExecutionEnvironment":76,"./SyntheticInputEvent":141,"./keyOf":182}],58:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -7291,7 +12366,7 @@ var CSSProperty = {
 
 module.exports = CSSProperty;
 
-},{}],48:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -7390,7 +12465,7 @@ var CSSPropertyOperations = {
 
 module.exports = CSSPropertyOperations;
 
-},{"./CSSProperty":47,"./dangerousStyleValue":145,"./hyphenateStyleName":162,"./memoizeStringOnly":173}],49:[function(require,module,exports){
+},{"./CSSProperty":58,"./dangerousStyleValue":156,"./hyphenateStyleName":173,"./memoizeStringOnly":184}],60:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -7497,7 +12572,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 module.exports = CallbackQueue;
 
 }).call(this,require("oMfpAn"))
-},{"./PooledClass":70,"./invariant":164,"./mixInto":177,"oMfpAn":42}],50:[function(require,module,exports){
+},{"./PooledClass":81,"./invariant":175,"./mixInto":188,"oMfpAn":50}],61:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -7886,7 +12961,7 @@ var ChangeEventPlugin = {
 
 module.exports = ChangeEventPlugin;
 
-},{"./EventConstants":59,"./EventPluginHub":61,"./EventPropagators":64,"./ExecutionEnvironment":65,"./ReactUpdates":120,"./SyntheticEvent":128,"./isEventSupported":165,"./isTextInputElement":167,"./keyOf":171}],51:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPluginHub":72,"./EventPropagators":75,"./ExecutionEnvironment":76,"./ReactUpdates":131,"./SyntheticEvent":139,"./isEventSupported":176,"./isTextInputElement":178,"./keyOf":182}],62:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -7918,7 +12993,7 @@ var ClientReactRootIndex = {
 
 module.exports = ClientReactRootIndex;
 
-},{}],52:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -8184,7 +13259,7 @@ var CompositionEventPlugin = {
 
 module.exports = CompositionEventPlugin;
 
-},{"./EventConstants":59,"./EventPropagators":64,"./ExecutionEnvironment":65,"./ReactInputSelection":102,"./SyntheticCompositionEvent":126,"./getTextContentAccessor":159,"./keyOf":171}],53:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPropagators":75,"./ExecutionEnvironment":76,"./ReactInputSelection":113,"./SyntheticCompositionEvent":137,"./getTextContentAccessor":170,"./keyOf":182}],64:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -8366,7 +13441,7 @@ var DOMChildrenOperations = {
 module.exports = DOMChildrenOperations;
 
 }).call(this,require("oMfpAn"))
-},{"./Danger":56,"./ReactMultiChildUpdateTypes":107,"./getTextContentAccessor":159,"./invariant":164,"oMfpAn":42}],54:[function(require,module,exports){
+},{"./Danger":67,"./ReactMultiChildUpdateTypes":118,"./getTextContentAccessor":170,"./invariant":175,"oMfpAn":50}],65:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -8668,7 +13743,7 @@ var DOMProperty = {
 module.exports = DOMProperty;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],55:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],66:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -8865,7 +13940,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 }).call(this,require("oMfpAn"))
-},{"./DOMProperty":54,"./escapeTextForBrowser":148,"./memoizeStringOnly":173,"./warning":187,"oMfpAn":42}],56:[function(require,module,exports){
+},{"./DOMProperty":65,"./escapeTextForBrowser":159,"./memoizeStringOnly":184,"./warning":198,"oMfpAn":50}],67:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -9056,7 +14131,7 @@ var Danger = {
 module.exports = Danger;
 
 }).call(this,require("oMfpAn"))
-},{"./ExecutionEnvironment":65,"./createNodesFromMarkup":144,"./emptyFunction":146,"./getMarkupWrap":156,"./invariant":164,"oMfpAn":42}],57:[function(require,module,exports){
+},{"./ExecutionEnvironment":76,"./createNodesFromMarkup":155,"./emptyFunction":157,"./getMarkupWrap":167,"./invariant":175,"oMfpAn":50}],68:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -9103,7 +14178,7 @@ var DefaultEventPluginOrder = [
 
 module.exports = DefaultEventPluginOrder;
 
-},{"./keyOf":171}],58:[function(require,module,exports){
+},{"./keyOf":182}],69:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -9250,7 +14325,7 @@ var EnterLeaveEventPlugin = {
 
 module.exports = EnterLeaveEventPlugin;
 
-},{"./EventConstants":59,"./EventPropagators":64,"./ReactMount":105,"./SyntheticMouseEvent":132,"./keyOf":171}],59:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPropagators":75,"./ReactMount":116,"./SyntheticMouseEvent":143,"./keyOf":182}],70:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -9329,7 +14404,7 @@ var EventConstants = {
 
 module.exports = EventConstants;
 
-},{"./keyMirror":170}],60:[function(require,module,exports){
+},{"./keyMirror":181}],71:[function(require,module,exports){
 (function (process){
 /**
  * @providesModule EventListener
@@ -9405,7 +14480,7 @@ var EventListener = {
 module.exports = EventListener;
 
 }).call(this,require("oMfpAn"))
-},{"./emptyFunction":146,"oMfpAn":42}],61:[function(require,module,exports){
+},{"./emptyFunction":157,"oMfpAn":50}],72:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -9699,7 +14774,7 @@ var EventPluginHub = {
 module.exports = EventPluginHub;
 
 }).call(this,require("oMfpAn"))
-},{"./EventPluginRegistry":62,"./EventPluginUtils":63,"./accumulate":138,"./forEachAccumulated":151,"./invariant":164,"./isEventSupported":165,"./monitorCodeUse":178,"oMfpAn":42}],62:[function(require,module,exports){
+},{"./EventPluginRegistry":73,"./EventPluginUtils":74,"./accumulate":149,"./forEachAccumulated":162,"./invariant":175,"./isEventSupported":176,"./monitorCodeUse":189,"oMfpAn":50}],73:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -9986,7 +15061,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],63:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],74:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -10214,7 +15289,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 
 }).call(this,require("oMfpAn"))
-},{"./EventConstants":59,"./invariant":164,"oMfpAn":42}],64:[function(require,module,exports){
+},{"./EventConstants":70,"./invariant":175,"oMfpAn":50}],75:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -10361,7 +15436,7 @@ var EventPropagators = {
 module.exports = EventPropagators;
 
 }).call(this,require("oMfpAn"))
-},{"./EventConstants":59,"./EventPluginHub":61,"./accumulate":138,"./forEachAccumulated":151,"oMfpAn":42}],65:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPluginHub":72,"./accumulate":149,"./forEachAccumulated":162,"oMfpAn":50}],76:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -10413,7 +15488,7 @@ var ExecutionEnvironment = {
 
 module.exports = ExecutionEnvironment;
 
-},{}],66:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -10601,7 +15676,7 @@ var HTMLDOMPropertyConfig = {
 
 module.exports = HTMLDOMPropertyConfig;
 
-},{"./DOMProperty":54,"./ExecutionEnvironment":65}],67:[function(require,module,exports){
+},{"./DOMProperty":65,"./ExecutionEnvironment":76}],78:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -10764,7 +15839,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactPropTypes":113,"./invariant":164,"oMfpAn":42}],68:[function(require,module,exports){
+},{"./ReactPropTypes":124,"./invariant":175,"oMfpAn":50}],79:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -10820,7 +15895,7 @@ var LocalEventTrapMixin = {
 module.exports = LocalEventTrapMixin;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactBrowserEventEmitter":73,"./accumulate":138,"./forEachAccumulated":151,"./invariant":164,"oMfpAn":42}],69:[function(require,module,exports){
+},{"./ReactBrowserEventEmitter":84,"./accumulate":149,"./forEachAccumulated":162,"./invariant":175,"oMfpAn":50}],80:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -10885,7 +15960,7 @@ var MobileSafariClickEventPlugin = {
 
 module.exports = MobileSafariClickEventPlugin;
 
-},{"./EventConstants":59,"./emptyFunction":146}],70:[function(require,module,exports){
+},{"./EventConstants":70,"./emptyFunction":157}],81:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -11008,7 +16083,7 @@ var PooledClass = {
 module.exports = PooledClass;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],71:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],82:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -11143,7 +16218,7 @@ React.version = '0.11.1';
 module.exports = React;
 
 }).call(this,require("oMfpAn"))
-},{"./DOMPropertyOperations":55,"./EventPluginUtils":63,"./ExecutionEnvironment":65,"./ReactChildren":74,"./ReactComponent":75,"./ReactCompositeComponent":77,"./ReactContext":78,"./ReactCurrentOwner":79,"./ReactDOM":80,"./ReactDOMComponent":82,"./ReactDefaultInjection":92,"./ReactDescriptor":95,"./ReactInstanceHandles":103,"./ReactMount":105,"./ReactMultiChild":106,"./ReactPerf":109,"./ReactPropTypes":113,"./ReactServerRendering":117,"./ReactTextComponent":119,"./onlyChild":179,"oMfpAn":42}],72:[function(require,module,exports){
+},{"./DOMPropertyOperations":66,"./EventPluginUtils":74,"./ExecutionEnvironment":76,"./ReactChildren":85,"./ReactComponent":86,"./ReactCompositeComponent":88,"./ReactContext":89,"./ReactCurrentOwner":90,"./ReactDOM":91,"./ReactDOMComponent":93,"./ReactDefaultInjection":103,"./ReactDescriptor":106,"./ReactInstanceHandles":114,"./ReactMount":116,"./ReactMultiChild":117,"./ReactPerf":120,"./ReactPropTypes":124,"./ReactServerRendering":128,"./ReactTextComponent":130,"./onlyChild":190,"oMfpAn":50}],83:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -11193,7 +16268,7 @@ var ReactBrowserComponentMixin = {
 module.exports = ReactBrowserComponentMixin;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactEmptyComponent":97,"./ReactMount":105,"./invariant":164,"oMfpAn":42}],73:[function(require,module,exports){
+},{"./ReactEmptyComponent":108,"./ReactMount":116,"./invariant":175,"oMfpAn":50}],84:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -11555,7 +16630,7 @@ var ReactBrowserEventEmitter = merge(ReactEventEmitterMixin, {
 
 module.exports = ReactBrowserEventEmitter;
 
-},{"./EventConstants":59,"./EventPluginHub":61,"./EventPluginRegistry":62,"./ReactEventEmitterMixin":99,"./ViewportMetrics":137,"./isEventSupported":165,"./merge":174}],74:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPluginHub":72,"./EventPluginRegistry":73,"./ReactEventEmitterMixin":110,"./ViewportMetrics":148,"./isEventSupported":176,"./merge":185}],85:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -11712,7 +16787,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 }).call(this,require("oMfpAn"))
-},{"./PooledClass":70,"./traverseAllChildren":186,"./warning":187,"oMfpAn":42}],75:[function(require,module,exports){
+},{"./PooledClass":81,"./traverseAllChildren":197,"./warning":198,"oMfpAn":50}],86:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -12162,7 +17237,7 @@ var ReactComponent = {
 module.exports = ReactComponent;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactDescriptor":95,"./ReactOwner":108,"./ReactUpdates":120,"./invariant":164,"./keyMirror":170,"./merge":174,"oMfpAn":42}],76:[function(require,module,exports){
+},{"./ReactDescriptor":106,"./ReactOwner":119,"./ReactUpdates":131,"./invariant":175,"./keyMirror":181,"./merge":185,"oMfpAn":50}],87:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -12291,7 +17366,7 @@ var ReactComponentBrowserEnvironment = {
 module.exports = ReactComponentBrowserEnvironment;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactDOMIDOperations":84,"./ReactMarkupChecksum":104,"./ReactMount":105,"./ReactPerf":109,"./ReactReconcileTransaction":115,"./getReactRootElementInContainer":158,"./invariant":164,"./setInnerHTML":182,"oMfpAn":42}],77:[function(require,module,exports){
+},{"./ReactDOMIDOperations":95,"./ReactMarkupChecksum":115,"./ReactMount":116,"./ReactPerf":120,"./ReactReconcileTransaction":126,"./getReactRootElementInContainer":169,"./invariant":175,"./setInnerHTML":193,"oMfpAn":50}],88:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -13720,7 +18795,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactComponent":75,"./ReactContext":78,"./ReactCurrentOwner":79,"./ReactDescriptor":95,"./ReactDescriptorValidator":96,"./ReactEmptyComponent":97,"./ReactErrorUtils":98,"./ReactOwner":108,"./ReactPerf":109,"./ReactPropTransferer":110,"./ReactPropTypeLocationNames":111,"./ReactPropTypeLocations":112,"./ReactUpdates":120,"./instantiateReactComponent":163,"./invariant":164,"./keyMirror":170,"./mapObject":172,"./merge":174,"./mixInto":177,"./monitorCodeUse":178,"./shouldUpdateReactComponent":184,"./warning":187,"oMfpAn":42}],78:[function(require,module,exports){
+},{"./ReactComponent":86,"./ReactContext":89,"./ReactCurrentOwner":90,"./ReactDescriptor":106,"./ReactDescriptorValidator":107,"./ReactEmptyComponent":108,"./ReactErrorUtils":109,"./ReactOwner":119,"./ReactPerf":120,"./ReactPropTransferer":121,"./ReactPropTypeLocationNames":122,"./ReactPropTypeLocations":123,"./ReactUpdates":131,"./instantiateReactComponent":174,"./invariant":175,"./keyMirror":181,"./mapObject":183,"./merge":185,"./mixInto":188,"./monitorCodeUse":189,"./shouldUpdateReactComponent":195,"./warning":198,"oMfpAn":50}],89:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -13789,7 +18864,7 @@ var ReactContext = {
 
 module.exports = ReactContext;
 
-},{"./merge":174}],79:[function(require,module,exports){
+},{"./merge":185}],90:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -13830,7 +18905,7 @@ var ReactCurrentOwner = {
 
 module.exports = ReactCurrentOwner;
 
-},{}],80:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -14043,7 +19118,7 @@ ReactDOM.injection = injection;
 module.exports = ReactDOM;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactDOMComponent":82,"./ReactDescriptor":95,"./ReactDescriptorValidator":96,"./mapObject":172,"./mergeInto":176,"oMfpAn":42}],81:[function(require,module,exports){
+},{"./ReactDOMComponent":93,"./ReactDescriptor":106,"./ReactDescriptorValidator":107,"./mapObject":183,"./mergeInto":187,"oMfpAn":50}],92:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14114,7 +19189,7 @@ var ReactDOMButton = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMButton;
 
-},{"./AutoFocusMixin":45,"./ReactBrowserComponentMixin":72,"./ReactCompositeComponent":77,"./ReactDOM":80,"./keyMirror":170}],82:[function(require,module,exports){
+},{"./AutoFocusMixin":56,"./ReactBrowserComponentMixin":83,"./ReactCompositeComponent":88,"./ReactDOM":91,"./keyMirror":181}],93:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -14536,7 +19611,7 @@ mixInto(ReactDOMComponent, ReactBrowserComponentMixin);
 module.exports = ReactDOMComponent;
 
 }).call(this,require("oMfpAn"))
-},{"./CSSPropertyOperations":48,"./DOMProperty":54,"./DOMPropertyOperations":55,"./ReactBrowserComponentMixin":72,"./ReactBrowserEventEmitter":73,"./ReactComponent":75,"./ReactMount":105,"./ReactMultiChild":106,"./ReactPerf":109,"./escapeTextForBrowser":148,"./invariant":164,"./keyOf":171,"./merge":174,"./mixInto":177,"oMfpAn":42}],83:[function(require,module,exports){
+},{"./CSSPropertyOperations":59,"./DOMProperty":65,"./DOMPropertyOperations":66,"./ReactBrowserComponentMixin":83,"./ReactBrowserEventEmitter":84,"./ReactComponent":86,"./ReactMount":116,"./ReactMultiChild":117,"./ReactPerf":120,"./escapeTextForBrowser":159,"./invariant":175,"./keyOf":182,"./merge":185,"./mixInto":188,"oMfpAn":50}],94:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14592,7 +19667,7 @@ var ReactDOMForm = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMForm;
 
-},{"./EventConstants":59,"./LocalEventTrapMixin":68,"./ReactBrowserComponentMixin":72,"./ReactCompositeComponent":77,"./ReactDOM":80}],84:[function(require,module,exports){
+},{"./EventConstants":70,"./LocalEventTrapMixin":79,"./ReactBrowserComponentMixin":83,"./ReactCompositeComponent":88,"./ReactDOM":91}],95:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -14785,7 +19860,7 @@ var ReactDOMIDOperations = {
 module.exports = ReactDOMIDOperations;
 
 }).call(this,require("oMfpAn"))
-},{"./CSSPropertyOperations":48,"./DOMChildrenOperations":53,"./DOMPropertyOperations":55,"./ReactMount":105,"./ReactPerf":109,"./invariant":164,"./setInnerHTML":182,"oMfpAn":42}],85:[function(require,module,exports){
+},{"./CSSPropertyOperations":59,"./DOMChildrenOperations":64,"./DOMPropertyOperations":66,"./ReactMount":116,"./ReactPerf":120,"./invariant":175,"./setInnerHTML":193,"oMfpAn":50}],96:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -14839,7 +19914,7 @@ var ReactDOMImg = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMImg;
 
-},{"./EventConstants":59,"./LocalEventTrapMixin":68,"./ReactBrowserComponentMixin":72,"./ReactCompositeComponent":77,"./ReactDOM":80}],86:[function(require,module,exports){
+},{"./EventConstants":70,"./LocalEventTrapMixin":79,"./ReactBrowserComponentMixin":83,"./ReactCompositeComponent":88,"./ReactDOM":91}],97:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -15025,7 +20100,7 @@ var ReactDOMInput = ReactCompositeComponent.createClass({
 module.exports = ReactDOMInput;
 
 }).call(this,require("oMfpAn"))
-},{"./AutoFocusMixin":45,"./DOMPropertyOperations":55,"./LinkedValueUtils":67,"./ReactBrowserComponentMixin":72,"./ReactCompositeComponent":77,"./ReactDOM":80,"./ReactMount":105,"./invariant":164,"./merge":174,"oMfpAn":42}],87:[function(require,module,exports){
+},{"./AutoFocusMixin":56,"./DOMPropertyOperations":66,"./LinkedValueUtils":78,"./ReactBrowserComponentMixin":83,"./ReactCompositeComponent":88,"./ReactDOM":91,"./ReactMount":116,"./invariant":175,"./merge":185,"oMfpAn":50}],98:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -15084,7 +20159,7 @@ var ReactDOMOption = ReactCompositeComponent.createClass({
 module.exports = ReactDOMOption;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactBrowserComponentMixin":72,"./ReactCompositeComponent":77,"./ReactDOM":80,"./warning":187,"oMfpAn":42}],88:[function(require,module,exports){
+},{"./ReactBrowserComponentMixin":83,"./ReactCompositeComponent":88,"./ReactDOM":91,"./warning":198,"oMfpAn":50}],99:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15267,7 +20342,7 @@ var ReactDOMSelect = ReactCompositeComponent.createClass({
 
 module.exports = ReactDOMSelect;
 
-},{"./AutoFocusMixin":45,"./LinkedValueUtils":67,"./ReactBrowserComponentMixin":72,"./ReactCompositeComponent":77,"./ReactDOM":80,"./merge":174}],89:[function(require,module,exports){
+},{"./AutoFocusMixin":56,"./LinkedValueUtils":78,"./ReactBrowserComponentMixin":83,"./ReactCompositeComponent":88,"./ReactDOM":91,"./merge":185}],100:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15483,7 +20558,7 @@ var ReactDOMSelection = {
 
 module.exports = ReactDOMSelection;
 
-},{"./ExecutionEnvironment":65,"./getNodeForCharacterOffset":157,"./getTextContentAccessor":159}],90:[function(require,module,exports){
+},{"./ExecutionEnvironment":76,"./getNodeForCharacterOffset":168,"./getTextContentAccessor":170}],101:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -15629,7 +20704,7 @@ var ReactDOMTextarea = ReactCompositeComponent.createClass({
 module.exports = ReactDOMTextarea;
 
 }).call(this,require("oMfpAn"))
-},{"./AutoFocusMixin":45,"./DOMPropertyOperations":55,"./LinkedValueUtils":67,"./ReactBrowserComponentMixin":72,"./ReactCompositeComponent":77,"./ReactDOM":80,"./invariant":164,"./merge":174,"./warning":187,"oMfpAn":42}],91:[function(require,module,exports){
+},{"./AutoFocusMixin":56,"./DOMPropertyOperations":66,"./LinkedValueUtils":78,"./ReactBrowserComponentMixin":83,"./ReactCompositeComponent":88,"./ReactDOM":91,"./invariant":175,"./merge":185,"./warning":198,"oMfpAn":50}],102:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -15706,7 +20781,7 @@ var ReactDefaultBatchingStrategy = {
 
 module.exports = ReactDefaultBatchingStrategy;
 
-},{"./ReactUpdates":120,"./Transaction":136,"./emptyFunction":146,"./mixInto":177}],92:[function(require,module,exports){
+},{"./ReactUpdates":131,"./Transaction":147,"./emptyFunction":157,"./mixInto":188}],103:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -15838,7 +20913,7 @@ module.exports = {
 };
 
 }).call(this,require("oMfpAn"))
-},{"./BeforeInputEventPlugin":46,"./ChangeEventPlugin":50,"./ClientReactRootIndex":51,"./CompositionEventPlugin":52,"./DefaultEventPluginOrder":57,"./EnterLeaveEventPlugin":58,"./ExecutionEnvironment":65,"./HTMLDOMPropertyConfig":66,"./MobileSafariClickEventPlugin":69,"./ReactBrowserComponentMixin":72,"./ReactComponentBrowserEnvironment":76,"./ReactDOM":80,"./ReactDOMButton":81,"./ReactDOMForm":83,"./ReactDOMImg":85,"./ReactDOMInput":86,"./ReactDOMOption":87,"./ReactDOMSelect":88,"./ReactDOMTextarea":90,"./ReactDefaultBatchingStrategy":91,"./ReactDefaultPerf":93,"./ReactEventListener":100,"./ReactInjection":101,"./ReactInstanceHandles":103,"./ReactMount":105,"./SVGDOMPropertyConfig":121,"./SelectEventPlugin":122,"./ServerReactRootIndex":123,"./SimpleEventPlugin":124,"./createFullPageComponent":143,"oMfpAn":42}],93:[function(require,module,exports){
+},{"./BeforeInputEventPlugin":57,"./ChangeEventPlugin":61,"./ClientReactRootIndex":62,"./CompositionEventPlugin":63,"./DefaultEventPluginOrder":68,"./EnterLeaveEventPlugin":69,"./ExecutionEnvironment":76,"./HTMLDOMPropertyConfig":77,"./MobileSafariClickEventPlugin":80,"./ReactBrowserComponentMixin":83,"./ReactComponentBrowserEnvironment":87,"./ReactDOM":91,"./ReactDOMButton":92,"./ReactDOMForm":94,"./ReactDOMImg":96,"./ReactDOMInput":97,"./ReactDOMOption":98,"./ReactDOMSelect":99,"./ReactDOMTextarea":101,"./ReactDefaultBatchingStrategy":102,"./ReactDefaultPerf":104,"./ReactEventListener":111,"./ReactInjection":112,"./ReactInstanceHandles":114,"./ReactMount":116,"./SVGDOMPropertyConfig":132,"./SelectEventPlugin":133,"./ServerReactRootIndex":134,"./SimpleEventPlugin":135,"./createFullPageComponent":154,"oMfpAn":50}],104:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16101,7 +21176,7 @@ var ReactDefaultPerf = {
 
 module.exports = ReactDefaultPerf;
 
-},{"./DOMProperty":54,"./ReactDefaultPerfAnalysis":94,"./ReactMount":105,"./ReactPerf":109,"./performanceNow":181}],94:[function(require,module,exports){
+},{"./DOMProperty":65,"./ReactDefaultPerfAnalysis":105,"./ReactMount":116,"./ReactPerf":120,"./performanceNow":192}],105:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16306,7 +21381,7 @@ var ReactDefaultPerfAnalysis = {
 
 module.exports = ReactDefaultPerfAnalysis;
 
-},{"./merge":174}],95:[function(require,module,exports){
+},{"./merge":185}],106:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -16561,7 +21636,7 @@ ReactDescriptor.isValidDescriptor = function(object) {
 module.exports = ReactDescriptor;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactContext":78,"./ReactCurrentOwner":79,"./merge":174,"./warning":187,"oMfpAn":42}],96:[function(require,module,exports){
+},{"./ReactContext":89,"./ReactCurrentOwner":90,"./merge":185,"./warning":198,"oMfpAn":50}],107:[function(require,module,exports){
 /**
  * Copyright 2014 Facebook, Inc.
  *
@@ -16846,7 +21921,7 @@ var ReactDescriptorValidator = {
 
 module.exports = ReactDescriptorValidator;
 
-},{"./ReactCurrentOwner":79,"./ReactDescriptor":95,"./ReactPropTypeLocations":112,"./monitorCodeUse":178}],97:[function(require,module,exports){
+},{"./ReactCurrentOwner":90,"./ReactDescriptor":106,"./ReactPropTypeLocations":123,"./monitorCodeUse":189}],108:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -16928,7 +22003,7 @@ var ReactEmptyComponent = {
 module.exports = ReactEmptyComponent;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],98:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],109:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -16967,7 +22042,7 @@ var ReactErrorUtils = {
 
 module.exports = ReactErrorUtils;
 
-},{}],99:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17024,7 +22099,7 @@ var ReactEventEmitterMixin = {
 
 module.exports = ReactEventEmitterMixin;
 
-},{"./EventPluginHub":61}],100:[function(require,module,exports){
+},{"./EventPluginHub":72}],111:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17215,7 +22290,7 @@ var ReactEventListener = {
 
 module.exports = ReactEventListener;
 
-},{"./EventListener":60,"./ExecutionEnvironment":65,"./PooledClass":70,"./ReactInstanceHandles":103,"./ReactMount":105,"./ReactUpdates":120,"./getEventTarget":155,"./getUnboundedScrollPosition":160,"./mixInto":177}],101:[function(require,module,exports){
+},{"./EventListener":71,"./ExecutionEnvironment":76,"./PooledClass":81,"./ReactInstanceHandles":114,"./ReactMount":116,"./ReactUpdates":131,"./getEventTarget":166,"./getUnboundedScrollPosition":171,"./mixInto":188}],112:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17262,7 +22337,7 @@ var ReactInjection = {
 
 module.exports = ReactInjection;
 
-},{"./DOMProperty":54,"./EventPluginHub":61,"./ReactBrowserEventEmitter":73,"./ReactComponent":75,"./ReactCompositeComponent":77,"./ReactDOM":80,"./ReactEmptyComponent":97,"./ReactPerf":109,"./ReactRootIndex":116,"./ReactUpdates":120}],102:[function(require,module,exports){
+},{"./DOMProperty":65,"./EventPluginHub":72,"./ReactBrowserEventEmitter":84,"./ReactComponent":86,"./ReactCompositeComponent":88,"./ReactDOM":91,"./ReactEmptyComponent":108,"./ReactPerf":120,"./ReactRootIndex":127,"./ReactUpdates":131}],113:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17405,7 +22480,7 @@ var ReactInputSelection = {
 
 module.exports = ReactInputSelection;
 
-},{"./ReactDOMSelection":89,"./containsNode":140,"./focusNode":150,"./getActiveElement":152}],103:[function(require,module,exports){
+},{"./ReactDOMSelection":100,"./containsNode":151,"./focusNode":161,"./getActiveElement":163}],114:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -17747,7 +22822,7 @@ var ReactInstanceHandles = {
 module.exports = ReactInstanceHandles;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactRootIndex":116,"./invariant":164,"oMfpAn":42}],104:[function(require,module,exports){
+},{"./ReactRootIndex":127,"./invariant":175,"oMfpAn":50}],115:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -17802,7 +22877,7 @@ var ReactMarkupChecksum = {
 
 module.exports = ReactMarkupChecksum;
 
-},{"./adler32":139}],105:[function(require,module,exports){
+},{"./adler32":150}],116:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -18487,7 +23562,7 @@ var ReactMount = {
 module.exports = ReactMount;
 
 }).call(this,require("oMfpAn"))
-},{"./DOMProperty":54,"./ReactBrowserEventEmitter":73,"./ReactCurrentOwner":79,"./ReactDescriptor":95,"./ReactInstanceHandles":103,"./ReactPerf":109,"./containsNode":140,"./getReactRootElementInContainer":158,"./instantiateReactComponent":163,"./invariant":164,"./shouldUpdateReactComponent":184,"./warning":187,"oMfpAn":42}],106:[function(require,module,exports){
+},{"./DOMProperty":65,"./ReactBrowserEventEmitter":84,"./ReactCurrentOwner":90,"./ReactDescriptor":106,"./ReactInstanceHandles":114,"./ReactPerf":120,"./containsNode":151,"./getReactRootElementInContainer":169,"./instantiateReactComponent":174,"./invariant":175,"./shouldUpdateReactComponent":195,"./warning":198,"oMfpAn":50}],117:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18919,7 +23994,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 
-},{"./ReactComponent":75,"./ReactMultiChildUpdateTypes":107,"./flattenChildren":149,"./instantiateReactComponent":163,"./shouldUpdateReactComponent":184}],107:[function(require,module,exports){
+},{"./ReactComponent":86,"./ReactMultiChildUpdateTypes":118,"./flattenChildren":160,"./instantiateReactComponent":174,"./shouldUpdateReactComponent":195}],118:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -18959,7 +24034,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 
 module.exports = ReactMultiChildUpdateTypes;
 
-},{"./keyMirror":170}],108:[function(require,module,exports){
+},{"./keyMirror":181}],119:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -19122,7 +24197,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 
 }).call(this,require("oMfpAn"))
-},{"./emptyObject":147,"./invariant":164,"oMfpAn":42}],109:[function(require,module,exports){
+},{"./emptyObject":158,"./invariant":175,"oMfpAn":50}],120:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -19211,7 +24286,7 @@ function _noMeasure(objName, fnName, func) {
 module.exports = ReactPerf;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":42}],110:[function(require,module,exports){
+},{"oMfpAn":50}],121:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -19377,7 +24452,7 @@ var ReactPropTransferer = {
 module.exports = ReactPropTransferer;
 
 }).call(this,require("oMfpAn"))
-},{"./emptyFunction":146,"./invariant":164,"./joinClasses":169,"./merge":174,"oMfpAn":42}],111:[function(require,module,exports){
+},{"./emptyFunction":157,"./invariant":175,"./joinClasses":180,"./merge":185,"oMfpAn":50}],122:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -19412,7 +24487,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactPropTypeLocationNames;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":42}],112:[function(require,module,exports){
+},{"oMfpAn":50}],123:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19443,7 +24518,7 @@ var ReactPropTypeLocations = keyMirror({
 
 module.exports = ReactPropTypeLocations;
 
-},{"./keyMirror":170}],113:[function(require,module,exports){
+},{"./keyMirror":181}],124:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19788,7 +24863,7 @@ function getPreciseType(propValue) {
 
 module.exports = ReactPropTypes;
 
-},{"./ReactDescriptor":95,"./ReactPropTypeLocationNames":111,"./emptyFunction":146}],114:[function(require,module,exports){
+},{"./ReactDescriptor":106,"./ReactPropTypeLocationNames":122,"./emptyFunction":157}],125:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -19851,7 +24926,7 @@ PooledClass.addPoolingTo(ReactPutListenerQueue);
 
 module.exports = ReactPutListenerQueue;
 
-},{"./PooledClass":70,"./ReactBrowserEventEmitter":73,"./mixInto":177}],115:[function(require,module,exports){
+},{"./PooledClass":81,"./ReactBrowserEventEmitter":84,"./mixInto":188}],126:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -20035,7 +25110,7 @@ PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
 
-},{"./CallbackQueue":49,"./PooledClass":70,"./ReactBrowserEventEmitter":73,"./ReactInputSelection":102,"./ReactPutListenerQueue":114,"./Transaction":136,"./mixInto":177}],116:[function(require,module,exports){
+},{"./CallbackQueue":60,"./PooledClass":81,"./ReactBrowserEventEmitter":84,"./ReactInputSelection":113,"./ReactPutListenerQueue":125,"./Transaction":147,"./mixInto":188}],127:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -20073,7 +25148,7 @@ var ReactRootIndex = {
 
 module.exports = ReactRootIndex;
 
-},{}],117:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -20166,7 +25241,7 @@ module.exports = {
 };
 
 }).call(this,require("oMfpAn"))
-},{"./ReactDescriptor":95,"./ReactInstanceHandles":103,"./ReactMarkupChecksum":104,"./ReactServerRenderingTransaction":118,"./instantiateReactComponent":163,"./invariant":164,"oMfpAn":42}],118:[function(require,module,exports){
+},{"./ReactDescriptor":106,"./ReactInstanceHandles":114,"./ReactMarkupChecksum":115,"./ReactServerRenderingTransaction":129,"./instantiateReactComponent":174,"./invariant":175,"oMfpAn":50}],129:[function(require,module,exports){
 /**
  * Copyright 2014 Facebook, Inc.
  *
@@ -20283,7 +25358,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
 
-},{"./CallbackQueue":49,"./PooledClass":70,"./ReactPutListenerQueue":114,"./Transaction":136,"./emptyFunction":146,"./mixInto":177}],119:[function(require,module,exports){
+},{"./CallbackQueue":60,"./PooledClass":81,"./ReactPutListenerQueue":125,"./Transaction":147,"./emptyFunction":157,"./mixInto":188}],130:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -20392,7 +25467,7 @@ mixInto(ReactTextComponent, {
 
 module.exports = ReactDescriptor.createFactory(ReactTextComponent);
 
-},{"./DOMPropertyOperations":55,"./ReactBrowserComponentMixin":72,"./ReactComponent":75,"./ReactDescriptor":95,"./escapeTextForBrowser":148,"./mixInto":177}],120:[function(require,module,exports){
+},{"./DOMPropertyOperations":66,"./ReactBrowserComponentMixin":83,"./ReactComponent":86,"./ReactDescriptor":106,"./escapeTextForBrowser":159,"./mixInto":188}],131:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -20661,7 +25736,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 
 }).call(this,require("oMfpAn"))
-},{"./CallbackQueue":49,"./PooledClass":70,"./ReactCurrentOwner":79,"./ReactPerf":109,"./Transaction":136,"./invariant":164,"./mixInto":177,"./warning":187,"oMfpAn":42}],121:[function(require,module,exports){
+},{"./CallbackQueue":60,"./PooledClass":81,"./ReactCurrentOwner":90,"./ReactPerf":120,"./Transaction":147,"./invariant":175,"./mixInto":188,"./warning":198,"oMfpAn":50}],132:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -20760,7 +25835,7 @@ var SVGDOMPropertyConfig = {
 
 module.exports = SVGDOMPropertyConfig;
 
-},{"./DOMProperty":54}],122:[function(require,module,exports){
+},{"./DOMProperty":65}],133:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -20962,7 +26037,7 @@ var SelectEventPlugin = {
 
 module.exports = SelectEventPlugin;
 
-},{"./EventConstants":59,"./EventPropagators":64,"./ReactInputSelection":102,"./SyntheticEvent":128,"./getActiveElement":152,"./isTextInputElement":167,"./keyOf":171,"./shallowEqual":183}],123:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPropagators":75,"./ReactInputSelection":113,"./SyntheticEvent":139,"./getActiveElement":163,"./isTextInputElement":178,"./keyOf":182,"./shallowEqual":194}],134:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -21000,7 +26075,7 @@ var ServerReactRootIndex = {
 
 module.exports = ServerReactRootIndex;
 
-},{}],124:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -21423,7 +26498,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 
 }).call(this,require("oMfpAn"))
-},{"./EventConstants":59,"./EventPluginUtils":63,"./EventPropagators":64,"./SyntheticClipboardEvent":125,"./SyntheticDragEvent":127,"./SyntheticEvent":128,"./SyntheticFocusEvent":129,"./SyntheticKeyboardEvent":131,"./SyntheticMouseEvent":132,"./SyntheticTouchEvent":133,"./SyntheticUIEvent":134,"./SyntheticWheelEvent":135,"./invariant":164,"./keyOf":171,"oMfpAn":42}],125:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPluginUtils":74,"./EventPropagators":75,"./SyntheticClipboardEvent":136,"./SyntheticDragEvent":138,"./SyntheticEvent":139,"./SyntheticFocusEvent":140,"./SyntheticKeyboardEvent":142,"./SyntheticMouseEvent":143,"./SyntheticTouchEvent":144,"./SyntheticUIEvent":145,"./SyntheticWheelEvent":146,"./invariant":175,"./keyOf":182,"oMfpAn":50}],136:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -21476,7 +26551,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 module.exports = SyntheticClipboardEvent;
 
 
-},{"./SyntheticEvent":128}],126:[function(require,module,exports){
+},{"./SyntheticEvent":139}],137:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -21529,7 +26604,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticCompositionEvent;
 
 
-},{"./SyntheticEvent":128}],127:[function(require,module,exports){
+},{"./SyntheticEvent":139}],138:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -21575,7 +26650,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
 
-},{"./SyntheticMouseEvent":132}],128:[function(require,module,exports){
+},{"./SyntheticMouseEvent":143}],139:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -21741,7 +26816,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.threeArgumentPooler);
 
 module.exports = SyntheticEvent;
 
-},{"./PooledClass":70,"./emptyFunction":146,"./getEventTarget":155,"./merge":174,"./mergeInto":176}],129:[function(require,module,exports){
+},{"./PooledClass":81,"./emptyFunction":157,"./getEventTarget":166,"./merge":185,"./mergeInto":187}],140:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -21787,7 +26862,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
 
-},{"./SyntheticUIEvent":134}],130:[function(require,module,exports){
+},{"./SyntheticUIEvent":145}],141:[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  *
@@ -21841,7 +26916,7 @@ SyntheticEvent.augmentClass(
 module.exports = SyntheticInputEvent;
 
 
-},{"./SyntheticEvent":128}],131:[function(require,module,exports){
+},{"./SyntheticEvent":139}],142:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -21930,7 +27005,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
 
-},{"./SyntheticUIEvent":134,"./getEventKey":153,"./getEventModifierState":154}],132:[function(require,module,exports){
+},{"./SyntheticUIEvent":145,"./getEventKey":164,"./getEventModifierState":165}],143:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22020,7 +27095,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
 
-},{"./SyntheticUIEvent":134,"./ViewportMetrics":137,"./getEventModifierState":154}],133:[function(require,module,exports){
+},{"./SyntheticUIEvent":145,"./ViewportMetrics":148,"./getEventModifierState":165}],144:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22075,7 +27150,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
 
-},{"./SyntheticUIEvent":134,"./getEventModifierState":154}],134:[function(require,module,exports){
+},{"./SyntheticUIEvent":145,"./getEventModifierState":165}],145:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22144,7 +27219,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
 
-},{"./SyntheticEvent":128,"./getEventTarget":155}],135:[function(require,module,exports){
+},{"./SyntheticEvent":139,"./getEventTarget":166}],146:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22212,7 +27287,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
 
-},{"./SyntheticMouseEvent":132}],136:[function(require,module,exports){
+},{"./SyntheticMouseEvent":143}],147:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -22460,7 +27535,7 @@ var Transaction = {
 module.exports = Transaction;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],137:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],148:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22499,7 +27574,7 @@ var ViewportMetrics = {
 
 module.exports = ViewportMetrics;
 
-},{"./getUnboundedScrollPosition":160}],138:[function(require,module,exports){
+},{"./getUnboundedScrollPosition":171}],149:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -22557,7 +27632,7 @@ function accumulate(current, next) {
 module.exports = accumulate;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],139:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],150:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22598,7 +27673,7 @@ function adler32(data) {
 
 module.exports = adler32;
 
-},{}],140:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22649,7 +27724,7 @@ function containsNode(outerNode, innerNode) {
 
 module.exports = containsNode;
 
-},{"./isTextNode":168}],141:[function(require,module,exports){
+},{"./isTextNode":179}],152:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -22707,7 +27782,7 @@ function copyProperties(obj, a, b, c, d, e, f) {
 module.exports = copyProperties;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":42}],142:[function(require,module,exports){
+},{"oMfpAn":50}],153:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -22800,7 +27875,7 @@ function createArrayFrom(obj) {
 
 module.exports = createArrayFrom;
 
-},{"./toArray":185}],143:[function(require,module,exports){
+},{"./toArray":196}],154:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -22867,7 +27942,7 @@ function createFullPageComponent(componentClass) {
 module.exports = createFullPageComponent;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactCompositeComponent":77,"./invariant":164,"oMfpAn":42}],144:[function(require,module,exports){
+},{"./ReactCompositeComponent":88,"./invariant":175,"oMfpAn":50}],155:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -22964,7 +28039,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 
 }).call(this,require("oMfpAn"))
-},{"./ExecutionEnvironment":65,"./createArrayFrom":142,"./getMarkupWrap":156,"./invariant":164,"oMfpAn":42}],145:[function(require,module,exports){
+},{"./ExecutionEnvironment":76,"./createArrayFrom":153,"./getMarkupWrap":167,"./invariant":175,"oMfpAn":50}],156:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23029,7 +28104,7 @@ function dangerousStyleValue(name, value) {
 
 module.exports = dangerousStyleValue;
 
-},{"./CSSProperty":47}],146:[function(require,module,exports){
+},{"./CSSProperty":58}],157:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23074,7 +28149,7 @@ copyProperties(emptyFunction, {
 
 module.exports = emptyFunction;
 
-},{"./copyProperties":141}],147:[function(require,module,exports){
+},{"./copyProperties":152}],158:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -23105,7 +28180,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = emptyObject;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":42}],148:[function(require,module,exports){
+},{"oMfpAn":50}],159:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23153,7 +28228,7 @@ function escapeTextForBrowser(text) {
 
 module.exports = escapeTextForBrowser;
 
-},{}],149:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -23216,7 +28291,7 @@ function flattenChildren(children) {
 module.exports = flattenChildren;
 
 }).call(this,require("oMfpAn"))
-},{"./traverseAllChildren":186,"./warning":187,"oMfpAn":42}],150:[function(require,module,exports){
+},{"./traverseAllChildren":197,"./warning":198,"oMfpAn":50}],161:[function(require,module,exports){
 /**
  * Copyright 2014 Facebook, Inc.
  *
@@ -23251,7 +28326,7 @@ function focusNode(node) {
 
 module.exports = focusNode;
 
-},{}],151:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23289,7 +28364,7 @@ var forEachAccumulated = function(arr, cb, scope) {
 
 module.exports = forEachAccumulated;
 
-},{}],152:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23325,7 +28400,7 @@ function getActiveElement() /*?DOMElement*/ {
 
 module.exports = getActiveElement;
 
-},{}],153:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -23444,7 +28519,7 @@ function getEventKey(nativeEvent) {
 module.exports = getEventKey;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],154:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],165:[function(require,module,exports){
 /**
  * Copyright 2013 Facebook, Inc.
  *
@@ -23498,7 +28573,7 @@ function getEventModifierState(nativeEvent) {
 
 module.exports = getEventModifierState;
 
-},{}],155:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23536,7 +28611,7 @@ function getEventTarget(nativeEvent) {
 
 module.exports = getEventTarget;
 
-},{}],156:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -23660,7 +28735,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 
 }).call(this,require("oMfpAn"))
-},{"./ExecutionEnvironment":65,"./invariant":164,"oMfpAn":42}],157:[function(require,module,exports){
+},{"./ExecutionEnvironment":76,"./invariant":175,"oMfpAn":50}],168:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23742,7 +28817,7 @@ function getNodeForCharacterOffset(root, offset) {
 
 module.exports = getNodeForCharacterOffset;
 
-},{}],158:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23784,7 +28859,7 @@ function getReactRootElementInContainer(container) {
 
 module.exports = getReactRootElementInContainer;
 
-},{}],159:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23828,7 +28903,7 @@ function getTextContentAccessor() {
 
 module.exports = getTextContentAccessor;
 
-},{"./ExecutionEnvironment":65}],160:[function(require,module,exports){
+},{"./ExecutionEnvironment":76}],171:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23875,7 +28950,7 @@ function getUnboundedScrollPosition(scrollable) {
 
 module.exports = getUnboundedScrollPosition;
 
-},{}],161:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23915,7 +28990,7 @@ function hyphenate(string) {
 
 module.exports = hyphenate;
 
-},{}],162:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -23963,7 +29038,7 @@ function hyphenateStyleName(string) {
 
 module.exports = hyphenateStyleName;
 
-},{"./hyphenate":161}],163:[function(require,module,exports){
+},{"./hyphenate":172}],174:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -24029,7 +29104,7 @@ function instantiateReactComponent(descriptor) {
 module.exports = instantiateReactComponent;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],164:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],175:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -24093,7 +29168,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require("oMfpAn"))
-},{"oMfpAn":42}],165:[function(require,module,exports){
+},{"oMfpAn":50}],176:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24165,7 +29240,7 @@ function isEventSupported(eventNameSuffix, capture) {
 
 module.exports = isEventSupported;
 
-},{"./ExecutionEnvironment":65}],166:[function(require,module,exports){
+},{"./ExecutionEnvironment":76}],177:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24200,7 +29275,7 @@ function isNode(object) {
 
 module.exports = isNode;
 
-},{}],167:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24251,7 +29326,7 @@ function isTextInputElement(elem) {
 
 module.exports = isTextInputElement;
 
-},{}],168:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24283,7 +29358,7 @@ function isTextNode(object) {
 
 module.exports = isTextNode;
 
-},{"./isNode":166}],169:[function(require,module,exports){
+},{"./isNode":177}],180:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24329,7 +29404,7 @@ function joinClasses(className/*, ... */) {
 
 module.exports = joinClasses;
 
-},{}],170:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -24391,7 +29466,7 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],171:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],182:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24434,7 +29509,7 @@ var keyOf = function(oneKeyObj) {
 
 module.exports = keyOf;
 
-},{}],172:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24488,7 +29563,7 @@ function mapObject(obj, func, context) {
 
 module.exports = mapObject;
 
-},{}],173:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24529,7 +29604,7 @@ function memoizeStringOnly(callback) {
 
 module.exports = memoizeStringOnly;
 
-},{}],174:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24568,7 +29643,7 @@ var merge = function(one, two) {
 
 module.exports = merge;
 
-},{"./mergeInto":176}],175:[function(require,module,exports){
+},{"./mergeInto":187}],186:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -24719,7 +29794,7 @@ var mergeHelpers = {
 module.exports = mergeHelpers;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"./keyMirror":170,"oMfpAn":42}],176:[function(require,module,exports){
+},{"./invariant":175,"./keyMirror":181,"oMfpAn":50}],187:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24767,7 +29842,7 @@ function mergeInto(one, two) {
 
 module.exports = mergeInto;
 
-},{"./mergeHelpers":175}],177:[function(require,module,exports){
+},{"./mergeHelpers":186}],188:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24803,7 +29878,7 @@ var mixInto = function(constructor, methodBag) {
 
 module.exports = mixInto;
 
-},{}],178:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -24844,7 +29919,7 @@ function monitorCodeUse(eventName, data) {
 module.exports = monitorCodeUse;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],179:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],190:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -24891,7 +29966,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactDescriptor":95,"./invariant":164,"oMfpAn":42}],180:[function(require,module,exports){
+},{"./ReactDescriptor":106,"./invariant":175,"oMfpAn":50}],191:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24926,7 +30001,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = performance || {};
 
-},{"./ExecutionEnvironment":65}],181:[function(require,module,exports){
+},{"./ExecutionEnvironment":76}],192:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -24961,7 +30036,7 @@ var performanceNow = performance.now.bind(performance);
 
 module.exports = performanceNow;
 
-},{"./performance":180}],182:[function(require,module,exports){
+},{"./performance":191}],193:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -25048,7 +30123,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setInnerHTML;
 
-},{"./ExecutionEnvironment":65}],183:[function(require,module,exports){
+},{"./ExecutionEnvironment":76}],194:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -25099,7 +30174,7 @@ function shallowEqual(objA, objB) {
 
 module.exports = shallowEqual;
 
-},{}],184:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 /**
  * Copyright 2013-2014 Facebook, Inc.
  *
@@ -25145,7 +30220,7 @@ function shouldUpdateReactComponent(prevDescriptor, nextDescriptor) {
 
 module.exports = shouldUpdateReactComponent;
 
-},{}],185:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -25224,7 +30299,7 @@ function toArray(obj) {
 module.exports = toArray;
 
 }).call(this,require("oMfpAn"))
-},{"./invariant":164,"oMfpAn":42}],186:[function(require,module,exports){
+},{"./invariant":175,"oMfpAn":50}],197:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2014 Facebook, Inc.
@@ -25421,7 +30496,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 }).call(this,require("oMfpAn"))
-},{"./ReactInstanceHandles":103,"./ReactTextComponent":119,"./invariant":164,"oMfpAn":42}],187:[function(require,module,exports){
+},{"./ReactInstanceHandles":114,"./ReactTextComponent":130,"./invariant":175,"oMfpAn":50}],198:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014 Facebook, Inc.
@@ -25473,10 +30548,10 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require("oMfpAn"))
-},{"./emptyFunction":146,"oMfpAn":42}],188:[function(require,module,exports){
+},{"./emptyFunction":157,"oMfpAn":50}],199:[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":71}],189:[function(require,module,exports){
+},{"./lib/React":82}],200:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -26821,4 +31896,4 @@ module.exports = require('./lib/React');
   }
 }).call(this);
 
-},{}]},{},[3])
+},{}]},{},[7])

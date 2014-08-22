@@ -1,9 +1,11 @@
 var _                     = require( 'underscore' )
+var R                     = require( 'ramda' )
 var Promise               = require( 'bluebird' )
 var React                 = require( 'react' )
 var Monument              = require( './components/Monument.jsx' )
 var mprogress             = require( './lib/mprogress' )
 var BitStore              = require( './lib/BitStore' )
+var alex                  = require( './lib/Alex' )
 
 mprogress.start()
 
@@ -23,4 +25,11 @@ bitStore.fetch().then(function( bits ) {
 
   setTimeout( _.bind(mprogress.done, mprogress), 1200 )
 
+  bitstore.on('change', function( bits ) {
+    monumentComponent.setProps({ bits: bits })
+  })
+
+
+
 })
+//alex.listen()

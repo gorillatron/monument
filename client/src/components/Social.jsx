@@ -5,13 +5,13 @@ var _             = require( 'underscore')
 var Social = React.createClass({
 
   render: function(){ return (
-      <li className={ 'tile social ' + this.props.type}>
+      <li className={ 'tile social ' + this.props.bit.data.type}>
         <div className="cover">
-          <a href={this.props.url} target='blank'>
+          <a href={this.props.bit.data.url} target='blank'>
           {
-            this.props.type == 'facebook'   ? <div className='text'>Monument: Social Experiment</div> :
-            this.props.type == 'soundcloud' ? <div className='text'></div> :
-                                              <div className='text'>YO</div>
+            this.props.bit.data.type == 'facebook'   ? <div className='text'>Monument: Social Experiment</div> :
+            this.props.bit.data.type == 'soundcloud' ? <div className='text'></div> :
+                                                       <div className='text'>FAIL</div>
             }
           </a>
         </div>
