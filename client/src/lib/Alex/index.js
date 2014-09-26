@@ -5,7 +5,7 @@ var EventEmitter = require( 'events' ).EventEmitter
 module.exports = alex = R.mixin(new EventEmitter(), {
 
 
-  resultsBuffer: [],
+  resultsListBuffer: [],
 
 
   listen: function() {
@@ -19,9 +19,11 @@ module.exports = alex = R.mixin(new EventEmitter(), {
   },
 
 
-  processResults: function( results ) {
-    var transcript = pickTranscript( results )
-    console.log(transcript)
+  processResults: function( resultsList ) {
+    this.resultsListBuffer.push( resultsList )
+    var transcript = compileTranscript( resultsList )
+    if( transcript == 'seven' )
+      this.speak( 'correct' )
   },
 
   firstWord: true,
@@ -54,6 +56,16 @@ module.exports = alex = R.mixin(new EventEmitter(), {
 
 })
 
-var pickTranscript = R.map(function( result ) {
-  return result.transcript
-})
+var compileTranscript = function( resultsList ) {
+  var interim = ''
+
+  for(var i = 0; i < resultsList.length; i++ ) {
+    var result = resultsList[ i ]
+    for(var j = 0; j < result.length; j++) {
+      var alternative = result[j]
+      interim += alternative.transcript
+    }
+  }
+
+  return interim
+}

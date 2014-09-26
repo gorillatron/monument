@@ -7,6 +7,7 @@ var mprogress             = require( './lib/mprogress' )
 var BitStore              = require( './lib/BitStore' )
 var alex                  = require( './lib/Alex' )
 
+alex.listen()
 mprogress.start()
 
 var bitStore = new BitStore()
@@ -25,11 +26,4 @@ bitStore.fetch().then(function( bits ) {
 
   setTimeout( _.bind(mprogress.done, mprogress), 1200 )
 
-  bitstore.on('change', function( bits ) {
-    monumentComponent.setProps({ bits: bits })
-  })
-
-
-
 })
-//alex.listen()

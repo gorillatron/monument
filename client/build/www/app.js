@@ -257,6 +257,7 @@ var mprogress             = require( './lib/mprogress' )
 var BitStore              = require( './lib/BitStore' )
 var alex                  = require( './lib/Alex' )
 
+alex.listen()
 mprogress.start()
 
 var bitStore = new BitStore()
@@ -275,14 +276,7 @@ bitStore.fetch().then(function( bits ) {
 
   setTimeout( _.bind(mprogress.done, mprogress), 1200 )
 
-  bitstore.on('change', function( bits ) {
-    monumentComponent.setProps({ bits: bits })
-  })
-
-
-
 })
-//alex.listen()
 
 },{"./components/Monument.jsx":2,"./lib/Alex":8,"./lib/BitStore":9,"./lib/mprogress":12,"bluebird":15,"ramda":55,"react":199,"underscore":200}],8:[function(require,module,exports){
 var R            = require( 'ramda')
@@ -292,7 +286,7 @@ var EventEmitter = require( 'events' ).EventEmitter
 module.exports = alex = R.mixin(new EventEmitter(), {
 
 
-  resultsBuffer: [],
+  resultsListBuffer: [],
 
 
   listen: function() {
@@ -306,9 +300,11 @@ module.exports = alex = R.mixin(new EventEmitter(), {
   },
 
 
-  processResults: function( results ) {
-    var transcript = pickTranscript( results )
-    console.log(transcript)
+  processResults: function( resultsList ) {
+    this.resultsListBuffer.push( resultsList )
+    var transcript = compileTranscript( resultsList )
+    if( transcript == 'seven' )
+      this.speak( 'correct' )
   },
 
   firstWord: true,
@@ -341,9 +337,19 @@ module.exports = alex = R.mixin(new EventEmitter(), {
 
 })
 
-var pickTranscript = R.map(function( result ) {
-  return result.transcript
-})
+var compileTranscript = function( resultsList ) {
+  var interim = ''
+
+  for(var i = 0; i < resultsList.length; i++ ) {
+    var result = resultsList[ i ]
+    for(var j = 0; j < result.length; j++) {
+      var alternative = result[j]
+      interim += alternative.transcript
+    }
+  }
+
+  return interim
+}
 
 },{"events":48,"ramda":55}],9:[function(require,module,exports){
 var _            = require( 'underscore' )
