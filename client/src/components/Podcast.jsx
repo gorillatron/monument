@@ -13,9 +13,13 @@ var Podcast = React.createClass({
     this.props.onClick( event, this )
   },
 
+  getArtworkUrl: function() {
+    return this.props.bit.data.track.artwork_url ? this.props.bit.data.track.artwork_url.replace('large', 't500x500') : ''
+  },
+
   render: function(){ return (
     <li className={'tile ' + (this.state.active ? 'active' : '')} onClick={this.onClick}>
-      <div className="cover" style={{ 'background-image': 'url(' +this.props.bit.data.track.artwork_url.replace('large', 't500x500')+ ')' }}>
+      <div className="cover" style={{ 'background-image': 'url(' +this.getArtworkUrl()+ ')' }}>
       </div>
       <div className="cover-overlay">
         <h1 className='title'> {this.props.bit.data.track.title} </h1>

@@ -97,9 +97,13 @@ var Podcast = React.createClass({displayName: 'Podcast',
     this.props.onClick( event, this )
   },
 
+  getArtworkUrl: function() {
+    return this.props.bit.data.track.artwork_url ? this.props.bit.data.track.artwork_url.replace('large', 't500x500') : ''
+  },
+
   render: function(){ return (
     React.DOM.li({className: 'tile ' + (this.state.active ? 'active' : ''), onClick: this.onClick}, 
-      React.DOM.div({className: "cover", style: { 'background-image': 'url(' +this.props.bit.data.track.artwork_url.replace('large', 't500x500')+ ')'}}
+      React.DOM.div({className: "cover", style: { 'background-image': 'url(' +this.getArtworkUrl()+ ')'}}
       ), 
       React.DOM.div({className: "cover-overlay"}, 
         React.DOM.h1({className: "title"}, " ", this.props.bit.data.track.title, " "), 
@@ -255,9 +259,8 @@ var React                 = require( 'react' )
 var Monument              = require( './components/Monument.jsx' )
 var mprogress             = require( './lib/mprogress' )
 var BitStore              = require( './lib/BitStore' )
-var alex                  = require( './lib/Alex' )
 
-alex.listen()
+
 mprogress.start()
 
 var bitStore = new BitStore()
@@ -278,7 +281,7 @@ bitStore.fetch().then(function( bits ) {
 
 })
 
-},{"./components/Monument.jsx":2,"./lib/Alex":8,"./lib/BitStore":9,"./lib/mprogress":12,"bluebird":15,"ramda":55,"react":199,"underscore":200}],8:[function(require,module,exports){
+},{"./components/Monument.jsx":2,"./lib/BitStore":9,"./lib/mprogress":12,"bluebird":15,"ramda":55,"react":199,"underscore":200}],8:[function(require,module,exports){
 var R            = require( 'ramda')
 var EventEmitter = require( 'events' ).EventEmitter
 

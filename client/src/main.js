@@ -5,9 +5,8 @@ var React                 = require( 'react' )
 var Monument              = require( './components/Monument.jsx' )
 var mprogress             = require( './lib/mprogress' )
 var BitStore              = require( './lib/BitStore' )
-var alex                  = require( './lib/Alex' )
 
-alex.listen()
+
 mprogress.start()
 
 var bitStore = new BitStore()
