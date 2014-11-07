@@ -22,7 +22,7 @@ var Podcast = React.createClass({
       <div className="cover" style={{ 'background-image': 'url(' +this.getArtworkUrl()+ ')' }}>
       </div>
       <div className="cover-overlay">
-        <h1 className='title'> {this.props.bit.data.track.title} </h1>
+        <h1 className='title' style={{ display: this.state.active ? 'none' : 'block' }}> {this.props.bit.data.track.title} </h1>
         {this.state.active ?
           <iframe width="100%" height="100%" scrolling="no" frameborder="no" src={"https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" +this.props.bit.data.track.id+ "&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"}></iframe> :
           ''}

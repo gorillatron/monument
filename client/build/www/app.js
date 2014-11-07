@@ -106,7 +106,7 @@ var Podcast = React.createClass({displayName: 'Podcast',
       React.DOM.div({className: "cover", style: { 'background-image': 'url(' +this.getArtworkUrl()+ ')'}}
       ), 
       React.DOM.div({className: "cover-overlay"}, 
-        React.DOM.h1({className: "title"}, " ", this.props.bit.data.track.title, " "), 
+        React.DOM.h1({className: "title", style: { display: this.state.active ? 'none' : 'block'}}, " ", this.props.bit.data.track.title, " "), 
         this.state.active ?
           React.DOM.iframe({width: "100%", height: "100%", scrolling: "no", frameborder: "no", src: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/" +this.props.bit.data.track.id+ "&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"}) :
           ''
