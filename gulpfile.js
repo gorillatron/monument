@@ -3,6 +3,7 @@ var gulp        = require( 'gulp' )
 var browserify  = require( 'gulp-browserify' )
 var reactify    = require( 'reactify' )
 var less        = require( 'gulp-less' )
+var uglify      = require( 'gulp-uglify' )
 var mkdirp      = require( 'mkdirp' )
 var rimraf      = require( 'rimraf' )
 var rename      = require( 'gulp-rename' )
@@ -27,6 +28,7 @@ gulp.task('build-www-js', function() {
       transform: [reactify],
       extensions: ['.jsx']
     }))
+    .pipe( uglify() )
     .pipe( rename('app.js') )
     .pipe( gulp.dest(paths.build.www) )
 })
