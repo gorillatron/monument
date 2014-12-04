@@ -5,7 +5,7 @@
 / /\/\ \ (_) | | | | |_| | | | | | |  __/ | | | |_
 \/    \/\___/|_| |_|\__,_|_| |_| |_|\___|_| |_|\__|
 
-@author: Jørn Andre Tangen @gorillatrom
+@author: Jørn Andre Tangen @gorillatro
 @repo: https://github.com/gorillatron/monument
 
 */
