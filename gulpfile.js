@@ -1,4 +1,5 @@
 var path        = require( 'path' )
+var fs          = require( 'fs' )
 var gulp        = require( 'gulp' )
 var browserify  = require( 'gulp-browserify' )
 var reactify    = require( 'reactify' )
@@ -7,6 +8,7 @@ var uglify      = require( 'gulp-uglify' )
 var mkdirp      = require( 'mkdirp' )
 var rimraf      = require( 'rimraf' )
 var rename      = require( 'gulp-rename' )
+var insert      = require( 'gulp-insert' )
 
 
 var paths = {
@@ -29,6 +31,7 @@ gulp.task('build-www-js', function() {
       extensions: ['.jsx']
     }))
     .pipe( uglify() )
+    .pipe( insert.prepend(fs.readFileSync( path.join(__dirname, './com.txt') )) )
     .pipe( rename('app.js') )
     .pipe( gulp.dest(paths.build.www) )
 })
