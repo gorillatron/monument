@@ -29,10 +29,16 @@
     </script>
 
     <div id="app">
-
+      ##content##
     </div>
 
-    <script src="/app.js"></script>
+    <script src="/App.js"></script>
+    <script charset="utf-8">
+      var App = require( 'App' )
+      var bootstrapdata = ##bootstrapdata##
+      var app = new App()
+      app.renderToNode( document.getElementById("app"), {bits: bootstrapdata.bits} )
+    </script>
 
   </body>
 

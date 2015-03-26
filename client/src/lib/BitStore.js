@@ -2,17 +2,13 @@ var _            = require( 'underscore' )
 var EventEmitter = require( 'events' ).EventEmitter
 var inherits     = require( 'util' ).inherits
 var Promise      = require( 'bluebird' )
-var SoundCloud   = require( './SoundCloud' )
+var soundcloud   = require( './SoundCloud' )
 var getRandomInt = require( './getRandomInt')
 
 
 function BitStore() {
   EventEmitter.apply( this, arguments )
   this.bits = []
-  this.initializeSoundCloud({
-    client_id: "84f2b368d96bdc044dafced637dbce4b",
-    redirect_uri: "http://local.com:3000/#scauthredirect"
-  })
 }
 
 inherits( BitStore, EventEmitter )
@@ -22,14 +18,14 @@ BitStore.prototype.fetch = function() {
   return this.fetchPodcasts().then(_.bind(function( bits ) {
     return this.insertSocialIcons().then(_.bind(function( bits ) {
       this.emit('synced')
-      return bits
+      return this
     }, this))
   },this))
 }
 
 BitStore.prototype.fetchPodcasts = function () {
   return new Promise(_.bind(function( resolve, reject ){
-    SoundCloud.get('/users/monument-podcast/tracks', _.bind(function( tracks ) {
+    soundcloud.getTracks().then(_.bind(function( tracks ) {
 
       var i = tracks.length
       var bits = tracks.map(function(track) {
@@ -41,7 +37,7 @@ BitStore.prototype.fetchPodcasts = function () {
 
       this.bits = this.bits.concat( bits )
 
-      resolve( this.bits )
+      resolve( this )
     }, this))
   }, this))
 }
@@ -60,10 +56,6 @@ BitStore.prototype.insertSocialIcons = function() {
     data: { url: "/pictures/klistremerke_2_crop.png", utterance: '7' }
   })
   return Promise.resolve( this.bits )
-}
-
-BitStore.prototype.initializeSoundCloud = function( credentials ) {
-  SoundCloud.initialize( credentials )
 }
 
 

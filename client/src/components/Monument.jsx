@@ -32,7 +32,7 @@ var Monument = React.createClass({
     <div id="container">
       <header className={this.state.headerclass}>
         <div className={ 'logo ' + this.state.logoclass }>
-          <div className='icon'></div>
+          <div className="icon"></div>
           <span className="r">onument</span>
           <span className="b">onument</span>
         </div>

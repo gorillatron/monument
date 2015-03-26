@@ -1,5 +1,4 @@
 var _             = require( 'underscore' )
-var $             = require( 'jbone' )
 var getRandomInt = require( '../../lib/getRandomInt' )
 
 function RumbleAnimation( options ) {
@@ -15,10 +14,10 @@ function RumbleAnimation( options ) {
   }
 
   this.rumble = function( options ) {
-    var $tile = $( this.getDOMNode() )
-    $tile.attr('class', $tile.attr('class') + ' rumble')
+    var tile = this.getDOMNode()
+    tile.className += " rumble"
     setTimeout(function() {
-      $tile.attr('class', $tile.attr('class').replace('rumble', '') )
+      tile.className.replace( 'rumble', '' )
     }, getRandomInt(this.options.rumbleDuration[0], this.options.rumbleDuration[1]))
     setTimeout( _.bind(this.rumble, this), getRandomInt(this.options.interval[0], this.options.interval[1]) )
   }

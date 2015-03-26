@@ -7,26 +7,36 @@ var React                 = require( 'react' )
 var Monument              = require( './components/Monument.jsx' )
 var BitStore              = require( './lib/BitStore' )
 
+module.exports = App
 
 function App( spec ) {
+
   var store = new BitStore()
   var emitter = new EventEmitter
+  var monumentComponentFactory = React.createFactory( Monument )
 
   return Object.seal({
+
     on: function(){
       emitter.on.apply( emitter, arguments )
     },
+
     once: function(){
       emitter.once.apply( emitter, arguments )
     },
-    renderToNode: function( node ) {
-      return React.renderComponent( new Monument({ store: store }), node )
+
+    renderToNode: function( node, props ) {
+      return React.render( monumentComponentFactory( props ), node )
     },
-    renderToStringAsync: function() {
-      store.fetch()
-        .then(function( store ) {
-          return React.renderToString( new Monument({ bits: store.bits }))
-        })
+
+    renderToStringAsync: function( props ) {
+      return React.renderToString( monumentComponentFactory( props ) )
+    },
+
+    fetchBits: function() {
+      return store.fetch().then(function( store ) {
+        return store.bits
+      })
     }
   })
 }
