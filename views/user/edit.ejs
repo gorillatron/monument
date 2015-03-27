@@ -1,0 +1,12 @@
+<form class="" action="/user/update/<%= user.id %>" method="post">
+  <input type="text" name="name" value="<%= user.name %>">
+  <input type="email" name="email" value="<%= user.email %>">
+  <input type="text" name="phoneNumber" value="<%= user.phoneNumber %>">
+  <% if(session.user.role === 'admin'){ %>
+    <select name="role">
+      <option value="admin" <%= user.role == 'admin' ? 'selected' : '' %>>admin</option>
+      <option value="normal" <%= user.role == 'normal' ? 'selected' : '' %>>normal</option>
+    </select>
+  <% } %>
+  <input type="submit" name="submit" value="save">
+</form>
