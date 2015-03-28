@@ -29,4 +29,10 @@ module.exports.models = {
   ***************************************************************************/
   // migrate: 'alter'
 
+  schema: true,
+
+  migrate: 'safe',
+
+  connection: 'mongo'
+
 };
