@@ -111,10 +111,16 @@
 
   form#eventsignupform input[name="phoneNumber"] {
     margin-bottom: 15px;
+    margin-top: 15px;
+  }
+
+  form#eventsignupform input[name="name"] {
+    margin-bottom: 15px;
   }
 
   form#eventsignupform input[name="email"] {
     margin-top: 15px;
+    margin-bottom: 15px;
   }
 
   form#eventsignupform i {
@@ -165,6 +171,8 @@
   </p>
 
   <form id="eventsignupform" action="/event/partake" method="post">
+    <input type="text" name="name" placeholder="Fornavn + Etternavn" required>
+    <i> ~ samt ~ </i>
     <input type="text" name="phoneNumber" placeholder="Mobilnummer">
     <div class="clear"></div>
     <i> ~ og/eller ~ </i>

@@ -56,6 +56,12 @@ module.exports = {
 	partake: function(req, res, next) {
 		var phoneNumber = req.param('phoneNumber')
 		var email = req.param('email')
+		var name = req.param('name')
+
+		if(!name || name.length < 4) {
+			req.session.flash = { error: true, message: 'Navn må ha minst tre tegn ' }
+			return res.redirect('/event/signup')
+		}
 
 		if(!validateEmail(email) && !validatePhoneNumber(phoneNumber)) {
 			req.session.flash = { error: true, message: 'Epost eller mobilnummer ikke gyldig' }
@@ -80,6 +86,8 @@ module.exports = {
 				if(phoneNumber) {
 					user.phoneNumber = phoneNumber
 				}
+
+				user.name = name
 
 				user.save(function userSaved(err) {
 					if(err) {
