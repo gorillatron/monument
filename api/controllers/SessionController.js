@@ -30,7 +30,7 @@ module.exports = {
 				req.session.authenticated = true
 				req.session.user = user
 
-				res.redirect('/')
+				res.redirect('/user')
 			})
 		})
 	}

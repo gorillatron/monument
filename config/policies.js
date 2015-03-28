@@ -23,7 +23,9 @@ module.exports.policies = {
     '*': ['sessionAuth'],
     'new': true,
     'create': true,
-    'edit': ['sessionAuth', 'canEditUser']
+    'edit': ['sessionAuth', 'canEditUser'],
+    'update': ['sessionAuth', 'canEditUser'],
+    'destroy': ['sessionAuth', 'canEditUser']
   },
 
   EventController: {
