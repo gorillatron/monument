@@ -1,0 +1,15 @@
+<form class="" action="/user/create" method="post">
+  <input type="text" name="name" placeholder="name">
+  <input type="text" name="email" placeholder="email">
+  <input type="text" name="phoneNumber" placeholder="phoneNumber">
+  <input type="password" name="password" placeholder="password">
+  <input type="password" name="passwordConfirmation" placeholder="confirm password">
+  <% if(session.user.role === 'admin'){ %>
+    <select name="role">
+      <option value="admin">admin</option>
+      <option value="normal">normal</option>
+    </select>
+  <% } %>
+  <input type="hidden" name="_csrf" value="<%= _csrf %>">
+  <input type="submit" name="submit" value="Save">
+</form>
