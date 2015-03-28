@@ -3,11 +3,27 @@
 
   body {
     font-family: 'Alegreya Sans SC';
+    margin: 0px;
+    padding: 0px;
+  }
+
+  html {
+    padding: 0px;
+    margin: 0px;
   }
 
   .wrapper {
-    width: 482px;
-    margin: 8% auto 0px auto;
+    max-width: 482px;
+    margin: 0 auto 0px auto;
+    padding: 20px;
+    transition: margin 0.2s ease;
+    -webkit-transition: margin 0.6s ease;
+  }
+
+  @media (min-width: 900px) {
+    .wrapper {
+      margin: 8% auto 0px auto;
+    }
   }
 
   header .logo-wrapper {
@@ -52,11 +68,11 @@
   }
 
   img#poster {
+    width: 100%;
   }
 
   form#eventsignupform {
-    display: none;
-    text-align: right;
+
   }
 
   form#eventsignupform.show {
@@ -65,10 +81,15 @@
 
   form#eventsignupform input {
     display: block;
-    float: right;
-    border: 1px solid rgb(80, 80, 80);
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 2px;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    background-color: white;
     padding: 6px 15px;
     font-family: 'Alegreya Sans SC';
+    font-size: 14px;
+    width: 200px;
   }
 
 
@@ -78,6 +99,10 @@
 
   form#eventsignupform input[name="email"] {
     margin-top: 15px;
+  }
+
+  form#eventsignupform i {
+    color: rgb(120,120,120);
   }
 
   form#eventsignupform .button {
@@ -101,29 +126,27 @@
         <span class="b" >onument</span>
       </div>
     </div>
-    <div class="button" id="signup">
-      delta
-    </div>
   </header>
 
   <form id="eventsignupform" action="/event/langfredag/partake" method="post">
+    <p>
+      Om du vil ha informasjon om fremtidige offentlige samt private arrangementer meld deg på her. Du vil ikke bli spammet.
+    </p>
     <input type="text" name="phoneNumber" placeholder="Mobilnummer">
     <div class="clear"></div>
-    <span> -- eller -- </span>
+    <i> ~ eller ~ </i>
     <div class="clear"></div>
     <input type="email" name="email" placeholder="Epost">
     <div class="clear"></div>
-    <div class="button small">
-      meld på
+    <div class="button">
+      meld meg på
     </div>
   </form>
 
   <img id="poster" src="/images/langfredagposter.png" alt="" />
 
   <script charset="utf-8">
-    document.querySelector('#signup').addEventListener('click', function( event ) {
-      document.querySelector('#eventsignupform').setAttribute('class', 'show')
-    }, false)
+
   </script>
 
 </div>

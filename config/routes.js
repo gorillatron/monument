@@ -32,9 +32,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'UserController.index',
-
-  'get /event/:slug': 'EventController.show'
+  '/': 'UserController.index'
 
   /***************************************************************************
   *                                                                          *

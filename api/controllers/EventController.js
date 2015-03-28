@@ -16,6 +16,10 @@ function validateEmail(email) {
 
 module.exports = {
 
+	signup: function(req, res) {
+		res.view()
+	},
+
 	show: function(req,res) {
 		Event.find(function(err, events) {
 			if(err) {
