@@ -16,8 +16,13 @@
     max-width: 482px;
     margin: 0 auto 0px auto;
     padding: 20px;
-    transition: margin 0.2s ease;
-    -webkit-transition: margin 0.6s ease;
+    transition: margin 0.2s ease, opacity 0.5s ease;
+    -webkit-transition: margin 0.6s ease, opacity 0.5s ease;
+    opacity: 0.001;
+  }
+
+  .wrapper.show {
+    opacity: 1;
   }
 
   @media (min-width: 900px) {
@@ -116,7 +121,7 @@
 
 </style>
 
-<div class="wrapper">
+<div class="wrapper" id="mainwrapper">
 
   <header>
     <div class="logo-wrapper">
@@ -146,7 +151,9 @@
   <img id="poster" src="/images/langfredagposter.png" alt="" />
 
   <script charset="utf-8">
-
+    setTimeout(function() {
+      document.querySelector('#mainwrapper').setAttribute('class', 'wrapper show')
+    }, 50)
   </script>
 
 </div>
