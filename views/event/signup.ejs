@@ -35,7 +35,9 @@
     display: inline-block;
   }
 
-  .button {
+  .button,
+  input.button {
+    outline: none;
     border: 2px solid rgb(103,157,129);
     padding: 15px 35px;
     border-radius: 2px;
@@ -43,6 +45,13 @@
     color: rgb(100,100,100);
     cursor: pointer;
     -webkit-transition: all 0.18s ease;
+    background-color: white;
+    box-shadow: none;
+    -webkit-appearance: none;
+  }
+
+  input.button:active {
+    outline: none;
   }
 
   .button.small {
