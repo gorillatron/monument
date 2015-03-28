@@ -24,6 +24,10 @@ module.exports.policies = {
     'new': true,
     'create': true,
     'edit': ['sessionAuth', 'canEditUser']
+  },
+
+  EventController: {
+    'signup': ['flash']
   }
 
   /***************************************************************************

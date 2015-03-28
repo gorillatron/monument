@@ -84,7 +84,9 @@
     display: block;
   }
 
-  form#eventsignupform input {
+  form#eventsignupform input[type="text"],
+  form#eventsignupform input[type="email"],
+  form#eventsignupform input[type="password"] {
     display: block;
     border: 1px solid rgb(100, 100, 100);
     border-radius: 2px;
@@ -113,6 +115,16 @@
   form#eventsignupform .button {
     display: inline-block;
     margin: 15px 0px;
+    background-color: white;
+    font-size: 16px;
+  }
+
+  .flash {
+    color: rgb(103,157,129);
+  }
+
+  .flash.error {
+    color: rgb(202, 59, 119);
   }
 
   .clear {
@@ -133,19 +145,24 @@
     </div>
   </header>
 
-  <form id="eventsignupform" action="/event/langfredag/partake" method="post">
-    <p>
-      Om du vil ha informasjon om fremtidige offentlige samt private arrangementer meld deg på her. Du vil ikke bli spammet.
-    </p>
+  <% if(flash.message) { %>
+    <div class="flash <%= flash.error ? 'error' : '' %>">
+      <%= flash.message %>
+    </div>
+  <% } %>
+
+  <p>
+    Om du vil ha informasjon om fremtidige offentlige samt private arrangementer meld deg på her. Du vil ikke bli spammet.
+  </p>
+
+  <form id="eventsignupform" action="/event/partake" method="post">
     <input type="text" name="phoneNumber" placeholder="Mobilnummer">
     <div class="clear"></div>
-    <i> ~ eller ~ </i>
+    <i> ~ og/eller ~ </i>
     <div class="clear"></div>
     <input type="email" name="email" placeholder="Epost">
     <div class="clear"></div>
-    <div class="button">
-      meld meg på
-    </div>
+    <input type="submit" value="meld meg på" class="button">
   </form>
 
   <img id="poster" src="/images/langfredagposter.png" alt="" />

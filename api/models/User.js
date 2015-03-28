@@ -19,14 +19,12 @@ module.exports = {
 
     email: {
       type: 'email',
-      unique: true,
-      required: true
+      unique: true
     },
 
     phoneNumber: {
       type: 'string',
-      unique: true,
-      required: true
+      unique: true
     },
 
     encryptedPassword: {
@@ -48,18 +46,11 @@ module.exports = {
   },
 
   beforeCreate: function(values, next) {
-    if(!values.password || values.password !== values.passwordConfirmation) {
-      return next(new Error('passwords does not match'))
+    console.log(values)
+    if(!values.email && !values.phoneNumber) {
+      return next(new Error('user must have either email or phoneNumber'))
     }
-
-    bcrypt.hash(values.password, 10, function encrypted(err, encryptedPassword) {
-      if(err) {
-        return next(err)
-      }
-
-      values.encryptedPassword = encryptedPassword
-      next()
-    })
+    next()
   }
 
 };

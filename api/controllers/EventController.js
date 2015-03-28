@@ -14,6 +14,10 @@ function validateEmail(email) {
   return re.test(email)
 }
 
+function validatePhoneNumber(phone) {
+  return phone && phone.length >= 8
+}
+
 module.exports = {
 
 	signup: function(req, res) {
@@ -49,19 +53,60 @@ module.exports = {
 		})
 	},
 
-	partake: function(req, res) {
+	partake: function(req, res, next) {
 		var phoneNumber = req.param('phoneNumber')
 		var email = req.param('email')
 
 		if(!validateEmail(email) && !validatePhoneNumber(phoneNumber)) {
-			return res.badRequest('')
+			req.session.flash = { error: true, message: 'Epost eller mobilnummer ikke gyldig' }
+			return res.redirect('/event/signup')
 		}
 
-		User.find({
+		User.findOne({
 			or: [
-
-
+				{ phoneNumber: phoneNumber },
+				{ email: email }
 			]
+		},
+		function existingUser(err, user) {
+			if(err) {
+				return next(err)
+			}
+
+			function ensuredUser(user) {
+				if(email) {
+					user.email = email
+				}
+				if(phoneNumber) {
+					user.phoneNumber = phoneNumber
+				}
+
+				user.save(function userSaved(err) {
+					if(err) {
+						return next(err)
+					}
+
+					req.session.flash = { message: 'Takk for din påmelding!' }
+					res.redirect('/event/signup')
+				})
+			}
+
+			if(user) {
+				ensuredUser(user)
+			}
+			else {
+				User.create({
+					email: email,
+					phoneNumber: phoneNumber
+				},
+				function userCreated(err, user) {
+					if(err) {
+						return next(err)
+					}
+
+					ensuredUser(user)
+				})
+			}
 		})
 	}
 
