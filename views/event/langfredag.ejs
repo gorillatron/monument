@@ -1,0 +1,129 @@
+
+<style media="screen">
+
+  body {
+    font-family: 'Alegreya Sans SC';
+  }
+
+  .wrapper {
+    width: 482px;
+    margin: 8% auto 0px auto;
+  }
+
+  header .logo-wrapper {
+    display: inline-block;
+  }
+
+  .button {
+    border: 2px solid rgb(103,157,129);
+    padding: 15px 35px;
+    border-radius: 2px;
+    font-family: 'Alegreya Sans SC';
+    color: rgb(100,100,100);
+    cursor: pointer;
+    -webkit-transition: all 0.18s ease;
+  }
+
+  .button.small {
+    padding: 6px 15px;
+  }
+
+  .button:active {
+    -webkit-transform: scale(0.94);
+  }
+
+  header {
+    position: relative;
+  }
+
+  header .button#signup {
+    position: absolute;
+    right: 0px;
+    bottom: 18px;
+    vertical-align: top;
+    display: inline-block;
+    float: right;
+  }
+
+  .info {
+    position: relative;
+    background: white;
+    z-index: 2;
+  }
+
+  img#poster {
+  }
+
+  form#eventsignupform {
+    display: none;
+    text-align: right;
+  }
+
+  form#eventsignupform.show {
+    display: block;
+  }
+
+  form#eventsignupform input {
+    display: block;
+    float: right;
+    border: 1px solid rgb(80, 80, 80);
+    padding: 6px 15px;
+    font-family: 'Alegreya Sans SC';
+  }
+
+
+  form#eventsignupform input[name="phoneNumber"] {
+    margin-bottom: 15px;
+  }
+
+  form#eventsignupform input[name="email"] {
+    margin-top: 15px;
+  }
+
+  form#eventsignupform .button {
+    display: inline-block;
+    margin: 15px 0px;
+  }
+
+  .clear {
+    clear: both;
+  }
+
+</style>
+
+<div class="wrapper">
+
+  <header>
+    <div class="logo-wrapper">
+      <div class="logo">
+        <div class="icon" ></div>
+        <span class="r" >onument</span>
+        <span class="b" >onument</span>
+      </div>
+    </div>
+    <div class="button" id="signup">
+      delta
+    </div>
+  </header>
+
+  <form id="eventsignupform" action="/event/langfredag/partake" method="post">
+    <input type="text" name="phoneNumber" placeholder="Mobilnummer">
+    <div class="clear"></div>
+    <span> -- eller -- </span>
+    <div class="clear"></div>
+    <input type="email" name="email" placeholder="Epost">
+    <div class="clear"></div>
+    <div class="button small">
+      meld på
+    </div>
+  </form>
+
+  <img id="poster" src="/images/langfredagposter.png" alt="" />
+
+  <script charset="utf-8">
+    document.querySelector('#signup').addEventListener('click', function( event ) {
+      document.querySelector('#eventsignupform').setAttribute('class', 'show')
+    }, false)
+  </script>
+
+</div>

@@ -9,6 +9,11 @@ function slugalize(string) {
 	return string.toLowerCase().replace(/\s/g, '')
 }
 
+function validateEmail(email) {
+  var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+  return re.test(email)
+}
+
 module.exports = {
 
 	show: function(req,res) {
@@ -30,9 +35,29 @@ module.exports = {
 				console.log(events)
 			}
 
-			res.view({
-				event: events[0]
+			var event = events[0]
+
+			var viewPath = 'event/' + slugalize(event.name)
+
+			res.view(viewPath, {
+				event: event
 			})
+		})
+	},
+
+	partake: function(req, res) {
+		var phoneNumber = req.param('phoneNumber')
+		var email = req.param('email')
+
+		if(!validateEmail(email) && !validatePhoneNumber(phoneNumber)) {
+			return res.badRequest('')
+		}
+
+		User.find({
+			or: [
+
+
+			]
 		})
 	}
 
