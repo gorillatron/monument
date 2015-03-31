@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <title>Monument Admin</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Ember config -->
+    <base href="/admin" />
+    <meta name="adminclient/config/environment" content="<%- encodeURIComponent(JSON.stringify(emberconfig)) %>" />
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/importer.css">
+    <!--STYLES END-->
+
+  </head>
+
+  <body>
+    <%- body %>
+    <script charset="utf-8" src="/js/adminclient/assets/vendor.js"></script>
+    <script charset="utf-8" src="/js/adminclient/assets/adminclient.js"></script>
+  </body>
+</html>

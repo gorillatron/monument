@@ -1,9 +1,9 @@
 /**
- * SessionController
- *
- * @description :: Server-side logic for managing sessions
- * @help        :: See http://links.sailsjs.org/docs/controllers
- */
+* SessionController
+*
+* @description :: Server-side logic for managing sessions
+* @help        :: See http://links.sailsjs.org/docs/controllers
+*/
 
 var bcrypt = require('bcrypt')
 
@@ -17,6 +17,10 @@ module.exports = {
 		User.findOne({email: req.param('email')}, function foundUser(err, user) {
 			if(err) {
 				return next(err)
+			}
+
+			if(!user) {
+				return res.notFound('Could not find the user')
 			}
 
 			bcrypt.compare(req.param('password'), user.encryptedPassword, function(err, compares) {

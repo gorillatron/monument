@@ -1,0 +1,24 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <td>Name:</td>
+      <td>{{view "contenteditable" valueBinding="model.name" editable=true}}</td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td>{{view "contenteditable" valueBinding="model.email" editable=true}}</td>
+    </tr>
+    <tr>
+      <td>Phone:</td>
+      <td>{{view "contenteditable" valueBinding="model.phoneNumber" editable=true}}</td>
+    </tr>
+    <tr>
+      <td>Role:</td>
+      <td>
+        {{view "select" content=roles selection=model.role}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button type="button" class="btn btn-success" {{bind-attr disabled="isClean"}} {{action 'save' model}}>Save</button>

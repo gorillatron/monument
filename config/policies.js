@@ -20,12 +20,12 @@
 module.exports.policies = {
 
   UserController: {
-    '*': ['sessionAuth'],
-    'new': true,
-    'create': true,
-    'edit': ['sessionAuth', 'canEditUser'],
-    'update': ['sessionAuth', 'canEditUser'],
-    'destroy': ['sessionAuth', 'canEditUser']
+    // '*': ['sessionAuth'],
+    // 'new': true,
+    // 'create': true,
+    // 'edit': ['sessionAuth', 'canEditUser'],
+    // 'update': ['sessionAuth', 'canEditUser'],
+    // 'destroy': ['sessionAuth', 'canEditUser']
   },
 
   EventController: {

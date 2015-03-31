@@ -46,7 +46,6 @@ module.exports = {
   },
 
   beforeCreate: function(values, next) {
-    console.log(values)
     if(!values.email && !values.phoneNumber) {
       return next(new Error('user must have either email or phoneNumber'))
     }

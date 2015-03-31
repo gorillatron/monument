@@ -32,7 +32,12 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'EventController.signup'
+  '/': 'EventController.signup',
+  '/event/signup': 'EventController.signup',
+  '/event/partake': 'EventController.partake',
+
+  '/admin': 'AdminController.index',
+  '/admin/users': 'AdminController.index'
 
   /***************************************************************************
   *                                                                          *
