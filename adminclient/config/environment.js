@@ -4,6 +4,10 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'adminclient',
     environment: environment,
+    'simple-auth' :{
+      authorizer: 'authorizer:custom',
+      store: 'simple-auth-session-store:local-storage'
+    },
     baseURL: '/admin',
     locationType: 'auto',
     EmberENV: {
