@@ -4,7 +4,26 @@ import Base from 'simple-auth/authenticators/base';
 export default Base.extend({
 
   restore: function(data) {
-    console.log('authenticators.custom.restore')
+    console.log('authenticators.custom.restore', data)
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      Ember.$.ajax({
+        url:         'http://www.localhost.com:3000/session/token',
+        type:        'GET',
+        dataType:    'json',
+        contentType: 'application/json'
+      })
+      .then((response) => {
+        if(response.token === data.token) {
+          resolve(response)
+        }
+        else {
+          reject(response)
+        }
+      },
+      (errorxhr) => {
+        reject(errorxhr)
+      })
+    })
   },
 
   authenticate: function(options) {

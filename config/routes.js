@@ -37,6 +37,7 @@ module.exports.routes = {
   '/event/partake': 'EventController.partake',
 
   '/admin': 'AdminController.index',
+  '/admin/login': 'AdminController.index',
   '/admin/users': 'AdminController.index',
   '/admin/user/:userid': 'AdminController.index',
 

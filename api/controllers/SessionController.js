@@ -45,6 +45,13 @@ module.exports = {
 				res.ok({ token: req.session.token })
 			})
 		})
+	},
+
+	destroy: function(req, res) {
+		delete req.session.authenticated
+		delete req.session.token
+		delete req.session.user
+		res.ok({})
 	}
 
 };
