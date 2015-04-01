@@ -13,6 +13,12 @@
   </div>
 </header>
 
+{{#if session.isAuthenticated}}
+  <h1>authenticated</h1>
+{{else}}
+  <h1>NOT authenticated</h1>
+{{/if}}
+
 <div class="container">
   {{outlet}}
 </div>

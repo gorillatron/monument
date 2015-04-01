@@ -6,14 +6,13 @@
 */
 
 var bcrypt = require('bcrypt')
+var uuid   = require('node-uuid')
 
 module.exports = {
 
 	getToken: function(req, res) {
 		if(req.session.authenticated) {
-			res.jsonx({
-				token: req.session.token
-			})
+			res.jsonx({ token: req.session.token })
 		}
 		else {
 			res.forbidden({error: {code: 'unauthorized', msg: 'no current token'}})
@@ -21,18 +20,17 @@ module.exports = {
 	},
 
 	generate: function(req, res) {
-		console.log('create')
 		User.findOne({email: req.param('email')}, function foundUser(err, user) {
 			if(err) {
 				return next(err)
 			}
-			console.log('create', user)
+
 			if(!user) {
 				return res.forbidden({error: {code: 'unauthorized', msg: ''}})
 			}
 
 			bcrypt.compare(req.param('password'), user.encryptedPassword, function(err, compares) {
-				console.log('create', err)
+
 				if(err) {
 					return next(err)
 				}
@@ -41,9 +39,10 @@ module.exports = {
 				}
 
 				req.session.authenticated = true
+				req.session.token = uuid.v4()
 				req.session.user = user
 
-				res.ok()
+				res.ok({ token: req.session.token })
 			})
 		})
 	}

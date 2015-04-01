@@ -8,17 +8,21 @@ export default Base.extend({
   },
 
   authenticate: function(options) {
-    console.log('authenticators.custom.authenticate', options)
+    var email = options.email || 'jornandretangen@gmail.com'
+    var password = options.password || 'lol'
+
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
         url:         'http://www.localhost.com:3000/session/token',
         type:        'POST',
-        data:        JSON.stringify({ grant: 'password', email: options.email, password: options.password }),
+        data:        JSON.stringify({ grant: 'password', email: email, password: password }),
         dataType:    'json',
         contentType: 'application/json'
-      }).then(() => {
-        console.log(arguments)
-        resolve()
+      })
+      .then((response) => {
+        resolve(response)
+      }, (xhr) => {
+        reject(xhr)
       })
     })
   },
