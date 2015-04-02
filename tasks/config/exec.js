@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 
 	grunt.config.set('exec', {
     'buildAdminClient': {
-      command: 'cd ' +srcPath+ ' && ember build --output-path=' +dstPath+ ' && cd ../'
+      command: 'cd ' +srcPath+ ' && npm install && node_modules/bower/bin/bower install && ./node_modules/ember-cli/bin/ember build --output-path=' +dstPath+ ' && cd ../'
     }
   });
 
