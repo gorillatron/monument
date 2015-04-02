@@ -38,7 +38,13 @@ export default Base.extend({
         contentType: 'application/json'
       })
       .then((response) => {
-        resolve(response)
+        if(response.user.role !== 'admin') {
+          alert('You have a user allright! But its not admin :sadface')
+          reject(xhr)
+        }
+        else {
+          resolve(response)
+        }
       }, (xhr) => {
         reject(xhr)
       })

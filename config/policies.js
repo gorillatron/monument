@@ -16,14 +16,19 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.policies.html
  */
 
+ var sessionUserHasRole = require('../api/policies/sessionUserHasRole')
+
 
 module.exports.policies = {
 
   UserController: {
-    '*': function(req, res, next) {
-      req.session.authenticated = true
-      next()
-    }
+    '*': ['tokenAuthenticate', sessionUserHasRole('admin')]
+  },
+
+  EventController: {
+    'create': ['tokenAuthenticate', sessionUserHasRole('admin')],
+    'edit': ['tokenAuthenticate', sessionUserHasRole('admin')],
+    'delete': ['tokenAuthenticate', sessionUserHasRole('admin')]
   },
 
   EventController: {

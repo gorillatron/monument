@@ -5,18 +5,9 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-function slugalize(string) {
-	return string.toLowerCase().replace(/\s/g, '')
-}
-
-function validateEmail(email) {
-  var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-  return re.test(email)
-}
-
-function validatePhoneNumber(phone) {
-  return phone && phone.length >= 8
-}
+var validateEmail = require('../validators/validateEmail')
+var validatePhonenumber = require('../validators/validatePhonenumber')
+var slugalize = require('../helpers/slugalize')
 
 module.exports = {
 
@@ -63,7 +54,7 @@ module.exports = {
 			return res.redirect('/event/signup')
 		}
 
-		if(!validateEmail(email) && !validatePhoneNumber(phoneNumber)) {
+		if(!validateEmail(email) && !validatePhonenumber(phoneNumber)) {
 			req.session.flash = { error: true, message: 'Epost eller mobilnummer ikke gyldig' }
 			return res.redirect('/event/signup')
 		}
