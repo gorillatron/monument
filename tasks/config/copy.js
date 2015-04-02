@@ -33,9 +33,9 @@ module.exports = function(grunt) {
 			},
 			{
 				expand: true,
-				cwd: 'adminclient/assets',
-				src: ['./'],
-				dest: 'www/public/js/adminclient'
+				cwd: 'adminclient/dist/assets',
+				src: ['adminclient.js', 'vendor.js'],
+				dest: 'www'
 			}]
 		}
 	});

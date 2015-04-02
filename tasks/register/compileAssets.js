@@ -3,7 +3,6 @@ module.exports = function (grunt) {
 		'clean:dev',
 		'jst:dev',
 		'less:dev',
-		'copy:dev',
-		'exec:buildAdminClient'
+		'copy:dev'
 	]);
 };
