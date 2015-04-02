@@ -12,7 +12,7 @@ module.exports = {
 
 	getToken: function(req, res) {
 		if(req.session.authenticated) {
-			res.jsonx({ token: req.session.token })
+			res.jsonx({ token: req.session.token, user: req.session.user })
 		}
 		else {
 			res.forbidden({error: {code: 'unauthorized', msg: 'no current token'}})
@@ -42,7 +42,7 @@ module.exports = {
 				req.session.token = uuid.v4()
 				req.session.user = user
 
-				res.ok({ token: req.session.token })
+				res.jsonx({ token: req.session.token, user: req.session.user })
 			})
 		})
 	},

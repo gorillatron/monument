@@ -4,7 +4,6 @@ import Base from 'simple-auth/authenticators/base';
 export default Base.extend({
 
   restore: function(data) {
-    console.log('authenticators.custom.restore', data)
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
         url:         'http://www.localhost.com:3000/session/token',
@@ -27,8 +26,8 @@ export default Base.extend({
   },
 
   authenticate: function(options) {
-    var email = options.email || 'jornandretangen@gmail.com'
-    var password = options.password || 'lol'
+    var email = options.email
+    var password = options.password
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
@@ -47,7 +46,19 @@ export default Base.extend({
   },
 
   invalidate: function(data) {
-    console.log('authenticators.custom.invalidate')
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      Ember.$.ajax({
+        url:         'http://www.localhost.com:3000/session/token',
+        type:        'DELETE',
+        dataType:    'json',
+        contentType: 'application/json'
+      })
+      .then((response) => {
+        resolve()
+      }, (xhr) => {
+        reject()
+      })
+    })
   }
 
 });

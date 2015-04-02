@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import AuthenticatedRouteMixin from 'simple-auth/mixins/authenticated-route-mixin';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
 
@@ -9,11 +10,6 @@ export default Ember.Route.extend({
     },
 
     willTransition: function(transition) {
-      // if(!this.get('at')) {
-      //   transition.abort()
-      //   this.set('at', true)
-      //   setTimeout(()=> {transition.retry()}, 2000)
-      // }
       if(this.controller.model.get('isDirty') && !confirm('User has changes, want to continue?')) {
         transition.abort()
       }
