@@ -14,7 +14,7 @@
  * 		https://github.com/gruntjs/grunt-contrib-copy
  */
 module.exports = function(grunt) {
-	
+
 	grunt.config.set('copy', {
 		dev: {
 			files: [{
@@ -30,6 +30,12 @@ module.exports = function(grunt) {
 				cwd: '.tmp/public',
 				src: ['**/*'],
 				dest: 'www'
+			},
+			{
+				expand: true,
+				cwd: 'adminclient/assets',
+				src: ['./'],
+				dest: 'www/public/js/adminclient'
 			}]
 		}
 	});
