@@ -32,7 +32,18 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'EventController.signup'
+  '/': 'EventController.signup',
+  '/event/signup': 'EventController.signup',
+  '/event/partake': 'EventController.partake',
+
+  '/admin': 'AdminController.index',
+  '/admin/login': 'AdminController.index',
+  '/admin/users': 'AdminController.index',
+  '/admin/user/:userid': 'AdminController.index',
+
+  'get /session/token': 'SessionController.getToken',
+  'post /session/token': 'SessionController.generate',
+  'delete /session/token': 'SessionController.destroy'
 
   /***************************************************************************
   *                                                                          *
