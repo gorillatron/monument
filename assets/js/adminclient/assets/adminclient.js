@@ -334,7 +334,7 @@ define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/au
     restore: function restore(data) {
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
-          url: "http://www.localhost.com:3000/session/token",
+          url: "//www.localhost.com:3000/session/token",
           type: "GET",
           dataType: "json",
           contentType: "application/json"
@@ -356,7 +356,7 @@ define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/au
 
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
-          url: "http://www.localhost.com:3000/session/token",
+          url: "//www.localhost.com:3000/session/token",
           type: "POST",
           data: JSON.stringify({ grant: "password", email: email, password: password }),
           dataType: "json",
@@ -2146,7 +2146,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.65c5d54e"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.ce8d8afa"});
 }
 
 /* jshint ignore:end */
