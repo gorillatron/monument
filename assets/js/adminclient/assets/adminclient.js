@@ -334,7 +334,7 @@ define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/au
     restore: function restore(data) {
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
-          url: "//www.localhost.com:3000/session/token",
+          url: "/session/token",
           type: "GET",
           dataType: "json",
           contentType: "application/json"
@@ -356,7 +356,7 @@ define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/au
 
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
-          url: "//www.localhost.com:3000/session/token",
+          url: "/session/token",
           type: "POST",
           data: JSON.stringify({ grant: "password", email: email, password: password }),
           dataType: "json",

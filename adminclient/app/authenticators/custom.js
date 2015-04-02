@@ -6,7 +6,7 @@ export default Base.extend({
   restore: function(data) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
-        url:         '//www.localhost.com:3000/session/token',
+        url:         '/session/token',
         type:        'GET',
         dataType:    'json',
         contentType: 'application/json'
@@ -31,7 +31,7 @@ export default Base.extend({
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
-        url:         '//www.localhost.com:3000/session/token',
+        url:         '/session/token',
         type:        'POST',
         data:        JSON.stringify({ grant: 'password', email: email, password: password }),
         dataType:    'json',
