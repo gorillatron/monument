@@ -1686,6 +1686,16 @@ define('adminclient/tests/users/index/controller.jshint', function () {
   });
 
 });
+define('adminclient/tests/users/index/route.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - users/index');
+  test('users/index/route.js should pass jshint', function() { 
+    ok(true, 'users/index/route.js should pass jshint.'); 
+  });
+
+});
 define('adminclient/tests/users/route.jshint', function () {
 
   'use strict';
@@ -1944,6 +1954,19 @@ define('adminclient/users/index/controller', ['exports', 'ember', 'adminclient/f
         return true;
       });
     }).property("role", "search", "model")
+
+  });
+
+});
+define('adminclient/users/index/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
+
+    model: function model() {
+      return this.store.find("user");
+    }
 
   });
 
@@ -2207,15 +2230,9 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
 });
 define('adminclient/users/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
 
-  'use strict';
+	'use strict';
 
-  exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
-
-    model: function model() {
-      return this.store.find("user");
-    }
-
-  });
+	exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {});
 
 });
 define('adminclient/users/template', ['exports'], function (exports) {
