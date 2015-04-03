@@ -6,16 +6,5 @@ export default DS.Model.extend({
   email:        DS.attr('string'),
   role:         DS.attr('string'),
   createdAt:    DS.attr('date'),
-  updatedAt:    DS.attr('date'),
-
-  persisted: false,
-
-  didUpdate: function() {
-    this.set('persisted', true);
-  },
-
-  resetPersistenceFlag: function(){
-    this.set('persisted', false);
-  }.observes('isDirty')
-
+  updatedAt:    DS.attr('date')
 });

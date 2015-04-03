@@ -3,8 +3,6 @@ import Notify from 'ember-notify';
 
 export default Ember.ObjectController.extend({
 
-  needs: ['user'],
-
   roles: ['admin', 'normal'],
 
   isClean: Ember.computed.not('model.isDirty'),
@@ -15,12 +13,6 @@ export default Ember.ObjectController.extend({
     }
     return false
   },
-
-  flashMessage: function() {
-    if(this.model.persisted) {
-      Notify.success('User saved.')
-    }
-  }.observes('model.persisted'),
 
   actions: {
 

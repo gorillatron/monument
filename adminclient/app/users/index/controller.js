@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import fuzzymatch from '../../func/fuzzymatch';
 
 export default Ember.ArrayController.extend({
 
@@ -7,8 +6,8 @@ export default Ember.ArrayController.extend({
 
   queryParams: ['role', 'search'],
 
-  role: '',
+  role: null,
 
-  search: ''
+  search: null
 
 });

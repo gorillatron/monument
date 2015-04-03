@@ -21,13 +21,9 @@ define('adminclient/app', ['exports', 'ember', 'ember/resolver', 'ember/load-ini
 });
 define('adminclient/application/adapter', ['exports', 'ember-data'], function (exports, DS) {
 
-  'use strict';
+	'use strict';
 
-  exports['default'] = DS['default'].RESTAdapter.extend({
-    wat: function wat() {
-      alert("wat");
-    }
-  });
+	exports['default'] = DS['default'].RESTAdapter.extend({});
 
 });
 define('adminclient/application/controller', ['exports', 'ember'], function (exports, Ember) {
@@ -803,6 +799,25 @@ define('adminclient/func/fuzzymatch', ['exports'], function (exports) {
   };
 
 });
+define('adminclient/func/objectFilter', ['exports'], function (exports) {
+
+  'use strict';
+
+
+  exports['default'] = function (obj, filter) {
+    return Object.keys(obj).reduce(function (out, key) {
+
+      var val = obj[key];
+
+      if (filter(val, key)) {
+        out[key] = val;
+      }
+
+      return out;
+    }, {});
+  };
+
+});
 define('adminclient/helpers/liquid-bind', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -1367,7 +1382,7 @@ define('adminclient/router', ['exports', 'ember', 'adminclient/config/environmen
 
   Router.map(function () {
     this.resource("users", function () {
-      this.route("edit", { path: "/:user_id" });
+      this.resource("user", { path: "/:user_id" });
     });
   });
 
@@ -1995,7 +2010,7 @@ define('adminclient/tests/application/adapter.jshint', function () {
 
   module('JSHint - application');
   test('application/adapter.js should pass jshint', function() { 
-    ok(false, 'application/adapter.js should pass jshint.\napplication/adapter.js: line 5, col 17, Missing semicolon.\n\n1 error'); 
+    ok(true, 'application/adapter.js should pass jshint.'); 
   });
 
 });
@@ -2046,6 +2061,16 @@ define('adminclient/tests/func/fuzzymatch.jshint', function () {
   module('JSHint - func');
   test('func/fuzzymatch.js should pass jshint', function() { 
     ok(false, 'func/fuzzymatch.js should pass jshint.\nfunc/fuzzymatch.js: line 2, col 9, \'a\' is already defined.\nfunc/fuzzymatch.js: line 2, col 26, Missing semicolon.\nfunc/fuzzymatch.js: line 3, col 9, \'b\' is already defined.\nfunc/fuzzymatch.js: line 3, col 26, Missing semicolon.\nfunc/fuzzymatch.js: line 4, col 13, Missing semicolon.\nfunc/fuzzymatch.js: line 8, col 19, Missing semicolon.\nfunc/fuzzymatch.js: line 11, col 14, Missing semicolon.\nfunc/fuzzymatch.js: line 12, col 2, Missing semicolon.\n\n8 errors'); 
+  });
+
+});
+define('adminclient/tests/func/objectFilter.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - func');
+  test('func/objectFilter.js should pass jshint', function() { 
+    ok(false, 'func/objectFilter.js should pass jshint.\nfunc/objectFilter.js: line 5, col 23, Missing semicolon.\nfunc/objectFilter.js: line 8, col 21, Missing semicolon.\nfunc/objectFilter.js: line 11, col 15, Missing semicolon.\nfunc/objectFilter.js: line 12, col 9, Missing semicolon.\nfunc/objectFilter.js: line 13, col 2, Missing semicolon.\n\n5 errors'); 
   });
 
 });
@@ -2132,7 +2157,7 @@ define('adminclient/tests/router.jshint', function () {
 
   module('JSHint - .');
   test('router.js should pass jshint', function() { 
-    ok(false, 'router.js should pass jshint.\nrouter.js: line 10, col 44, Missing semicolon.\n\n1 error'); 
+    ok(true, 'router.js should pass jshint.'); 
   });
 
 });
@@ -2725,7 +2750,7 @@ define('adminclient/tests/user/controller.jshint', function () {
 
   module('JSHint - user');
   test('user/controller.js should pass jshint', function() { 
-    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 14, col 28, Missing semicolon.\nuser/controller.js: line 16, col 17, Missing semicolon.\nuser/controller.js: line 21, col 36, Missing semicolon.\nuser/controller.js: line 29, col 34, Missing semicolon.\nuser/controller.js: line 30, col 26, Missing semicolon.\n\n5 errors'); 
+    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 12, col 28, Missing semicolon.\nuser/controller.js: line 14, col 17, Missing semicolon.\nuser/controller.js: line 21, col 34, Missing semicolon.\nuser/controller.js: line 22, col 26, Missing semicolon.\nuser/controller.js: line 2, col 8, \'Notify\' is defined but never used.\n\n5 errors'); 
   });
 
 });
@@ -2739,13 +2764,13 @@ define('adminclient/tests/user/model.jshint', function () {
   });
 
 });
-define('adminclient/tests/users/edit/route.jshint', function () {
+define('adminclient/tests/user/route.jshint', function () {
 
   'use strict';
 
-  module('JSHint - users/edit');
-  test('users/edit/route.js should pass jshint', function() { 
-    ok(false, 'users/edit/route.js should pass jshint.\nusers/edit/route.js: line 11, col 18, Missing semicolon.\nusers/edit/route.js: line 16, col 27, Missing semicolon.\nusers/edit/route.js: line 23, col 33, Missing semicolon.\n\n3 errors'); 
+  module('JSHint - user');
+  test('user/route.js should pass jshint', function() { 
+    ok(false, 'user/route.js should pass jshint.\nuser/route.js: line 11, col 18, Missing semicolon.\nuser/route.js: line 16, col 27, Missing semicolon.\nuser/route.js: line 23, col 33, Missing semicolon.\n\n3 errors'); 
   });
 
 });
@@ -2755,7 +2780,7 @@ define('adminclient/tests/users/index/controller.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/controller.js should pass jshint', function() { 
-    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 2, col 8, \'fuzzymatch\' is defined but never used.\n\n1 error'); 
+    ok(true, 'users/index/controller.js should pass jshint.'); 
   });
 
 });
@@ -2765,17 +2790,7 @@ define('adminclient/tests/users/index/route.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/route.js should pass jshint', function() { 
-    ok(false, 'users/index/route.js should pass jshint.\nusers/index/route.js: line 8, col 27, Missing semicolon.\nusers/index/route.js: line 15, col 38, Missing semicolon.\nusers/index/route.js: line 24, col 25, Missing semicolon.\nusers/index/route.js: line 27, col 22, Missing semicolon.\nusers/index/route.js: line 28, col 11, Missing semicolon.\nusers/index/route.js: line 30, col 31, Missing semicolon.\nusers/index/route.js: line 31, col 17, Missing semicolon.\nusers/index/route.js: line 32, col 7, Missing semicolon.\nusers/index/route.js: line 19, col 16, \'fuzzymatch\' is not defined.\nusers/index/route.js: line 20, col 16, \'fuzzymatch\' is not defined.\n\n10 errors'); 
-  });
-
-});
-define('adminclient/tests/users/route.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - users');
-  test('users/route.js should pass jshint', function() { 
-    ok(true, 'users/route.js should pass jshint.'); 
+    ok(false, 'users/index/route.js should pass jshint.\nusers/index/route.js: line 10, col 60, Missing semicolon.\nusers/index/route.js: line 11, col 47, Missing semicolon.\nusers/index/route.js: line 3, col 8, \'fuzzymatch\' is defined but never used.\n\n3 errors'); 
   });
 
 });
@@ -3013,8 +3028,6 @@ define('adminclient/user/controller', ['exports', 'ember', 'ember-notify'], func
 
   exports['default'] = Ember['default'].ObjectController.extend({
 
-    needs: ["user"],
-
     roles: ["admin", "normal"],
 
     isClean: Ember['default'].computed.not("model.isDirty"),
@@ -3025,12 +3038,6 @@ define('adminclient/user/controller', ['exports', 'ember', 'ember-notify'], func
       }
       return false;
     },
-
-    flashMessage: (function () {
-      if (this.model.persisted) {
-        Notify['default'].success("User saved.");
-      }
-    }).observes("model.persisted"),
 
     actions: {
 
@@ -3055,22 +3062,11 @@ define('adminclient/user/model', ['exports', 'ember-data'], function (exports, D
     email: DS['default'].attr("string"),
     role: DS['default'].attr("string"),
     createdAt: DS['default'].attr("date"),
-    updatedAt: DS['default'].attr("date"),
-
-    persisted: false,
-
-    didUpdate: function didUpdate() {
-      this.set("persisted", true);
-    },
-
-    resetPersistenceFlag: (function () {
-      this.set("persisted", false);
-    }).observes("isDirty")
-
+    updatedAt: DS['default'].attr("date")
   });
 
 });
-define('adminclient/users/edit/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
+define('adminclient/user/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
 
   'use strict';
 
@@ -3099,7 +3095,7 @@ define('adminclient/users/edit/route', ['exports', 'ember', 'simple-auth/mixins/
   });
 
 });
-define('adminclient/users/edit/template', ['exports'], function (exports) {
+define('adminclient/user/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -3240,7 +3236,7 @@ define('adminclient/users/edit/template', ['exports'], function (exports) {
   }()));
 
 });
-define('adminclient/users/index/controller', ['exports', 'ember', 'adminclient/func/fuzzymatch'], function (exports, Ember, fuzzymatch) {
+define('adminclient/users/index/controller', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
 
@@ -3250,38 +3246,24 @@ define('adminclient/users/index/controller', ['exports', 'ember', 'adminclient/f
 
     queryParams: ["role", "search"],
 
-    role: "",
+    role: null,
 
-    search: ""
+    search: null
 
   });
 
 });
-define('adminclient/users/index/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
+define('adminclient/users/index/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin', 'adminclient/func/fuzzymatch', 'adminclient/func/objectFilter'], function (exports, Ember, AuthenticatedRouteMixin, fuzzymatch, objectFilter) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
 
     model: function model(params) {
-      var store = this.store;
-
-      return new Ember['default'].RSVP.Promise(function (resolve, reject) {
-
-        store.find("user").then(function (users) {
-
-          var filteredUsers = users.filter(function (user) {
-            console.log(user.isDeleted);
-            if (params.role && user.get("role") !== params.role || params.search && !(fuzzymatch(user.get("name"), params.search) || fuzzymatch(user.get("email"), params.search) || user.get("phoneNumber").match(params.search))) {
-              return false;
-            }
-
-            return true;
-          });
-
-          resolve(filteredUsers);
-        }, reject);
+      var query = objectFilter['default'](params, function (val) {
+        return val !== null;
       });
+      return this.store.findQuery("user", query);
     }
 
   });
@@ -3410,7 +3392,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
           var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),-1,-1);
           var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),-1,-1);
           var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),-1,-1);
-          block(env, morph0, context, "link-to", ["users.edit", get(env, context, "user")], {}, child0, null);
+          block(env, morph0, context, "link-to", ["user", get(env, context, "user")], {}, child0, null);
           content(env, morph1, context, "user.phoneNumber");
           content(env, morph2, context, "user.email");
           content(env, morph3, context, "user.role");
@@ -3520,13 +3502,6 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
       }
     };
   }()));
-
-});
-define('adminclient/users/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {});
 
 });
 define('adminclient/users/template', ['exports'], function (exports) {
@@ -3927,7 +3902,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.0ddeb1de"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.e1dd458c"});
 }
 
 /* jshint ignore:end */
