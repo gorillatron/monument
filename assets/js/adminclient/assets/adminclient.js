@@ -2110,27 +2110,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("section");
-        dom.setAttribute(el1,"class","data-filter");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("form");
-        dom.setAttribute(el2,"class","navbar-form navbar-left");
-        dom.setAttribute(el2,"role","search");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3,"class","form-group");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
+        var el1 = dom.createComment(" <section class=\"data-filter\">\n  <form class=\"navbar-form navbar-left\" role=\"search\">\n    <div class=\"form-group\">\n      {{input type=\"text\" value=search placeholder=\"search\" class=\"form-control\"}}\n    </div>\n  </form>\n</section> ");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
@@ -2200,7 +2180,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -2218,10 +2198,8 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]),0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2, 1, 3]),0,1);
-        inline(env, morph0, context, "input", [], {"type": "text", "value": get(env, context, "search"), "placeholder": "search", "class": "form-control"});
-        block(env, morph1, context, "each", [get(env, context, "filteredModels")], {"itemController": "user", "keyword": "user"}, child0, null);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [2, 1, 3]),0,1);
+        block(env, morph0, context, "each", [get(env, context, "filteredModels")], {"itemController": "user", "keyword": "user"}, child0, null);
         return fragment;
       }
     };
