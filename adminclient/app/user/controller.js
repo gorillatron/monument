@@ -15,10 +15,6 @@ export default Ember.ObjectController.extend({
 
   actions: {
 
-    lolat: function() {
-      alert('LOL ' + this.model.get('name'))
-    },
-
     destroy: function() {
       if(confirm("Are you sure you want to destroy user " + this.model.get('name'))) {
         this.model.deleteRecord()

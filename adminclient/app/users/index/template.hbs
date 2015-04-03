@@ -1,0 +1,39 @@
+<section class="data-filter">
+  <form class="navbar-form navbar-left" role="search">
+    <div class="form-group">
+      {{input type="text" value=search placeholder="search" class="form-control"}}
+    </div>
+  </form>
+</section>
+
+<section class="data-table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {{#each user in filteredModels itemController="user"}}
+        <tr>
+          <td>
+            {{#link-to 'users.edit' user}} {{user.name}} {{/link-to}}
+          </td>
+          <td>{{user.phoneNumber}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.role}}</td>
+          <td>
+            <button type="button" class="btn btn-danger btn-sm" {{action 'destroy' user}}>delete</button>
+          </td>
+        </tr>
+      {{/each}}
+
+    </tbody>
+  </table>
+
+</section>

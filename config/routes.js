@@ -39,7 +39,7 @@ module.exports.routes = {
   '/admin': 'AdminController.index',
   '/admin/login': 'AdminController.index',
   '/admin/users': 'AdminController.index',
-  '/admin/user/:userid': 'AdminController.index',
+  '/admin/users/:userid': 'AdminController.index',
 
   'get /session/token': 'SessionController.getToken',
   'post /session/token': 'SessionController.generate',

@@ -26,6 +26,19 @@ define('adminclient/app', ['exports', 'ember', 'ember/resolver', 'ember/load-ini
   exports['default'] = App;
 
 });
+define('adminclient/application/controller', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Controller.extend({
+
+    activepath: (function () {
+      console.log(arguments, this);
+    }).property()
+
+  });
+
+});
 define('adminclient/application/route', ['exports', 'ember', 'simple-auth/mixins/application-route-mixin'], function (exports, Ember, ApplicationRouteMixin) {
 
   'use strict';
@@ -50,17 +63,55 @@ define('adminclient/application/template', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
       var child0 = (function() {
+        var child0 = (function() {
+          return {
+            isHTMLBars: true,
+            blockParams: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            build: function build(dom) {
+              var el0 = dom.createTextNode(" users ");
+              return el0;
+            },
+            render: function render(context, env, contextualElement) {
+              var dom = env.dom;
+              dom.detectNamespace(contextualElement);
+              var fragment;
+              if (env.useFragmentCache && dom.canClone) {
+                if (this.cachedFragment === null) {
+                  fragment = this.build(dom);
+                  if (this.hasRendered) {
+                    this.cachedFragment = fragment;
+                  } else {
+                    this.hasRendered = true;
+                  }
+                }
+                if (this.cachedFragment) {
+                  fragment = dom.cloneNode(this.cachedFragment, true);
+                }
+              } else {
+                fragment = this.build(dom);
+              }
+              return fragment;
+            }
+          };
+        }());
         return {
           isHTMLBars: true,
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
           build: function build(dom) {
-            var el0 = dom.createTextNode(" users ");
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
             return el0;
           },
           render: function render(context, env, contextualElement) {
             var dom = env.dom;
+            var hooks = env.hooks, block = hooks.block;
             dom.detectNamespace(contextualElement);
             var fragment;
             if (env.useFragmentCache && dom.canClone) {
@@ -78,6 +129,8 @@ define('adminclient/application/template', ['exports'], function (exports) {
             } else {
               fragment = this.build(dom);
             }
+            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+            block(env, morph0, context, "link-to", ["users"], {}, child0, null);
             return fragment;
           }
         };
@@ -89,16 +142,9 @@ define('adminclient/application/template', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("          ");
+          var el1 = dom.createTextNode("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createElement("li");
-          dom.setAttribute(el1,"class","active");
-          var el2 = dom.createTextNode("\n            ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n          ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createTextNode("");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -122,8 +168,9 @@ define('adminclient/application/template', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),0,1);
-          block(env, morph0, context, "link-to", ["users"], {}, child0, null);
+          if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          block(env, morph0, context, "link-to", ["users"], {"tagName": "li"}, child0, null);
           return fragment;
         }
       };
@@ -408,6 +455,24 @@ define('adminclient/authorizers/custom', ['exports', 'simple-auth/authorizers/ba
   });
 
 });
+define('adminclient/func/fuzzymatch', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = function (a, b) {
+    var a = a.toLowerCase();
+    var b = b.toLowerCase();
+    var n = -1;
+    for (var i = 0, len = b.length; i < len; i++) {
+      var l = b[i];
+      if (! ~(n = a.indexOf(l, n + 1))) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+});
 define('adminclient/initializers/app-version', ['exports', 'adminclient/config/environment', 'ember'], function (exports, config, Ember) {
 
   'use strict';
@@ -580,9 +645,9 @@ define('adminclient/router', ['exports', 'ember', 'adminclient/config/environmen
   });
 
   Router.map(function () {
-    this.route("users");
-    this.route("user", { path: "user/:user_id" });
-    this.route("login");
+    this.resource("users", function () {
+      this.route("edit", { path: "/:user_id" });
+    });
   });
 
   exports['default'] = Router;
@@ -871,6 +936,16 @@ define('adminclient/tests/app.jshint', function () {
   });
 
 });
+define('adminclient/tests/application/controller.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - application');
+  test('application/controller.js should pass jshint', function() { 
+    ok(false, 'application/controller.js should pass jshint.\napplication/controller.js: line 6, col 33, Missing semicolon.\n\n1 error'); 
+  });
+
+});
 define('adminclient/tests/application/route.jshint', function () {
 
   'use strict';
@@ -898,6 +973,16 @@ define('adminclient/tests/authorizers/custom.jshint', function () {
   module('JSHint - authorizers');
   test('authorizers/custom.js should pass jshint', function() { 
     ok(false, 'authorizers/custom.js should pass jshint.\nauthorizers/custom.js: line 7, col 49, \'Ember\' is not defined.\nauthorizers/custom.js: line 5, col 28, \'options\' is defined but never used.\n\n2 errors'); 
+  });
+
+});
+define('adminclient/tests/func/fuzzymatch.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - func');
+  test('func/fuzzymatch.js should pass jshint', function() { 
+    ok(false, 'func/fuzzymatch.js should pass jshint.\nfunc/fuzzymatch.js: line 2, col 9, \'a\' is already defined.\nfunc/fuzzymatch.js: line 2, col 26, Missing semicolon.\nfunc/fuzzymatch.js: line 3, col 9, \'b\' is already defined.\nfunc/fuzzymatch.js: line 3, col 26, Missing semicolon.\nfunc/fuzzymatch.js: line 4, col 13, Missing semicolon.\nfunc/fuzzymatch.js: line 8, col 19, Missing semicolon.\nfunc/fuzzymatch.js: line 11, col 14, Missing semicolon.\nfunc/fuzzymatch.js: line 12, col 2, Missing semicolon.\n\n8 errors'); 
   });
 
 });
@@ -984,7 +1069,7 @@ define('adminclient/tests/router.jshint', function () {
 
   module('JSHint - .');
   test('router.js should pass jshint', function() { 
-    ok(true, 'router.js should pass jshint.'); 
+    ok(false, 'router.js should pass jshint.\nrouter.js: line 10, col 44, Missing semicolon.\n\n1 error'); 
   });
 
 });
@@ -1028,6 +1113,32 @@ define('adminclient/tests/unit/adapters/application-test.jshint', function () {
   module('JSHint - unit/adapters');
   test('unit/adapters/application-test.js should pass jshint', function() { 
     ok(true, 'unit/adapters/application-test.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/unit/application/controller-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("controller:application", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('adminclient/tests/unit/application/controller-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/application');
+  test('unit/application/controller-test.js should pass jshint', function() { 
+    ok(true, 'unit/application/controller-test.js should pass jshint.'); 
   });
 
 });
@@ -1541,7 +1652,7 @@ define('adminclient/tests/user/controller.jshint', function () {
 
   module('JSHint - user');
   test('user/controller.js should pass jshint', function() { 
-    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 11, col 28, Missing semicolon.\nuser/controller.js: line 13, col 17, Missing semicolon.\nuser/controller.js: line 19, col 45, Missing semicolon.\nuser/controller.js: line 24, col 34, Missing semicolon.\nuser/controller.js: line 25, col 26, Missing semicolon.\n\n5 errors'); 
+    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 11, col 28, Missing semicolon.\nuser/controller.js: line 13, col 17, Missing semicolon.\nuser/controller.js: line 20, col 34, Missing semicolon.\nuser/controller.js: line 21, col 26, Missing semicolon.\n\n4 errors'); 
   });
 
 });
@@ -1555,23 +1666,23 @@ define('adminclient/tests/user/model.jshint', function () {
   });
 
 });
-define('adminclient/tests/user/route.jshint', function () {
+define('adminclient/tests/users/edit/route.jshint', function () {
 
   'use strict';
 
-  module('JSHint - user');
-  test('user/route.js should pass jshint', function() { 
-    ok(false, 'user/route.js should pass jshint.\nuser/route.js: line 9, col 18, Missing semicolon.\nuser/route.js: line 14, col 27, Missing semicolon.\nuser/route.js: line 21, col 33, Missing semicolon.\n\n3 errors'); 
+  module('JSHint - users/edit');
+  test('users/edit/route.js should pass jshint', function() { 
+    ok(false, 'users/edit/route.js should pass jshint.\nusers/edit/route.js: line 11, col 18, Missing semicolon.\nusers/edit/route.js: line 16, col 27, Missing semicolon.\nusers/edit/route.js: line 23, col 33, Missing semicolon.\n\n3 errors'); 
   });
 
 });
-define('adminclient/tests/users/controller.jshint', function () {
+define('adminclient/tests/users/index/controller.jshint', function () {
 
   'use strict';
 
-  module('JSHint - users');
-  test('users/controller.js should pass jshint', function() { 
-    ok(true, 'users/controller.js should pass jshint.'); 
+  module('JSHint - users/index');
+  test('users/index/controller.js should pass jshint', function() { 
+    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 2, col 47, Missing semicolon.\nusers/index/controller.js: line 23, col 21, Missing semicolon.\nusers/index/controller.js: line 26, col 18, Missing semicolon.\nusers/index/controller.js: line 27, col 7, Missing semicolon.\n\n4 errors'); 
   });
 
 });
@@ -1614,10 +1725,6 @@ define('adminclient/user/controller', ['exports', 'ember'], function (exports, E
 
     actions: {
 
-      lolat: function lolat() {
-        alert("LOL " + this.model.get("name"));
-      },
-
       destroy: function destroy() {
         if (confirm("Are you sure you want to destroy user " + this.model.get("name"))) {
           this.model.deleteRecord();
@@ -1643,11 +1750,13 @@ define('adminclient/user/model', ['exports', 'ember-data'], function (exports, D
   });
 
 });
-define('adminclient/user/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
+define('adminclient/users/edit/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
 
   'use strict';
 
   exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
+
+    controllerName: "user",
 
     actions: {
 
@@ -1670,7 +1779,7 @@ define('adminclient/user/route', ['exports', 'ember', 'simple-auth/mixins/authen
   });
 
 });
-define('adminclient/user/template', ['exports'], function (exports) {
+define('adminclient/users/edit/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -1811,31 +1920,35 @@ define('adminclient/user/template', ['exports'], function (exports) {
   }()));
 
 });
-define('adminclient/users/controller', ['exports', 'ember'], function (exports, Ember) {
+define('adminclient/users/index/controller', ['exports', 'ember', 'adminclient/func/fuzzymatch'], function (exports, Ember, fuzzymatch) {
 
   'use strict';
 
   exports['default'] = Ember['default'].ArrayController.extend({
 
-    itemController: "user"
+    queryParams: ["role"],
+
+    role: "",
+
+    search: "",
+
+    filteredModels: (function () {
+      var _this = this;
+
+      return this.model.filter(function (user) {
+
+        if (_this.role && user.get("role") !== _this.role || _this.search && !(fuzzymatch['default'](user.get("name"), _this.search) || fuzzymatch['default'](user.get("email"), _this.search) || user.get("phoneNumber").match(_this.search))) {
+          return false;
+        }
+
+        return true;
+      });
+    }).property("role", "search", "model")
 
   });
 
 });
-define('adminclient/users/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
-
-  'use strict';
-
-  exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
-
-    model: function model() {
-      return this.store.find("user");
-    }
-
-  });
-
-});
-define('adminclient/users/template', ['exports'], function (exports) {
+define('adminclient/users/index/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -1888,33 +2001,33 @@ define('adminclient/users/template', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("      ");
+          var el1 = dom.createTextNode("        ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("tr");
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createTextNode("\n            ");
+          dom.appendChild(el2, el3);
           var el3 = dom.createTextNode("\n          ");
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n        ");
-          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
-          var el3 = dom.createTextNode("\n          ");
+          var el3 = dom.createTextNode("\n            ");
           dom.appendChild(el2, el3);
           var el3 = dom.createElement("button");
           dom.setAttribute(el3,"type","button");
@@ -1924,16 +2037,8 @@ define('adminclient/users/template', ['exports'], function (exports) {
           dom.appendChild(el2, el3);
           var el3 = dom.createTextNode("\n          ");
           dom.appendChild(el2, el3);
-          var el3 = dom.createElement("button");
-          dom.setAttribute(el3,"type","button");
-          dom.setAttribute(el3,"class","btn btn-danger btn-sm");
-          var el4 = dom.createTextNode("lolat");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n        ");
-          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n      ");
+          var el2 = dom.createTextNode("\n        ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -1961,19 +2066,16 @@ define('adminclient/users/template', ['exports'], function (exports) {
             fragment = this.build(dom);
           }
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [9]);
-          var element2 = dom.childAt(element1, [1]);
-          var element3 = dom.childAt(element1, [3]);
+          var element1 = dom.childAt(element0, [9, 1]);
           var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
           var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),-1,-1);
           var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),-1,-1);
           var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),-1,-1);
-          block(env, morph0, context, "link-to", ["user", get(env, context, "user")], {}, child0, null);
+          block(env, morph0, context, "link-to", ["users.edit", get(env, context, "user")], {}, child0, null);
           content(env, morph1, context, "user.phoneNumber");
           content(env, morph2, context, "user.email");
           content(env, morph3, context, "user.role");
-          element(env, element2, context, "action", ["destroy", get(env, context, "user")], {});
-          element(env, element3, context, "action", ["lolat", get(env, context, "user")], {});
+          element(env, element1, context, "action", ["destroy", get(env, context, "user")], {});
           return fragment;
         }
       };
@@ -1985,41 +2087,18 @@ define('adminclient/users/template', ['exports'], function (exports) {
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("table");
-        dom.setAttribute(el1,"class","table");
+        var el1 = dom.createElement("section");
+        dom.setAttribute(el1,"class","data-filter");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("thead");
+        var el2 = dom.createElement("form");
+        dom.setAttribute(el2,"class","navbar-form navbar-left");
+        dom.setAttribute(el2,"role","search");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
+        var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","form-group");
         var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Name");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Email");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Phone");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
-        var el5 = dom.createTextNode("Role");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("th");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -2027,15 +2106,69 @@ define('adminclient/users/template', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("section");
+        dom.setAttribute(el1,"class","data-table");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("tbody");
-        var el3 = dom.createTextNode("\n\n");
+        var el2 = dom.createElement("table");
+        dom.setAttribute(el2,"class","table");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("thead");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("tr");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("th");
+        var el6 = dom.createTextNode("Name");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("th");
+        var el6 = dom.createTextNode("Email");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("th");
+        var el6 = dom.createTextNode("Phone");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("th");
+        var el6 = dom.createTextNode("Role");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("th");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tbody");
+        var el4 = dom.createTextNode("\n\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
@@ -2044,7 +2177,7 @@ define('adminclient/users/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -2062,8 +2195,70 @@ define('adminclient/users/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3]),0,1);
-        block(env, morph0, context, "each", [get(env, context, "controller")], {"keyword": "user"}, child0, null);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]),0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(fragment, [2, 1, 3]),0,1);
+        inline(env, morph0, context, "input", [], {"type": "text", "value": get(env, context, "search"), "placeholder": "search", "class": "form-control"});
+        block(env, morph1, context, "each", [get(env, context, "filteredModels")], {"itemController": "user", "keyword": "user"}, child0, null);
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('adminclient/users/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
+
+    model: function model() {
+      return this.store.find("user");
+    }
+
+  });
+
+});
+define('adminclient/users/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        content(env, morph0, context, "outlet");
         return fragment;
       }
     };
@@ -2164,7 +2359,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.6afd6331"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.c5ce6cc2"});
 }
 
 /* jshint ignore:end */

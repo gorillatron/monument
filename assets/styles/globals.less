@@ -1,8 +1,27 @@
 h1, h2, h3, h4, h5 {
-  font-family: 'Alegreya Sans SC';
+  font-family: @font-family-sans-serif;
   color: #646464;
 }
 
+.btn {
+  border-width: 2px;
+  background-color: white;
+  color: rgb(80,80,80);
+  outline: none!important;
+  box-shadow: none!important;
+  .transition(all 0.18s ease);
+  &.btn-success, &.btn-error, &.btn-danger {
+    background-color: white;
+    color: rgb(80,80,80);
+    &:hover, &:active {
+      background-color: white;
+      color: rgb(80,80,80);
+    }
+    &:active {
+      .scale(0.9);
+    }
+  }
+}
 
 .logo-wrapper {
   .logo {
