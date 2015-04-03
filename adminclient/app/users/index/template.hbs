@@ -19,7 +19,7 @@
     </thead>
     <tbody>
 
-      {{#each user in filteredModels itemController="user"}}
+      {{#each user in controller}}
         <tr>
           <td>
             {{#link-to 'users.edit' user}} {{user.name}} {{/link-to}}
