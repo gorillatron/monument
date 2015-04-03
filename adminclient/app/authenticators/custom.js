@@ -25,9 +25,9 @@ export default Base.extend({
     })
   },
 
-  authenticate: function(options) {
-    var email = options.email
-    var password = options.password
+  authenticate: function(data) {
+    var email = data.email
+    var password = data.password
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
@@ -54,7 +54,7 @@ export default Base.extend({
   invalidate: function(data) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
-        url:         'http://www.localhost.com:3000/session/token',
+        url:         '/session/token',
         type:        'DELETE',
         dataType:    'json',
         contentType: 'application/json'

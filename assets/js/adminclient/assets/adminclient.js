@@ -350,9 +350,9 @@ define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/au
       });
     },
 
-    authenticate: function authenticate(options) {
-      var email = options.email;
-      var password = options.password;
+    authenticate: function authenticate(data) {
+      var email = data.email;
+      var password = data.password;
 
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
@@ -377,7 +377,7 @@ define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/au
     invalidate: function invalidate(data) {
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
-          url: "http://www.localhost.com:3000/session/token",
+          url: "/session/token",
           type: "DELETE",
           dataType: "json",
           contentType: "application/json"
@@ -887,7 +887,7 @@ define('adminclient/tests/authenticators/custom.jshint', function () {
 
   module('JSHint - authenticators');
   test('authenticators/custom.js should pass jshint', function() { 
-    ok(false, 'authenticators/custom.js should pass jshint.\nauthenticators/custom.js: line 16, col 28, Missing semicolon.\nauthenticators/custom.js: line 19, col 27, Missing semicolon.\nauthenticators/custom.js: line 23, col 25, Missing semicolon.\nauthenticators/custom.js: line 24, col 9, Missing semicolon.\nauthenticators/custom.js: line 25, col 7, Missing semicolon.\nauthenticators/custom.js: line 29, col 30, Missing semicolon.\nauthenticators/custom.js: line 30, col 36, Missing semicolon.\nauthenticators/custom.js: line 42, col 72, Missing semicolon.\nauthenticators/custom.js: line 43, col 22, Missing semicolon.\nauthenticators/custom.js: line 46, col 28, Missing semicolon.\nauthenticators/custom.js: line 49, col 20, Missing semicolon.\nauthenticators/custom.js: line 50, col 9, Missing semicolon.\nauthenticators/custom.js: line 51, col 7, Missing semicolon.\nauthenticators/custom.js: line 63, col 18, Missing semicolon.\nauthenticators/custom.js: line 65, col 17, Missing semicolon.\nauthenticators/custom.js: line 66, col 9, Missing semicolon.\nauthenticators/custom.js: line 67, col 7, Missing semicolon.\nauthenticators/custom.js: line 43, col 18, \'xhr\' is not defined.\nauthenticators/custom.js: line 54, col 24, \'data\' is defined but never used.\nauthenticators/custom.js: line 62, col 14, \'response\' is defined but never used.\nauthenticators/custom.js: line 64, col 11, \'xhr\' is defined but never used.\n\n21 errors'); 
+    ok(false, 'authenticators/custom.js should pass jshint.\nauthenticators/custom.js: line 16, col 28, Missing semicolon.\nauthenticators/custom.js: line 19, col 27, Missing semicolon.\nauthenticators/custom.js: line 23, col 25, Missing semicolon.\nauthenticators/custom.js: line 24, col 9, Missing semicolon.\nauthenticators/custom.js: line 25, col 7, Missing semicolon.\nauthenticators/custom.js: line 29, col 27, Missing semicolon.\nauthenticators/custom.js: line 30, col 33, Missing semicolon.\nauthenticators/custom.js: line 42, col 72, Missing semicolon.\nauthenticators/custom.js: line 43, col 22, Missing semicolon.\nauthenticators/custom.js: line 46, col 28, Missing semicolon.\nauthenticators/custom.js: line 49, col 20, Missing semicolon.\nauthenticators/custom.js: line 50, col 9, Missing semicolon.\nauthenticators/custom.js: line 51, col 7, Missing semicolon.\nauthenticators/custom.js: line 63, col 18, Missing semicolon.\nauthenticators/custom.js: line 65, col 17, Missing semicolon.\nauthenticators/custom.js: line 66, col 9, Missing semicolon.\nauthenticators/custom.js: line 67, col 7, Missing semicolon.\nauthenticators/custom.js: line 43, col 18, \'xhr\' is not defined.\nauthenticators/custom.js: line 54, col 24, \'data\' is defined but never used.\nauthenticators/custom.js: line 62, col 14, \'response\' is defined but never used.\nauthenticators/custom.js: line 64, col 11, \'xhr\' is defined but never used.\n\n21 errors'); 
   });
 
 });
@@ -1541,7 +1541,7 @@ define('adminclient/tests/user/controller.jshint', function () {
 
   module('JSHint - user');
   test('user/controller.js should pass jshint', function() { 
-    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 11, col 28, Missing semicolon.\nuser/controller.js: line 13, col 17, Missing semicolon.\n\n2 errors'); 
+    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 11, col 28, Missing semicolon.\nuser/controller.js: line 13, col 17, Missing semicolon.\nuser/controller.js: line 19, col 45, Missing semicolon.\nuser/controller.js: line 24, col 34, Missing semicolon.\nuser/controller.js: line 25, col 26, Missing semicolon.\n\n5 errors'); 
   });
 
 });
@@ -1571,7 +1571,7 @@ define('adminclient/tests/users/controller.jshint', function () {
 
   module('JSHint - users');
   test('users/controller.js should pass jshint', function() { 
-    ok(false, 'users/controller.js should pass jshint.\nusers/controller.js: line 8, col 28, Missing semicolon.\nusers/controller.js: line 9, col 20, Missing semicolon.\n\n2 errors'); 
+    ok(true, 'users/controller.js should pass jshint.'); 
   });
 
 });
@@ -1599,7 +1599,7 @@ define('adminclient/user/controller', ['exports', 'ember'], function (exports, E
 
   'use strict';
 
-  exports['default'] = Ember['default'].Controller.extend({
+  exports['default'] = Ember['default'].ObjectController.extend({
 
     roles: ["admin", "normal"],
 
@@ -1610,6 +1610,20 @@ define('adminclient/user/controller', ['exports', 'ember'], function (exports, E
         this.model.rollback();
       }
       return false;
+    },
+
+    actions: {
+
+      lolat: function lolat() {
+        alert("LOL " + this.model.get("name"));
+      },
+
+      destroy: function destroy() {
+        if (confirm("Are you sure you want to destroy user " + this.model.get("name"))) {
+          this.model.deleteRecord();
+          this.model.save();
+        }
+      }
     }
 
   });
@@ -1801,16 +1815,9 @@ define('adminclient/users/controller', ['exports', 'ember'], function (exports, 
 
   'use strict';
 
-  exports['default'] = Ember['default'].Controller.extend({
+  exports['default'] = Ember['default'].ArrayController.extend({
 
-    actions: {
-      destroy: function destroy(user) {
-        if (confirm("Are you sure you want to destroy user " + user.get("name"))) {
-          user.deleteRecord();
-          user.save();
-        }
-      }
-    }
+    itemController: "user"
 
   });
 
@@ -1915,6 +1922,14 @@ define('adminclient/users/template', ['exports'], function (exports) {
           var el4 = dom.createTextNode("delete");
           dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n          ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("button");
+          dom.setAttribute(el3,"type","button");
+          dom.setAttribute(el3,"class","btn btn-danger btn-sm");
+          var el4 = dom.createTextNode("lolat");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
           var el3 = dom.createTextNode("\n        ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
@@ -1946,7 +1961,9 @@ define('adminclient/users/template', ['exports'], function (exports) {
             fragment = this.build(dom);
           }
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [9, 1]);
+          var element1 = dom.childAt(element0, [9]);
+          var element2 = dom.childAt(element1, [1]);
+          var element3 = dom.childAt(element1, [3]);
           var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
           var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),-1,-1);
           var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),-1,-1);
@@ -1955,7 +1972,8 @@ define('adminclient/users/template', ['exports'], function (exports) {
           content(env, morph1, context, "user.phoneNumber");
           content(env, morph2, context, "user.email");
           content(env, morph3, context, "user.role");
-          element(env, element1, context, "action", ["destroy", get(env, context, "user")], {});
+          element(env, element2, context, "action", ["destroy", get(env, context, "user")], {});
+          element(env, element3, context, "action", ["lolat", get(env, context, "user")], {});
           return fragment;
         }
       };
@@ -2045,7 +2063,7 @@ define('adminclient/users/template', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 3]),0,1);
-        block(env, morph0, context, "each", [get(env, context, "model")], {"keyword": "user"}, child0, null);
+        block(env, morph0, context, "each", [get(env, context, "controller")], {"keyword": "user"}, child0, null);
         return fragment;
       }
     };
@@ -2146,7 +2164,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.ce8d8afa"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.6afd6331"});
 }
 
 /* jshint ignore:end */

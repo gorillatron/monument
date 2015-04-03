@@ -10,7 +10,7 @@
   </thead>
   <tbody>
 
-    {{#each user in model}}
+    {{#each user in controller}}
       <tr>
         <td>
           {{#link-to 'user' user}} {{user.name}} {{/link-to}}
@@ -20,6 +20,7 @@
         <td>{{user.role}}</td>
         <td>
           <button type="button" class="btn btn-danger btn-sm" {{action 'destroy' user}}>delete</button>
+          <button type="button" class="btn btn-danger btn-sm" {{action 'lolat' user}}>lolat</button>
         </td>
       </tr>
     {{/each}}

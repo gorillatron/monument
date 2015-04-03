@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.Controller.extend({
+export default Ember.ObjectController.extend({
 
   roles: ['admin', 'normal'],
 
@@ -11,6 +11,20 @@ export default Ember.Controller.extend({
       this.model.rollback()
     }
     return false
+  },
+
+  actions: {
+
+    lolat: function() {
+      alert('LOL ' + this.model.get('name'))
+    },
+
+    destroy: function() {
+      if(confirm("Are you sure you want to destroy user " + this.model.get('name'))) {
+        this.model.deleteRecord()
+        this.model.save()
+      }
+    }
   }
 
 });
