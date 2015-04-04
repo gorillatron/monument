@@ -7,7 +7,7 @@ module.exports = function(environment) {
     'simple-auth' :{
       authorizer: 'authorizer:custom',
       store: 'simple-auth-session-store:local-storage',
-      authenticationRoute: 'login',
+      authenticationRoute: 'index',
       routeAfterAuthentication: 'users'
     },
     baseURL: '/admin',

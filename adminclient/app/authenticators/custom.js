@@ -26,14 +26,14 @@ export default Base.extend({
   },
 
   authenticate: function(data) {
-    var email = data.email
+    var useridentification = data.useridentification
     var password = data.password
 
     return new Ember.RSVP.Promise((resolve, reject) => {
       Ember.$.ajax({
         url:         '/session/token',
         type:        'POST',
-        data:        JSON.stringify({ grant: 'password', email: email, password: password }),
+        data:        JSON.stringify({ grant: 'password', useridentification: useridentification, password: password }),
         dataType:    'json',
         contentType: 'application/json'
       })

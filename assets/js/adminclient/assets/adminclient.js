@@ -396,14 +396,14 @@ define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/au
     },
 
     authenticate: function authenticate(data) {
-      var email = data.email;
+      var useridentification = data.useridentification;
       var password = data.password;
 
       return new Ember['default'].RSVP.Promise(function (resolve, reject) {
         Ember['default'].$.ajax({
           url: "/session/token",
           type: "POST",
-          data: JSON.stringify({ grant: "password", email: email, password: password }),
+          data: JSON.stringify({ grant: "password", useridentification: useridentification, password: password }),
           dataType: "json",
           contentType: "application/json"
         }).then(function (response) {
@@ -1276,7 +1276,7 @@ define('adminclient/login/controller', ['exports', 'ember', 'simple-auth/mixins/
 
       authenticate: function authenticate() {
         this.get("session").authenticate("authenticator:custom", {
-          email: this.get("email"),
+          useridentification: this.get("useridentification"),
           password: this.get("password")
         });
       }
@@ -1363,7 +1363,7 @@ define('adminclient/login/template', ['exports'], function (exports) {
         var element1 = dom.childAt(element0, [5]);
         var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
         var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,1);
-        inline(env, morph0, context, "input", [], {"valueBinding": "email", "class": "form-control", "type": "text", "placeholder": "email"});
+        inline(env, morph0, context, "input", [], {"valueBinding": "useridentification", "class": "form-control", "type": "text", "placeholder": "email/phone"});
         inline(env, morph1, context, "input", [], {"valueBinding": "password", "class": "form-control", "type": "password", "placeholder": "password"});
         element(env, element1, context, "action", ["authenticate"], {});
         return fragment;
@@ -2040,7 +2040,7 @@ define('adminclient/tests/authenticators/custom.jshint', function () {
 
   module('JSHint - authenticators');
   test('authenticators/custom.js should pass jshint', function() { 
-    ok(false, 'authenticators/custom.js should pass jshint.\nauthenticators/custom.js: line 16, col 28, Missing semicolon.\nauthenticators/custom.js: line 19, col 27, Missing semicolon.\nauthenticators/custom.js: line 23, col 25, Missing semicolon.\nauthenticators/custom.js: line 24, col 9, Missing semicolon.\nauthenticators/custom.js: line 25, col 7, Missing semicolon.\nauthenticators/custom.js: line 29, col 27, Missing semicolon.\nauthenticators/custom.js: line 30, col 33, Missing semicolon.\nauthenticators/custom.js: line 42, col 72, Missing semicolon.\nauthenticators/custom.js: line 43, col 22, Missing semicolon.\nauthenticators/custom.js: line 46, col 28, Missing semicolon.\nauthenticators/custom.js: line 49, col 20, Missing semicolon.\nauthenticators/custom.js: line 50, col 9, Missing semicolon.\nauthenticators/custom.js: line 51, col 7, Missing semicolon.\nauthenticators/custom.js: line 63, col 18, Missing semicolon.\nauthenticators/custom.js: line 65, col 17, Missing semicolon.\nauthenticators/custom.js: line 66, col 9, Missing semicolon.\nauthenticators/custom.js: line 67, col 7, Missing semicolon.\nauthenticators/custom.js: line 43, col 18, \'xhr\' is not defined.\nauthenticators/custom.js: line 54, col 24, \'data\' is defined but never used.\nauthenticators/custom.js: line 62, col 14, \'response\' is defined but never used.\nauthenticators/custom.js: line 64, col 11, \'xhr\' is defined but never used.\n\n21 errors'); 
+    ok(false, 'authenticators/custom.js should pass jshint.\nauthenticators/custom.js: line 16, col 28, Missing semicolon.\nauthenticators/custom.js: line 19, col 27, Missing semicolon.\nauthenticators/custom.js: line 23, col 25, Missing semicolon.\nauthenticators/custom.js: line 24, col 9, Missing semicolon.\nauthenticators/custom.js: line 25, col 7, Missing semicolon.\nauthenticators/custom.js: line 29, col 53, Missing semicolon.\nauthenticators/custom.js: line 30, col 33, Missing semicolon.\nauthenticators/custom.js: line 42, col 72, Missing semicolon.\nauthenticators/custom.js: line 43, col 22, Missing semicolon.\nauthenticators/custom.js: line 46, col 28, Missing semicolon.\nauthenticators/custom.js: line 49, col 20, Missing semicolon.\nauthenticators/custom.js: line 50, col 9, Missing semicolon.\nauthenticators/custom.js: line 51, col 7, Missing semicolon.\nauthenticators/custom.js: line 63, col 18, Missing semicolon.\nauthenticators/custom.js: line 65, col 17, Missing semicolon.\nauthenticators/custom.js: line 66, col 9, Missing semicolon.\nauthenticators/custom.js: line 67, col 7, Missing semicolon.\nauthenticators/custom.js: line 43, col 18, \'xhr\' is not defined.\nauthenticators/custom.js: line 54, col 24, \'data\' is defined but never used.\nauthenticators/custom.js: line 62, col 14, \'response\' is defined but never used.\nauthenticators/custom.js: line 64, col 11, \'xhr\' is defined but never used.\n\n21 errors'); 
   });
 
 });
@@ -2750,7 +2750,7 @@ define('adminclient/tests/user/controller.jshint', function () {
 
   module('JSHint - user');
   test('user/controller.js should pass jshint', function() { 
-    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 12, col 28, Missing semicolon.\nuser/controller.js: line 14, col 17, Missing semicolon.\nuser/controller.js: line 21, col 34, Missing semicolon.\nuser/controller.js: line 22, col 26, Missing semicolon.\nuser/controller.js: line 2, col 8, \'Notify\' is defined but never used.\n\n5 errors'); 
+    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 12, col 28, Missing semicolon.\nuser/controller.js: line 14, col 17, Missing semicolon.\nuser/controller.js: line 21, col 38, Missing semicolon.\nuser/controller.js: line 23, col 57, Missing semicolon.\nuser/controller.js: line 24, col 9, Missing semicolon.\nuser/controller.js: line 29, col 34, Missing semicolon.\nuser/controller.js: line 31, col 42, Missing semicolon.\nuser/controller.js: line 33, col 59, Missing semicolon.\nuser/controller.js: line 34, col 11, Missing semicolon.\n\n9 errors'); 
   });
 
 });
@@ -3041,10 +3041,22 @@ define('adminclient/user/controller', ['exports', 'ember', 'ember-notify'], func
 
     actions: {
 
+      save: function save() {
+        this.model.save().then(function () {
+          Notify['default'].success("User saved.");
+        }, function () {
+          Notify['default'].error("Could not persist to the server.");
+        });
+      },
+
       destroy: function destroy() {
         if (confirm("Are you sure you want to destroy user " + this.model.get("name"))) {
           this.model.deleteRecord();
-          this.model.save();
+          this.model.save().then(function () {
+            Notify['default'].success("User deleted.");
+          }, function () {
+            Notify['default'].error("Could not persist to the server.");
+          });
         }
       }
     }
@@ -3902,7 +3914,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.e1dd458c"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.1ced7000"});
 }
 
 /* jshint ignore:end */

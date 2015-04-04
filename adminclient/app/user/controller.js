@@ -16,10 +16,22 @@ export default Ember.ObjectController.extend({
 
   actions: {
 
+    save: function(){
+      this.model.save().then(() => {
+        Notify.success('User saved.')
+      }, () => {
+        Notify.error('Could not persist to the server.')
+      })
+    },
+
     destroy: function() {
       if(confirm("Are you sure you want to destroy user " + this.model.get('name'))) {
         this.model.deleteRecord()
-        this.model.save()
+        this.model.save().then(() => {
+          Notify.success('User deleted.')
+        }, () => {
+          Notify.error('Could not persist to the server.')
+        })
       }
     }
   }

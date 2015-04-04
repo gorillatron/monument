@@ -10,7 +10,7 @@ export default Ember.Controller.extend(AuthenticationControllerMixin, {
 
     authenticate: function() {
       this.get('session').authenticate('authenticator:custom', {
-        email: this.get('email'),
+        useridentification: this.get('useridentification'),
         password: this.get('password')
       });
     }
