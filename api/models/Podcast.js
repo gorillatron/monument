@@ -7,7 +7,36 @@
 
 import soundcloudConfig from '../../config/soundcloud';
 
-var soundcloudTrackIds = {}
+
+/**
+ * Index for soundcloud track ids.
+ * Used to check that the track id is unique in the database.
+ * The index is populated each time the beforeValidate hook of Podcast is run.
+*/
+var soundcloudTrackIndex = {
+
+  index: {},
+
+  populate:function( cb ) {
+    Podcast.find((err, podcasts) => {
+      if(err) {
+        return cb(err)
+      }
+
+      this.index = podcasts.reduce((index, podcast) => {
+        index[podcast.soundcloudTrack.id] = true
+        return index
+      }, {})
+
+      return cb()
+    })
+  },
+
+  has: function(id) {
+    return this.index[id] === true
+  }
+}
+
 
 export default {
 
@@ -20,7 +49,7 @@ export default {
     },
 
     uniqueTrack: function (track) {
-      return !soundcloudTrackIds[track.id]
+      return !soundcloudTrackIndex.has(track.id)
     }
 
   },
@@ -37,18 +66,7 @@ export default {
   },
 
   beforeValidate: function(values, next) {
-    Podcast.find((err, podcasts) => {
-      if(err) {
-        return next(err)
-      }
-
-      soundcloudTrackIds = podcasts.reduce((soundcloudTrackIds, podcast) => {
-        soundcloudTrackIds[podcast.soundcloudTrack.id] = true
-        return soundcloudTrackIds
-      }, {})
-
-      return next()
-    })
+    soundcloudTrackIndex.populate(next)
   }
 
 };
