@@ -68,7 +68,7 @@ export default {
 					return res.forbidden({ error: {code: FORBIDDEN, message: 'Unable to authenticate'} })
 				}
 
-				authenticateSession(req.session)
+				authenticateSession(req.session, authenticatingUser)
 
 				res.jsonx({ token: req.session.token, user: req.session.user })
 			})
