@@ -1,4 +1,4 @@
-module.exports = function(req, res, next) {
+export default function(req, res, next) {
  res.locals.flash = {};
 
  if(!req.session.flash) return next();

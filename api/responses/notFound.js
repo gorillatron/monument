@@ -17,7 +17,7 @@
  * automatically.
  */
 
-module.exports = function notFound (data, options) {
+ export default function notFound (data, options) {
 
   // Get access to `req`, `res`, & `sails`
   var req = this.req;
@@ -79,4 +79,3 @@ module.exports = function notFound (data, options) {
   });
 
 };
-

@@ -1,4 +1,4 @@
 
-module.exports = function slugalize(string) {
+export default function(string) {
 	return string.toLowerCase().replace(/\s/g, '')
 }

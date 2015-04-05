@@ -3,6 +3,12 @@ h1, h2, h3, h4, h5 {
   color: #646464;
 }
 
+span[contenteditable=true] {
+  &:focus {
+    outline: none;
+  }
+}
+
 .btn {
   border-width: 2px;
   background-color: white;

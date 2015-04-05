@@ -7,11 +7,11 @@
  * @docs        :: http://sailsjs.org/#!documentation/policies
  *
  */
-module.exports = function(req, res, next) {
+ export default function(req, res, next) {
 
   var authorizationHeader = req.get('Authorization') || ''
   var token = authorizationHeader.replace('Token:', '')
-  
+
   if( token === req.session.token ) {
     next()
   }

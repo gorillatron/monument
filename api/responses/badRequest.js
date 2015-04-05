@@ -15,7 +15,7 @@
  * ```
  */
 
-module.exports = function badRequest(data, options) {
+ export default function badRequest(data, options) {
 
   // Get access to `req`, `res`, & `sails`
   var req = this.req;
@@ -61,4 +61,3 @@ module.exports = function badRequest(data, options) {
   });
 
 };
-

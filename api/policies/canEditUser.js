@@ -1,5 +1,5 @@
 
-module.exports = function canEditUser(req, res, next) {
+export default function(req, res, next) {
 
   if(!req.session.user) {
     console.warn('policy:canEditUser run without any user on session')

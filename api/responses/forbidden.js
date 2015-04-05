@@ -12,7 +12,7 @@
  * ```
  */
 
-module.exports = function forbidden (data, options) {
+ export default function forbidden (data, options) {
 
   // Get access to `req`, `res`, & `sails`
   var req = this.req;
@@ -74,4 +74,3 @@ module.exports = function forbidden (data, options) {
   });
 
 };
-

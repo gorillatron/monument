@@ -10,63 +10,65 @@
 * @help        :: See http://links.sailsjs.org/docs/controllers
 */
 
-var bcrypt 		= require('bcrypt')
-var uuid   		= require('node-uuid')
-var constants = require('../constants')
+import bcrypt from 'bcrypt';
+import uuid from 'node-uuid';
+import constants from '../constants';
 
 var FORBIDDEN = constants.errorcodes.FORBIDDEN
 
-module.exports = {
+function invalidateSession(session) {
+	delete session.authenticated
+	delete session.token
+	delete session.user
+}
 
-	_resetSession: function(req) {
-		delete req.session.authenticated
-		delete req.session.token
-		delete req.session.user
-	},
+function authenticateSession(session, user) {
+	session.authenticated = true
+	session.token = uuid.v4()
+	session.user = user
+}
+
+export default {
 
 	getToken: function(req, res) {
 		if(req.session.authenticated) {
 			return res.jsonx({ token: req.session.token, user: req.session.user })
 		}
 		else {
-			return res.forbidden({error: {code: FORBIDDEN, msg: 'no current token'}})
+			return res.forbidden({ error: {code: FORBIDDEN, message: 'no current token'} })
 		}
 	},
 
 	generate: function(req, res) {
-		var _this = this
-
 		User.findOne({
 			or: [
 				{email: req.param('useridentification')},
 				{phoneNumber: req.param('useridentification')}
 			]
-		}, function foundUser(err, user) {
+		}, function foundUser(err, authenticatingUser) {
 			if(err) {
 				return next(err)
 			}
 
-			if(!user) {
-				return res.forbidden({error: {code: FORBIDDEN, msg: 'forbidden'}})
+			if(!authenticatingUser) {
+				return res.forbidden({ error: {code: FORBIDDEN, message: 'Unable to authenticate'} })
 			}
 
-			if(!user.encryptedPassword) {
-				return res.forbidden({error: {code: FORBIDDEN, msg: 'forbidden'}})
+			if(!authenticatingUser.encryptedPassword) {
+				return res.forbidden({ error: {code: FORBIDDEN, message: 'Unable to authenticate'} })
 			}
 
-			bcrypt.compare(req.param('password'), user.encryptedPassword, function(err, compares) {
+			bcrypt.compare(req.param('password'), authenticatingUser.encryptedPassword, function(err, compares) {
 				if(err) {
 					return next(err)
 				}
 
 				if(!compares) {
-					_this._resetSession(req)
-					return res.forbidden({error: {code: FORBIDDEN, msg: ''}})
+					invalidateSession(req.session)
+					return res.forbidden({ error: {code: FORBIDDEN, message: 'Unable to authenticate'} })
 				}
 
-				req.session.authenticated = true
-				req.session.token = uuid.v4()
-				req.session.user = user
+				authenticateSession(req.session)
 
 				res.jsonx({ token: req.session.token, user: req.session.user })
 			})
@@ -74,7 +76,7 @@ module.exports = {
 	},
 
 	destroy: function(req, res) {
-		this._resetSession(req)
+		invalidateSession(req.session)
 		res.ok({})
 	}
 

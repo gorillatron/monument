@@ -5,9 +5,9 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
-var bcrypt = require('bcrypt')
+import bcrypt from 'bcrypt';
 
-module.exports = {
+export default {
 
   schema: true,
 

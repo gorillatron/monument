@@ -10,7 +10,7 @@
  *
  */
 
-module.exports = {
+ export default {
 
   /***************************************************************************
    * Set the default database connection for models in the production        *

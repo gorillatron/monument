@@ -3236,9 +3236,9 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 3]),-1,-1);
         var morph2 = dom.createMorphAt(dom.childAt(element0, [5, 3]),-1,-1);
         var morph3 = dom.createMorphAt(dom.childAt(element0, [7, 3]),0,1);
-        inline(env, morph0, context, "view", ["contenteditable"], {"valueBinding": "model.name", "editable": true});
-        inline(env, morph1, context, "view", ["contenteditable"], {"valueBinding": "model.email", "editable": true});
-        inline(env, morph2, context, "view", ["contenteditable"], {"valueBinding": "model.phoneNumber", "editable": true});
+        inline(env, morph0, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "valueBinding": "model.name", "editable": true});
+        inline(env, morph1, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "valueBinding": "model.email", "editable": true});
+        inline(env, morph2, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "valueBinding": "model.phoneNumber", "editable": true});
         inline(env, morph3, context, "view", ["select"], {"content": get(env, context, "roles"), "selection": get(env, context, "model.role")});
         element(env, element1, context, "bind-attr", [], {"disabled": "isClean"});
         element(env, element1, context, "action", ["save", get(env, context, "model")], {});

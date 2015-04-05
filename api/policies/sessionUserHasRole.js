@@ -7,7 +7,7 @@
  * @docs        :: http://sailsjs.org/#!documentation/policies
  *
  */
-module.exports = function(role) {
+ export default function(role) {
   return function(req, res, next) {
 
     if(req.session.user.role !== role) {

@@ -5,11 +5,11 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-var validateEmail = require('../validators/validateEmail')
-var validatePhonenumber = require('../validators/validatePhonenumber')
-var slugalize = require('../helpers/slugalize')
+import validateEmail from '../validators/validateEmail';
+import validatePhonenumber from '../validators/validatePhonenumber';
+import slugalize from '../helpers/slugalize';
 
-module.exports = {
+export default {
 
 	signup: function(req, res) {
 		res.view()
