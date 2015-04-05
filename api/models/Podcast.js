@@ -7,46 +7,45 @@
 
 import soundcloudConfig from '../../config/soundcloud';
 
+var soundcloudTrackIds = {}
+
 export default {
 
   schema: true,
 
-  _uniqueTrack: false,
-
   types: {
-    belongsToSiteOwnersSoundcloudUser: function() {
-      return this.soundcloudData.user_id === soundcloudConfig.userId
+
+    trackBelongsToSiteOwnersSoundcloudUser: function(track) {
+      return track.user_id === soundcloudConfig.userId
     },
-    uniqueTrack: function() {
-      return this._uniqueTrack
+
+    uniqueTrack: function (track) {
+      return !soundcloudTrackIds[track.id]
     }
+
   },
 
   attributes: {
 
-    soundcloudData: {
+    soundcloudTrack: {
       type: 'json',
+      required: true,
       uniqueTrack: true,
-      belongsToSiteOwnersSoundcloudUser: true
+      trackBelongsToSiteOwnersSoundcloudUser: true
     }
 
   },
 
   beforeValidate: function(values, next) {
-    var _this = this
-
-    Podcast.find(function(err, podcasts) {
+    Podcast.find((err, podcasts) => {
       if(err) {
         return next(err)
       }
 
-      podcasts = podcasts.filter(function(podcast) {
-        return podcast.soundcloudData.id === values.soundcloudData.id
-      })
-
-      if(podcasts.length == 0) {
-        _this._uniqueTrack = true
-      }
+      soundcloudTrackIds = podcasts.reduce((soundcloudTrackIds, podcast) => {
+        soundcloudTrackIds[podcast.soundcloudTrack.id] = true
+        return soundcloudTrackIds
+      }, {})
 
       return next()
     })
