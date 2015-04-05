@@ -1,7 +1,7 @@
 /**
 * Podcast.js
 *
-* @description :: TODO: You might write a short summary of how this model works and what it represents here.
+* @description :: Model for Podcast, contains a Soundcloud.API Track.
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
