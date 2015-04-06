@@ -14,14 +14,24 @@ export default Ember.ArrayController.extend({
 
   _buttonDisplayTimer: null,
 
+  generatedCsv: null,
+
   actions: {
-    showButtons: function() {
-      this.set('displayButtons', !this.get('displayButtons'))
-      this._buttonDisplayTimer = setTimeout(() => {this.set('displayButtons', false)}, 4000)
+    toggleButtons: function() {
+      this.toggleProperty('displayButtons')
+      if(this.get('displayButtons')) {
+        clearTimeout(this._buttonDisplayTimer)
+        this._buttonDisplayTimer = setTimeout(() => {this.set('displayButtons', false)}, 4000)
+      }
     },
     generateCsv: function(attr) {
       clearTimeout(this._buttonDisplayTimer)
       this.set('displayButtons', false)
+      var csv = this.model.map((user) => user.get(attr)).join(', ')
+      this.set('generatedCsv', csv)
+    },
+    clearCsv: function() {
+      this.set('generatedCsv', null)
     }
   }
 

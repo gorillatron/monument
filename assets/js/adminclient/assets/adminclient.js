@@ -2780,7 +2780,7 @@ define('adminclient/tests/users/index/controller.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/controller.js should pass jshint', function() { 
-    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 19, col 62, Missing semicolon.\nusers/index/controller.js: line 20, col 85, Missing semicolon.\nusers/index/controller.js: line 20, col 93, Missing semicolon.\nusers/index/controller.js: line 23, col 45, Missing semicolon.\nusers/index/controller.js: line 24, col 40, Missing semicolon.\nusers/index/controller.js: line 22, col 27, \'attr\' is defined but never used.\n\n6 errors'); 
+    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 21, col 44, Missing semicolon.\nusers/index/controller.js: line 23, col 47, Missing semicolon.\nusers/index/controller.js: line 24, col 87, Missing semicolon.\nusers/index/controller.js: line 24, col 95, Missing semicolon.\nusers/index/controller.js: line 28, col 45, Missing semicolon.\nusers/index/controller.js: line 29, col 40, Missing semicolon.\nusers/index/controller.js: line 30, col 68, Missing semicolon.\nusers/index/controller.js: line 31, col 36, Missing semicolon.\nusers/index/controller.js: line 34, col 37, Missing semicolon.\n\n9 errors'); 
   });
 
 });
@@ -3266,18 +3266,30 @@ define('adminclient/users/index/controller', ['exports', 'ember'], function (exp
 
     _buttonDisplayTimer: null,
 
+    generatedCsv: null,
+
     actions: {
-      showButtons: function showButtons() {
+      toggleButtons: function toggleButtons() {
         var _this = this;
 
-        this.set("displayButtons", !this.get("displayButtons"));
-        this._buttonDisplayTimer = setTimeout(function () {
-          _this.set("displayButtons", false);
-        }, 4000);
+        this.toggleProperty("displayButtons");
+        if (this.get("displayButtons")) {
+          clearTimeout(this._buttonDisplayTimer);
+          this._buttonDisplayTimer = setTimeout(function () {
+            _this.set("displayButtons", false);
+          }, 4000);
+        }
       },
       generateCsv: function generateCsv(attr) {
         clearTimeout(this._buttonDisplayTimer);
         this.set("displayButtons", false);
+        var csv = this.model.map(function (user) {
+          return user.get(attr);
+        }).join(", ");
+        this.set("generatedCsv", csv);
+      },
+      clearCsv: function clearCsv() {
+        this.set("generatedCsv", null);
       }
     }
 
@@ -3449,7 +3461,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("style");
         dom.setAttribute(el2,"media","screen");
-        var el3 = dom.createTextNode("\n\n    .csv-generator-box .attribute-select {\n      opacity: 0.001;\n      transform: translatex(-40px);\n      transition: all 0.2s;\n    }\n\n    .csv-generator-box .attribute-select.display {\n      transform: translatex(0px);\n      opacity: 1;\n    }\n\n  ");
+        var el3 = dom.createTextNode("\n\n    .csv-generator-box .attribute-select {\n      opacity: 0.001;\n      transform: translatex(-40px);\n      transition: all 0.2s;\n    }\n\n    .csv-generator-box .attribute-select.display {\n      transform: translatex(0px);\n      opacity: 1;\n    }\n\n    .csv-generator-box .csv {\n      position: relative;\n      margin: 15px 0px;\n      padding: 10px;\n      border: 1px solid rgb(230,230,230);\n    }\n    .csv-generator-box .csv .glyphicon-remove {\n      position: absolute;\n      top: 10px;\n      right: 10px;\n    }\n\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
@@ -3482,6 +3494,19 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.setAttribute(el4,"class","btn btn-info btn-sm");
         var el5 = dom.createTextNode("phonenumber");
         dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("div");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode(" ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("span");
+        dom.setAttribute(el4,"class","glyphicon glyphicon-remove");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -3553,7 +3578,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, element = hooks.element, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, element = hooks.element, content = hooks.content, get = hooks.get, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -3577,12 +3602,18 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         var element5 = dom.childAt(element3, [3]);
         var element6 = dom.childAt(element5, [1]);
         var element7 = dom.childAt(element5, [3]);
-        var morph0 = dom.createMorphAt(dom.childAt(element2, [5, 3]),0,1);
-        element(env, element4, context, "action", ["showButtons"], {});
+        var element8 = dom.childAt(element3, [5]);
+        var element9 = dom.childAt(element8, [2]);
+        var morph0 = dom.createMorphAt(element8,0,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [5, 3]),0,1);
+        element(env, element4, context, "action", ["toggleButtons"], {});
         element(env, element5, context, "bind-attr", [], {"class": ":attribute-select displayButtons:display"});
         element(env, element6, context, "action", ["generateCsv", "email"], {});
         element(env, element7, context, "action", ["generateCsv", "phoneNumber"], {});
-        block(env, morph0, context, "each", [get(env, context, "controller")], {"keyword": "user"}, child0, null);
+        element(env, element8, context, "bind-attr", [], {"class": ":csv :hide generatedCsv:show"});
+        content(env, morph0, context, "generatedCsv");
+        element(env, element9, context, "action", ["clearCsv"], {});
+        block(env, morph1, context, "each", [get(env, context, "controller")], {"keyword": "user"}, child0, null);
         return fragment;
       }
     };
@@ -3987,7 +4018,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.bb378d0b"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.9355ca2e"});
 }
 
 /* jshint ignore:end */

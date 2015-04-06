@@ -21,16 +21,31 @@
       opacity: 1;
     }
 
+    .csv-generator-box .csv {
+      position: relative;
+      margin: 15px 0px;
+      padding: 10px;
+      border: 1px solid rgb(230,230,230);
+    }
+    .csv-generator-box .csv .glyphicon-remove {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
   </style>
 
   <div class="csv-generator-box">
-    <button type="button" class="btn btn-info btn-sm" {{action 'showButtons'}}>
+    <button type="button" class="btn btn-info btn-sm" {{action 'toggleButtons'}}>
       generate csv
     </button>
     <span {{bind-attr class=":attribute-select displayButtons:display"}}>
       <button type="button" class="btn btn-info btn-sm" {{action 'generateCsv' 'email'}}>email</button>
       <button type="button" class="btn btn-info btn-sm" {{action 'generateCsv' 'phoneNumber'}}>phonenumber</button>
     </span>
+    <div {{bind-attr class=":csv :hide generatedCsv:show"}}>
+      {{generatedCsv}} <span class="glyphicon glyphicon-remove" {{action 'clearCsv'}}></span>
+    </div>
   </div>
 
   <table class="table">
