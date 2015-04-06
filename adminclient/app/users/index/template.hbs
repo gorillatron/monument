@@ -7,6 +7,32 @@
 </section> -->
 
 <section class="data-table">
+
+  <style media="screen">
+
+    .csv-generator-box .attribute-select {
+      opacity: 0.001;
+      transform: translatex(-40px);
+      transition: all 0.2s;
+    }
+
+    .csv-generator-box .attribute-select.display {
+      transform: translatex(0px);
+      opacity: 1;
+    }
+
+  </style>
+
+  <div class="csv-generator-box">
+    <button type="button" class="btn btn-info btn-sm" {{action 'showButtons'}}>
+      generate csv
+    </button>
+    <span {{bind-attr class=":attribute-select displayButtons:display"}}>
+      <button type="button" class="btn btn-info btn-sm" {{action 'generateCsv' 'email'}}>email</button>
+      <button type="button" class="btn btn-info btn-sm" {{action 'generateCsv' 'phoneNumber'}}>phonenumber</button>
+    </span>
+  </div>
+
   <table class="table">
     <thead>
       <tr>

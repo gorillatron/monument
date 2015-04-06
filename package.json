@@ -44,5 +44,8 @@
     "type": "git"
   },
   "author": "gorillatron",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "connect-mongo": "^0.8.0"
+  }
 }

@@ -8,6 +8,21 @@ export default Ember.ArrayController.extend({
 
   role: null,
 
-  search: null
+  search: null,
+
+  displayButtons: false,
+
+  _buttonDisplayTimer: null,
+
+  actions: {
+    showButtons: function() {
+      this.set('displayButtons', !this.get('displayButtons'))
+      this._buttonDisplayTimer = setTimeout(() => {this.set('displayButtons', false)}, 4000)
+    },
+    generateCsv: function(attr) {
+      clearTimeout(this._buttonDisplayTimer)
+      this.set('displayButtons', false)
+    }
+  }
 
 });

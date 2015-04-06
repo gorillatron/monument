@@ -2780,7 +2780,7 @@ define('adminclient/tests/users/index/controller.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/controller.js should pass jshint', function() { 
-    ok(true, 'users/index/controller.js should pass jshint.'); 
+    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 19, col 62, Missing semicolon.\nusers/index/controller.js: line 20, col 85, Missing semicolon.\nusers/index/controller.js: line 20, col 93, Missing semicolon.\nusers/index/controller.js: line 23, col 45, Missing semicolon.\nusers/index/controller.js: line 24, col 40, Missing semicolon.\nusers/index/controller.js: line 22, col 27, \'attr\' is defined but never used.\n\n6 errors'); 
   });
 
 });
@@ -3260,7 +3260,26 @@ define('adminclient/users/index/controller', ['exports', 'ember'], function (exp
 
     role: null,
 
-    search: null
+    search: null,
+
+    displayButtons: false,
+
+    _buttonDisplayTimer: null,
+
+    actions: {
+      showButtons: function showButtons() {
+        var _this = this;
+
+        this.set("displayButtons", !this.get("displayButtons"));
+        this._buttonDisplayTimer = setTimeout(function () {
+          _this.set("displayButtons", false);
+        }, 4000);
+      },
+      generateCsv: function generateCsv(attr) {
+        clearTimeout(this._buttonDisplayTimer);
+        this.set("displayButtons", false);
+      }
+    }
 
   });
 
@@ -3426,7 +3445,51 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("section");
         dom.setAttribute(el1,"class","data-table");
-        var el2 = dom.createTextNode("\n  ");
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("style");
+        dom.setAttribute(el2,"media","screen");
+        var el3 = dom.createTextNode("\n\n    .csv-generator-box .attribute-select {\n      opacity: 0.001;\n      transform: translatex(-40px);\n      transition: all 0.2s;\n    }\n\n    .csv-generator-box .attribute-select.display {\n      transform: translatex(0px);\n      opacity: 1;\n    }\n\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","csv-generator-box");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3,"type","button");
+        dom.setAttribute(el3,"class","btn btn-info btn-sm");
+        var el4 = dom.createTextNode("\n      generate csv\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("span");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("button");
+        dom.setAttribute(el4,"type","button");
+        dom.setAttribute(el4,"class","btn btn-info btn-sm");
+        var el5 = dom.createTextNode("email");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("button");
+        dom.setAttribute(el4,"type","button");
+        dom.setAttribute(el4,"class","btn btn-info btn-sm");
+        var el5 = dom.createTextNode("phonenumber");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("table");
         dom.setAttribute(el2,"class","table");
@@ -3490,7 +3553,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, element = hooks.element, get = hooks.get, block = hooks.block;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -3508,7 +3571,17 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [2, 1, 3]),0,1);
+        var element2 = dom.childAt(fragment, [2]);
+        var element3 = dom.childAt(element2, [3]);
+        var element4 = dom.childAt(element3, [1]);
+        var element5 = dom.childAt(element3, [3]);
+        var element6 = dom.childAt(element5, [1]);
+        var element7 = dom.childAt(element5, [3]);
+        var morph0 = dom.createMorphAt(dom.childAt(element2, [5, 3]),0,1);
+        element(env, element4, context, "action", ["showButtons"], {});
+        element(env, element5, context, "bind-attr", [], {"class": ":attribute-select displayButtons:display"});
+        element(env, element6, context, "action", ["generateCsv", "email"], {});
+        element(env, element7, context, "action", ["generateCsv", "phoneNumber"], {});
         block(env, morph0, context, "each", [get(env, context, "controller")], {"keyword": "user"}, child0, null);
         return fragment;
       }
@@ -3914,7 +3987,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.04480e72"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.bb378d0b"});
 }
 
 /* jshint ignore:end */

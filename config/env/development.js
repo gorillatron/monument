@@ -21,6 +21,13 @@ export default {
   //   connection: 'someMongodbServer'
   // }
 
-  port: 3000
+  port: 3000,
+
+  session: {
+    adapter: 'mongo',
+    url: 'mongodb://localhost',
+    collection: 'sessions',
+    port: 27017
+  }
 
 };

@@ -41,7 +41,7 @@ export var session = {
   * session store that can be shared across multiple Sails.js servers        *
   ***************************************************************************/
 
-  // adapter: 'redis',
+  //adapter: 'mongo',
 
   /***************************************************************************
   *                                                                          *
