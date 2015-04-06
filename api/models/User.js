@@ -38,6 +38,11 @@ export default {
       enum: ['admin', 'normal']
     },
 
+    subscribesToNews: {
+      type: 'boolean',
+      defaultsTo: true
+    },
+
     partakingAtEvent: {
       collection: 'Event',
       via: 'participants'

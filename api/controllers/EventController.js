@@ -79,6 +79,7 @@ export default {
 				}
 
 				user.name = name
+				user.subscribesToNews = true
 
 				user.save(function userSaved(err) {
 					if(err) {
