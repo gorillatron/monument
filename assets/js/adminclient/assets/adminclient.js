@@ -3914,7 +3914,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.1ced7000"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.04480e72"});
 }
 
 /* jshint ignore:end */

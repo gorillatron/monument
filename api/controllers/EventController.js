@@ -49,8 +49,8 @@ export default {
 		var email = req.param('email')
 		var name = req.param('name')
 
-		if(!name || name.length < 4) {
-			req.session.flash = { error: true, message: 'Navn må ha minst tre tegn ' }
+		if(!name || name.length < 2) {
+			req.session.flash = { error: true, message: 'Navn må ha minst 2 tegn ' }
 			return res.redirect('/event/signup')
 		}
 
