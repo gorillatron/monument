@@ -55,6 +55,7 @@
         <th>Email</th>
         <th>Phone</th>
         <th>Role</th>
+        <th>News subscriber</th>
         <th></th>
       </tr>
     </thead>
@@ -63,11 +64,12 @@
       {{#each user in controller}}
         <tr>
           <td>
-            {{#link-to 'user' user}} {{user.name}} {{/link-to}}
+            {{#link-to 'user' user.model}} {{user.model.name}} {{/link-to}}
           </td>
-          <td>{{user.phoneNumber}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.role}}</td>
+          <td>{{user.model.phoneNumber}}</td>
+          <td>{{user.model.email}}</td>
+          <td>{{user.model.role}}</td>
+          <td>{{#if user.model.subscribesToNews}} yes {{else}} no {{/if}}</td>
           <td>
             <button type="button" class="btn btn-danger btn-sm" {{action 'destroy' user}}>delete</button>
           </td>

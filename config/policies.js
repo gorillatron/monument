@@ -25,11 +25,8 @@ export var policies = {
     '*': ['tokenAuthenticate', sessionUserHasRole('admin')]
   },
 
-  EventController: {
-    'signup': ['flash'],
-    'create': ['tokenAuthenticate', sessionUserHasRole('admin')],
-    'edit':   ['tokenAuthenticate', sessionUserHasRole('admin')],
-    'delete': ['tokenAuthenticate', sessionUserHasRole('admin')]
+  SubscriptionController: {
+    'signup': ['flash']
   }
 
   /***************************************************************************

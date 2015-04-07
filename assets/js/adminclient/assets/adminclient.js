@@ -60,11 +60,14 @@ define('adminclient/application/template', ['exports'], function (exports) {
         var child0 = (function() {
           return {
             isHTMLBars: true,
+            revision: "Ember@1.11.1",
             blockParams: 0,
             cachedFragment: null,
             hasRendered: false,
             build: function build(dom) {
-              var el0 = dom.createTextNode(" users ");
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode(" users ");
+              dom.appendChild(el0, el1);
               return el0;
             },
             render: function render(context, env, contextualElement) {
@@ -92,12 +95,15 @@ define('adminclient/application/template', ['exports'], function (exports) {
         }());
         return {
           isHTMLBars: true,
+          revision: "Ember@1.11.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
           build: function build(dom) {
             var el0 = dom.createDocumentFragment();
             var el1 = dom.createTextNode("            ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
@@ -123,7 +129,7 @@ define('adminclient/application/template', ['exports'], function (exports) {
             } else {
               fragment = this.build(dom);
             }
-            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
             block(env, morph0, context, "link-to", ["users"], {}, child0, null);
             return fragment;
           }
@@ -131,14 +137,13 @@ define('adminclient/application/template', ['exports'], function (exports) {
       }());
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("");
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -162,8 +167,9 @@ define('adminclient/application/template', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
           block(env, morph0, context, "link-to", ["users"], {"tagName": "li"}, child0, null);
           return fragment;
         }
@@ -172,6 +178,7 @@ define('adminclient/application/template', ['exports'], function (exports) {
     var child1 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -229,12 +236,15 @@ define('adminclient/application/template', ['exports'], function (exports) {
     var child2 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("\n        ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n\n");
           dom.appendChild(el0, el1);
@@ -260,7 +270,7 @@ define('adminclient/application/template', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           inline(env, morph0, context, "render", ["login"], {});
           return fragment;
         }
@@ -268,6 +278,7 @@ define('adminclient/application/template', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -306,10 +317,14 @@ define('adminclient/application/template', ['exports'], function (exports) {
         dom.setAttribute(el4,"class","nav navbar-nav");
         var el5 = dom.createTextNode("\n\n");
         dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -322,11 +337,15 @@ define('adminclient/application/template', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1,"class","container");
         var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
@@ -337,7 +356,7 @@ define('adminclient/application/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline, content = hooks.content;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -356,14 +375,14 @@ define('adminclient/application/template', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element1 = dom.childAt(fragment, [0, 1, 3]);
-        var morph0 = dom.createMorphAt(dom.childAt(element1, [1]),0,1);
-        var morph1 = dom.createMorphAt(element1,2,3);
-        var morph2 = dom.createMorphAt(fragment,1,2,contextualElement);
-        var morph3 = dom.createMorphAt(dom.childAt(fragment, [3]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(element1, [1]),1,1);
+        var morph1 = dom.createMorphAt(element1,3,3);
+        var morph2 = dom.createMorphAt(fragment,2,2,contextualElement);
+        var morph3 = dom.createMorphAt(dom.childAt(fragment, [4]),1,1);
         block(env, morph0, context, "if", [get(env, context, "session.isAuthenticated")], {}, child0, null);
         block(env, morph1, context, "if", [get(env, context, "session.isAuthenticated")], {}, child1, child2);
         inline(env, morph2, context, "ember-notify", [], {"closeAfter": 4000});
-        inline(env, morph3, context, "liquid-outlet", [], {"class": "app"});
+        content(env, morph3, context, "outlet");
         return fragment;
       }
     };
@@ -1300,6 +1319,7 @@ define('adminclient/login/template', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -1313,6 +1333,8 @@ define('adminclient/login/template', ['exports'], function (exports) {
         dom.setAttribute(el2,"class","form-group");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -1321,6 +1343,8 @@ define('adminclient/login/template', ['exports'], function (exports) {
         var el2 = dom.createElement("div");
         dom.setAttribute(el2,"class","form-group");
         var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -1361,8 +1385,8 @@ define('adminclient/login/template', ['exports'], function (exports) {
         }
         var element0 = dom.childAt(fragment, [0]);
         var element1 = dom.childAt(element0, [5]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,1);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
         inline(env, morph0, context, "input", [], {"valueBinding": "useridentification", "class": "form-control", "type": "text", "placeholder": "email/phone"});
         inline(env, morph1, context, "input", [], {"valueBinding": "password", "class": "form-control", "type": "password", "placeholder": "password"});
         element(env, element1, context, "action", ["authenticate"], {});
@@ -1398,6 +1422,7 @@ define('adminclient/templates/components/ember-notify', ['exports'], function (e
       var child0 = (function() {
         return {
           isHTMLBars: true,
+          revision: "Ember@1.11.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -1414,7 +1439,9 @@ define('adminclient/templates/components/ember-notify', ['exports'], function (e
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("span");
             dom.setAttribute(el1,"class","message");
-            var el2 = dom.createTextNode("");
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
@@ -1443,9 +1470,8 @@ define('adminclient/templates/components/ember-notify', ['exports'], function (e
             }
             var element0 = dom.childAt(fragment, [1]);
             var element1 = dom.childAt(fragment, [3]);
-            if (this.cachedFragment) { dom.repairClonedNode(element1,[0]); }
-            var morph0 = dom.createMorphAt(element1,-1,0);
-            var morph1 = dom.createUnsafeMorphAt(element1,0,-1);
+            var morph0 = dom.createMorphAt(element1,0,0);
+            var morph1 = dom.createUnsafeMorphAt(element1,1,1);
             element(env, element0, context, "action", ["close"], {"target": "view"});
             content(env, morph0, context, "message.message");
             content(env, morph1, context, "message.raw");
@@ -1455,14 +1481,13 @@ define('adminclient/templates/components/ember-notify', ['exports'], function (e
       }());
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("");
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -1486,8 +1511,9 @@ define('adminclient/templates/components/ember-notify', ['exports'], function (e
           } else {
             fragment = this.build(dom);
           }
-          if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
           block(env, morph0, context, "view", [get(env, context, "view.messageClass")], {"message": get(env, context, "message"), "closeAfter": get(env, context, "closeAfter"), "class": "clearfix"}, child0, null);
           return fragment;
         }
@@ -1495,14 +1521,13 @@ define('adminclient/templates/components/ember-notify', ['exports'], function (e
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -1526,8 +1551,9 @@ define('adminclient/templates/components/ember-notify', ['exports'], function (e
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
         block(env, morph0, context, "each", [get(env, context, "messages")], {"keyword": "message"}, child0, null);
         return fragment;
       }
@@ -1543,12 +1569,15 @@ define('adminclient/templates/components/liquid-bind-c', ['exports'], function (
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 1,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -1574,7 +1603,7 @@ define('adminclient/templates/components/liquid-bind-c', ['exports'], function (
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           set(env, context, "boundValue", blockArguments[0]);
           content(env, morph0, context, "boundValue");
           return fragment;
@@ -1583,14 +1612,13 @@ define('adminclient/templates/components/liquid-bind-c', ['exports'], function (
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -1614,8 +1642,9 @@ define('adminclient/templates/components/liquid-bind-c', ['exports'], function (
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
         block(env, morph0, context, "liquid-with", [get(env, context, "value")], {"class": get(env, context, "innerClass"), "use": get(env, context, "use"), "containerless": get(env, context, "containerless")}, child0, null);
         return fragment;
       }
@@ -1630,14 +1659,13 @@ define('adminclient/templates/components/liquid-measured', ['exports'], function
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -1661,8 +1689,9 @@ define('adminclient/templates/components/liquid-measured', ['exports'], function
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
         content(env, morph0, context, "yield");
         return fragment;
       }
@@ -1679,6 +1708,7 @@ define('adminclient/templates/components/liquid-modal', ['exports'], function (e
       var child0 = (function() {
         return {
           isHTMLBars: true,
+          revision: "Ember@1.11.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -1690,10 +1720,14 @@ define('adminclient/templates/components/liquid-modal', ['exports'], function (e
             dom.setAttribute(el1,"role","dialog");
             var el2 = dom.createTextNode("\n      ");
             dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
             var el2 = dom.createTextNode("\n    ");
             dom.appendChild(el1, el2);
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode("\n");
             dom.appendChild(el0, el1);
@@ -1720,8 +1754,8 @@ define('adminclient/templates/components/liquid-modal', ['exports'], function (e
               fragment = this.build(dom);
             }
             var element0 = dom.childAt(fragment, [1]);
-            var morph0 = dom.createMorphAt(element0,0,1);
-            var morph1 = dom.createMorphAt(fragment,2,3,contextualElement);
+            var morph0 = dom.createMorphAt(element0,1,1);
+            var morph1 = dom.createMorphAt(fragment,3,3,contextualElement);
             element(env, element0, context, "bind-attr", [], {"class": ":lf-dialog cc.options.dialogClass"});
             element(env, element0, context, "bind-attr", [], {"aria-labelledby": "cc.options.ariaLabelledBy", "aria-label": "cc.options.ariaLabel"});
             inline(env, morph0, context, "view", [get(env, context, "innerView")], {"dismiss": "dismiss"});
@@ -1732,14 +1766,13 @@ define('adminclient/templates/components/liquid-modal', ['exports'], function (e
       }());
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 1,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("");
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -1763,8 +1796,9 @@ define('adminclient/templates/components/liquid-modal', ['exports'], function (e
           } else {
             fragment = this.build(dom);
           }
-          if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, null);
+          dom.insertBoundary(fragment, 0);
           set(env, context, "cc", blockArguments[0]);
           block(env, morph0, context, "lm-container", [], {"action": "escape"}, child0, null);
           return fragment;
@@ -1773,14 +1807,13 @@ define('adminclient/templates/components/liquid-modal', ['exports'], function (e
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -1804,8 +1837,9 @@ define('adminclient/templates/components/liquid-modal', ['exports'], function (e
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
         block(env, morph0, context, "liquid-with", [get(env, context, "currentContext")], {"class": "lm-with", "containerless": true}, child0, null);
         return fragment;
       }
@@ -1821,12 +1855,15 @@ define('adminclient/templates/components/liquid-spacer', ['exports'], function (
     var child0 = (function() {
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createTextNode("  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
@@ -1852,7 +1889,7 @@ define('adminclient/templates/components/liquid-spacer', ['exports'], function (
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
           content(env, morph0, context, "yield");
           return fragment;
         }
@@ -1860,14 +1897,13 @@ define('adminclient/templates/components/liquid-spacer', ['exports'], function (
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -1891,8 +1927,9 @@ define('adminclient/templates/components/liquid-spacer', ['exports'], function (
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, null);
+        dom.insertBoundary(fragment, 0);
         block(env, morph0, context, "liquid-measured", [], {"width": get(env, context, "width"), "height": get(env, context, "height")}, child0, null);
         return fragment;
       }
@@ -1907,12 +1944,13 @@ define('adminclient/templates/liquid-with-self', ['exports'], function (exports)
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -1938,8 +1976,8 @@ define('adminclient/templates/liquid-with-self', ['exports'], function (exports)
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         content(env, morph0, context, "value");
         return fragment;
       }
@@ -1954,12 +1992,13 @@ define('adminclient/templates/liquid-with', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n\n");
         dom.appendChild(el0, el1);
@@ -1985,8 +2024,8 @@ define('adminclient/templates/liquid-with', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
         content(env, morph0, context, "with-apply");
         return fragment;
       }
@@ -2175,16 +2214,6 @@ define('adminclient/tests/test-helper.jshint', function () {
   module('JSHint - .');
   test('test-helper.js should pass jshint', function() { 
     ok(true, 'test-helper.js should pass jshint.'); 
-  });
-
-});
-define('adminclient/tests/transitions.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - .');
-  test('transitions.js should pass jshint', function() { 
-    ok(true, 'transitions.js should pass jshint.'); 
   });
 
 });
@@ -2780,7 +2809,7 @@ define('adminclient/tests/users/index/controller.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/controller.js should pass jshint', function() { 
-    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 21, col 44, Missing semicolon.\nusers/index/controller.js: line 23, col 47, Missing semicolon.\nusers/index/controller.js: line 24, col 87, Missing semicolon.\nusers/index/controller.js: line 24, col 95, Missing semicolon.\nusers/index/controller.js: line 28, col 45, Missing semicolon.\nusers/index/controller.js: line 29, col 40, Missing semicolon.\nusers/index/controller.js: line 30, col 68, Missing semicolon.\nusers/index/controller.js: line 31, col 36, Missing semicolon.\nusers/index/controller.js: line 34, col 37, Missing semicolon.\n\n9 errors'); 
+    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 21, col 44, Missing semicolon.\nusers/index/controller.js: line 23, col 47, Missing semicolon.\nusers/index/controller.js: line 24, col 87, Missing semicolon.\nusers/index/controller.js: line 24, col 95, Missing semicolon.\nusers/index/controller.js: line 28, col 45, Missing semicolon.\nusers/index/controller.js: line 29, col 40, Missing semicolon.\nusers/index/controller.js: line 30, col 88, Missing semicolon.\nusers/index/controller.js: line 31, col 36, Missing semicolon.\nusers/index/controller.js: line 34, col 37, Missing semicolon.\n\n9 errors'); 
   });
 
 });
@@ -2802,13 +2831,6 @@ define('adminclient/tests/views/contenteditable.jshint', function () {
   test('views/contenteditable.js should pass jshint', function() { 
     ok(false, 'views/contenteditable.js should pass jshint.\nviews/contenteditable.js: line 46, col 21, \'event\' is defined but never used.\n\n1 error'); 
   });
-
-});
-define('adminclient/transitions', ['exports'], function (exports) {
-
-	'use strict';
-
-	exports['default'] = function () {};
 
 });
 define('adminclient/transitions/cross-fade', ['exports', 'liquid-fire'], function (exports, liquid_fire) {
@@ -3026,7 +3048,7 @@ define('adminclient/user/controller', ['exports', 'ember', 'ember-notify'], func
 
   'use strict';
 
-  exports['default'] = Ember['default'].ObjectController.extend({
+  exports['default'] = Ember['default'].Controller.extend({
 
     roles: ["admin", "normal"],
 
@@ -3073,6 +3095,7 @@ define('adminclient/user/model', ['exports', 'ember-data'], function (exports, D
     phoneNumber: DS['default'].attr("string"),
     email: DS['default'].attr("string"),
     role: DS['default'].attr("string"),
+    subscribesToNews: DS['default'].attr("boolean"),
     createdAt: DS['default'].attr("date"),
     updatedAt: DS['default'].attr("date")
   });
@@ -3114,6 +3137,7 @@ define('adminclient/user/template', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -3136,6 +3160,8 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("td");
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -3152,6 +3178,8 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("td");
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -3168,6 +3196,8 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("td");
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -3185,6 +3215,8 @@ define('adminclient/user/template', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("td");
         var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
@@ -3212,7 +3244,7 @@ define('adminclient/user/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, inline = hooks.inline, get = hooks.get, element = hooks.element;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -3232,13 +3264,13 @@ define('adminclient/user/template', ['exports'], function (exports) {
         }
         var element0 = dom.childAt(fragment, [0, 1]);
         var element1 = dom.childAt(fragment, [2]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 3]),-1,-1);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 3]),-1,-1);
-        var morph2 = dom.createMorphAt(dom.childAt(element0, [5, 3]),-1,-1);
-        var morph3 = dom.createMorphAt(dom.childAt(element0, [7, 3]),0,1);
-        inline(env, morph0, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "valueBinding": "model.name", "editable": true});
-        inline(env, morph1, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "valueBinding": "model.email", "editable": true});
-        inline(env, morph2, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "valueBinding": "model.phoneNumber", "editable": true});
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 3]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 3]),0,0);
+        var morph2 = dom.createMorphAt(dom.childAt(element0, [5, 3]),0,0);
+        var morph3 = dom.createMorphAt(dom.childAt(element0, [7, 3]),1,1);
+        inline(env, morph0, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.name"), "editable": true});
+        inline(env, morph1, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.email"), "editable": true});
+        inline(env, morph2, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.phoneNumber"), "editable": true});
         inline(env, morph3, context, "view", ["select"], {"content": get(env, context, "roles"), "selection": get(env, context, "model.role")});
         element(env, element1, context, "bind-attr", [], {"disabled": "isClean"});
         element(env, element1, context, "action", ["save", get(env, context, "model")], {});
@@ -3256,7 +3288,7 @@ define('adminclient/users/index/controller', ['exports', 'ember'], function (exp
 
     itemController: "user",
 
-    queryParams: ["role", "search"],
+    queryParams: ["role", "search", "subscribesToNews"],
 
     role: null,
 
@@ -3283,8 +3315,8 @@ define('adminclient/users/index/controller', ['exports', 'ember'], function (exp
       generateCsv: function generateCsv(attr) {
         clearTimeout(this._buttonDisplayTimer);
         this.set("displayButtons", false);
-        var csv = this.model.map(function (user) {
-          return user.get(attr);
+        var csv = this.map(function (userController) {
+          return userController.model.get(attr);
         }).join(", ");
         this.set("generatedCsv", csv);
       },
@@ -3321,12 +3353,15 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
       var child0 = (function() {
         return {
           isHTMLBars: true,
+          revision: "Ember@1.11.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
           build: function build(dom) {
             var el0 = dom.createDocumentFragment();
             var el1 = dom.createTextNode(" ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
             dom.appendChild(el0, el1);
             var el1 = dom.createTextNode(" ");
             dom.appendChild(el0, el1);
@@ -3352,14 +3387,87 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
             } else {
               fragment = this.build(dom);
             }
-            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-            content(env, morph0, context, "user.name");
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            content(env, morph0, context, "user.model.name");
+            return fragment;
+          }
+        };
+      }());
+      var child1 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.11.1",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode(" yes ");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            return fragment;
+          }
+        };
+      }());
+      var child2 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.11.1",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode(" no ");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
             return fragment;
           }
         };
       }());
       return {
         isHTMLBars: true,
+        revision: "Ember@1.11.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -3373,20 +3481,34 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
           var el2 = dom.createElement("td");
           var el3 = dom.createTextNode("\n            ");
           dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           var el3 = dom.createTextNode("\n          ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
@@ -3430,15 +3552,17 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
             fragment = this.build(dom);
           }
           var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [9, 1]);
-          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
-          var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),-1,-1);
-          var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),-1,-1);
-          var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),-1,-1);
-          block(env, morph0, context, "link-to", ["user", get(env, context, "user")], {}, child0, null);
-          content(env, morph1, context, "user.phoneNumber");
-          content(env, morph2, context, "user.email");
-          content(env, morph3, context, "user.role");
+          var element1 = dom.childAt(element0, [11, 1]);
+          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+          var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),0,0);
+          var morph2 = dom.createMorphAt(dom.childAt(element0, [5]),0,0);
+          var morph3 = dom.createMorphAt(dom.childAt(element0, [7]),0,0);
+          var morph4 = dom.createMorphAt(dom.childAt(element0, [9]),0,0);
+          block(env, morph0, context, "link-to", ["user", get(env, context, "user.model")], {}, child0, null);
+          content(env, morph1, context, "user.model.phoneNumber");
+          content(env, morph2, context, "user.model.email");
+          content(env, morph3, context, "user.model.role");
+          block(env, morph4, context, "if", [get(env, context, "user.model.subscribesToNews")], {}, child1, child2);
           element(env, element1, context, "action", ["destroy", get(env, context, "user")], {});
           return fragment;
         }
@@ -3446,6 +3570,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
     }());
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
@@ -3503,6 +3628,8 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         var el3 = dom.createElement("div");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
         var el4 = dom.createTextNode(" ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("span");
@@ -3551,6 +3678,12 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("th");
+        var el6 = dom.createTextNode("News subscriber");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("th");
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
@@ -3562,6 +3695,8 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("tbody");
         var el4 = dom.createTextNode("\n\n");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -3603,9 +3738,9 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         var element6 = dom.childAt(element5, [1]);
         var element7 = dom.childAt(element5, [3]);
         var element8 = dom.childAt(element3, [5]);
-        var element9 = dom.childAt(element8, [2]);
-        var morph0 = dom.createMorphAt(element8,0,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element2, [5, 3]),0,1);
+        var element9 = dom.childAt(element8, [3]);
+        var morph0 = dom.createMorphAt(element8,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [5, 3]),1,1);
         element(env, element4, context, "action", ["toggleButtons"], {});
         element(env, element5, context, "bind-attr", [], {"class": ":attribute-select displayButtons:display"});
         element(env, element6, context, "action", ["generateCsv", "email"], {});
@@ -3627,12 +3762,13 @@ define('adminclient/users/template', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createTextNode("");
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -3658,9 +3794,9 @@ define('adminclient/users/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-        content(env, morph0, context, "liquid-outlet");
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        content(env, morph0, context, "outlet");
         return fragment;
       }
     };
@@ -4018,7 +4154,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.9355ca2e"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.47ea3499"});
 }
 
 /* jshint ignore:end */

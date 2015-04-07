@@ -4,7 +4,7 @@ export default Ember.ArrayController.extend({
 
   itemController: 'user',
 
-  queryParams: ['role', 'search'],
+  queryParams: ['role', 'search', 'subscribesToNews'],
 
   role: null,
 
@@ -27,7 +27,7 @@ export default Ember.ArrayController.extend({
     generateCsv: function(attr) {
       clearTimeout(this._buttonDisplayTimer)
       this.set('displayButtons', false)
-      var csv = this.model.map((user) => user.get(attr)).join(', ')
+      var csv = this.map((userController) => userController.model.get(attr)).join(', ')
       this.set('generatedCsv', csv)
     },
     clearCsv: function() {

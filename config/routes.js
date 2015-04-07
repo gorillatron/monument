@@ -32,9 +32,9 @@ export var routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'EventController.signup',
-  '/event/signup': 'EventController.signup',
-  '/event/partake': 'EventController.partake',
+  '/': 'SubscriptionController.signup',
+  '/subscription': 'SubscriptionController.signup',
+  '/subscribe': 'SubscriptionController.subscribe',
 
   '/admin': 'AdminController.index',
   '/admin/login': 'AdminController.index',

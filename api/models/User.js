@@ -6,10 +6,24 @@
 */
 
 import bcrypt from 'bcrypt';
+import Promise from 'bluebird';
+import WLValidationError from 'sails/node_modules/waterline/lib/waterline/error/WLValidationError';
+import norwegianNumberRegexp from '../regexp/norwegianNumber';
+
+var userRoles = {
+  'admin': {},
+  'normal': {}
+}
 
 export default {
 
   schema: true,
+
+  types: {
+    norwegianNumber: function(number) {
+      return norwegianNumberRegexp.exec(number) ? true : false
+    }
+  },
 
   attributes: {
 
@@ -24,7 +38,8 @@ export default {
 
     phoneNumber: {
       type: 'string',
-      unique: true
+      unique: true,
+      norwegianNumber: true
     },
 
     encryptedPassword: {
@@ -35,7 +50,7 @@ export default {
     role: {
       type: 'string',
       defaultsTo: 'normal',
-      enum: ['admin', 'normal']
+      enum: Object.keys(userRoles)
     },
 
     subscribesToNews: {
@@ -50,11 +65,45 @@ export default {
 
   },
 
-  beforeCreate: function(values, next) {
+  beforeValidate: function(values, next) {
     if(!values.email && !values.phoneNumber) {
-      return next(new Error('user must have either email or phoneNumber'))
+      return next(new WLValidationError({
+        "error": "E_VALIDATION",
+        "status": 400,
+        "summary": "2 attribute is invalid",
+        "model": "User",
+        "invalidAttributes": {
+          "multi": [
+            {
+              "rule": "subrequired",
+              "message": "phoneNumber or email is required"
+            }
+          ]
+        }
+      }))
     }
-    next()
+    return next()
+  },
+
+  findOrCreateOne: function(params, cb) {
+    var query = {
+      or: Object.keys(params).reduce((or, paramKey) => {
+        var paramVal = params[paramKey]
+        if(paramVal) {
+          or.push({ [paramKey]: paramVal })
+        }
+        return or
+      }, [])
+    }
+
+    return User.findOne(query).then((user) => {
+      if(user) {
+        return Promise.resolve(user)
+      }
+      else {
+        return User.create(params)
+      }
+    })
   }
 
 };
