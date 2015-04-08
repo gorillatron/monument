@@ -2779,7 +2779,7 @@ define('adminclient/tests/user/controller.jshint', function () {
 
   module('JSHint - user');
   test('user/controller.js should pass jshint', function() { 
-    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 12, col 28, Missing semicolon.\nuser/controller.js: line 14, col 17, Missing semicolon.\nuser/controller.js: line 21, col 38, Missing semicolon.\nuser/controller.js: line 23, col 57, Missing semicolon.\nuser/controller.js: line 24, col 9, Missing semicolon.\nuser/controller.js: line 29, col 34, Missing semicolon.\nuser/controller.js: line 31, col 42, Missing semicolon.\nuser/controller.js: line 33, col 59, Missing semicolon.\nuser/controller.js: line 34, col 11, Missing semicolon.\n\n9 errors'); 
+    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 11, col 61, Missing semicolon.\nuser/controller.js: line 16, col 28, Missing semicolon.\nuser/controller.js: line 18, col 17, Missing semicolon.\nuser/controller.js: line 25, col 38, Missing semicolon.\nuser/controller.js: line 27, col 57, Missing semicolon.\nuser/controller.js: line 28, col 9, Missing semicolon.\nuser/controller.js: line 33, col 34, Missing semicolon.\nuser/controller.js: line 35, col 42, Missing semicolon.\nuser/controller.js: line 37, col 59, Missing semicolon.\nuser/controller.js: line 38, col 11, Missing semicolon.\n\n10 errors'); 
   });
 
 });
@@ -2809,7 +2809,7 @@ define('adminclient/tests/users/index/controller.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/controller.js should pass jshint', function() { 
-    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 21, col 44, Missing semicolon.\nusers/index/controller.js: line 23, col 47, Missing semicolon.\nusers/index/controller.js: line 24, col 87, Missing semicolon.\nusers/index/controller.js: line 24, col 95, Missing semicolon.\nusers/index/controller.js: line 28, col 45, Missing semicolon.\nusers/index/controller.js: line 29, col 40, Missing semicolon.\nusers/index/controller.js: line 30, col 88, Missing semicolon.\nusers/index/controller.js: line 31, col 36, Missing semicolon.\nusers/index/controller.js: line 34, col 37, Missing semicolon.\n\n9 errors'); 
+    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 22, col 44, Missing semicolon.\nusers/index/controller.js: line 24, col 47, Missing semicolon.\nusers/index/controller.js: line 25, col 87, Missing semicolon.\nusers/index/controller.js: line 25, col 95, Missing semicolon.\nusers/index/controller.js: line 30, col 45, Missing semicolon.\nusers/index/controller.js: line 31, col 40, Missing semicolon.\nusers/index/controller.js: line 35, col 20, Missing semicolon.\nusers/index/controller.js: line 36, col 36, Missing semicolon.\nusers/index/controller.js: line 40, col 37, Missing semicolon.\n\n9 errors'); 
   });
 
 });
@@ -3054,6 +3054,10 @@ define('adminclient/user/controller', ['exports', 'ember', 'ember-notify'], func
 
     isClean: Ember['default'].computed.not("model.isDirty"),
 
+    displaySubscriptionBoolean: (function () {
+      return this.model.get("subscribesToNews") ? "yes" : "no";
+    }).property("model.subscribesToNews"),
+
     resetModel: function resetModel() {
       if (this.model.get("isDirty")) {
         this.model.rollback();
@@ -3224,6 +3228,28 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("tr");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("News Subscriber:");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("td");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createComment("");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
@@ -3244,7 +3270,7 @@ define('adminclient/user/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, content = hooks.content, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -3268,10 +3294,12 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 3]),0,0);
         var morph2 = dom.createMorphAt(dom.childAt(element0, [5, 3]),0,0);
         var morph3 = dom.createMorphAt(dom.childAt(element0, [7, 3]),1,1);
+        var morph4 = dom.createMorphAt(dom.childAt(element0, [9, 3]),1,1);
         inline(env, morph0, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.name"), "editable": true});
         inline(env, morph1, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.email"), "editable": true});
         inline(env, morph2, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.phoneNumber"), "editable": true});
         inline(env, morph3, context, "view", ["select"], {"content": get(env, context, "roles"), "selection": get(env, context, "model.role")});
+        content(env, morph4, context, "displaySubscriptionBoolean");
         element(env, element1, context, "bind-attr", [], {"disabled": "isClean"});
         element(env, element1, context, "action", ["save", get(env, context, "model")], {});
         return fragment;
@@ -3301,6 +3329,7 @@ define('adminclient/users/index/controller', ['exports', 'ember'], function (exp
     generatedCsv: null,
 
     actions: {
+
       toggleButtons: function toggleButtons() {
         var _this = this;
 
@@ -3312,14 +3341,18 @@ define('adminclient/users/index/controller', ['exports', 'ember'], function (exp
           }, 4000);
         }
       },
+
       generateCsv: function generateCsv(attr) {
         clearTimeout(this._buttonDisplayTimer);
         this.set("displayButtons", false);
         var csv = this.map(function (userController) {
           return userController.model.get(attr);
+        }).filter(function (val) {
+          return val && val.length > 0;
         }).join(", ");
         this.set("generatedCsv", csv);
       },
+
       clearCsv: function clearCsv() {
         this.set("generatedCsv", null);
       }
@@ -3389,78 +3422,6 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
             }
             var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
             content(env, morph0, context, "user.model.name");
-            return fragment;
-          }
-        };
-      }());
-      var child1 = (function() {
-        return {
-          isHTMLBars: true,
-          revision: "Ember@1.11.1",
-          blockParams: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          build: function build(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode(" yes ");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          render: function render(context, env, contextualElement) {
-            var dom = env.dom;
-            dom.detectNamespace(contextualElement);
-            var fragment;
-            if (env.useFragmentCache && dom.canClone) {
-              if (this.cachedFragment === null) {
-                fragment = this.build(dom);
-                if (this.hasRendered) {
-                  this.cachedFragment = fragment;
-                } else {
-                  this.hasRendered = true;
-                }
-              }
-              if (this.cachedFragment) {
-                fragment = dom.cloneNode(this.cachedFragment, true);
-              }
-            } else {
-              fragment = this.build(dom);
-            }
-            return fragment;
-          }
-        };
-      }());
-      var child2 = (function() {
-        return {
-          isHTMLBars: true,
-          revision: "Ember@1.11.1",
-          blockParams: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          build: function build(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode(" no ");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          render: function render(context, env, contextualElement) {
-            var dom = env.dom;
-            dom.detectNamespace(contextualElement);
-            var fragment;
-            if (env.useFragmentCache && dom.canClone) {
-              if (this.cachedFragment === null) {
-                fragment = this.build(dom);
-                if (this.hasRendered) {
-                  this.cachedFragment = fragment;
-                } else {
-                  this.hasRendered = true;
-                }
-              }
-              if (this.cachedFragment) {
-                fragment = dom.cloneNode(this.cachedFragment, true);
-              }
-            } else {
-              fragment = this.build(dom);
-            }
             return fragment;
           }
         };
@@ -3562,7 +3523,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
           content(env, morph1, context, "user.model.phoneNumber");
           content(env, morph2, context, "user.model.email");
           content(env, morph3, context, "user.model.role");
-          block(env, morph4, context, "if", [get(env, context, "user.model.subscribesToNews")], {}, child1, child2);
+          content(env, morph4, context, "user.displaySubscriptionBoolean");
           element(env, element1, context, "action", ["destroy", get(env, context, "user")], {});
           return fragment;
         }
@@ -3660,13 +3621,13 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("th");
-        var el6 = dom.createTextNode("Email");
+        var el6 = dom.createTextNode("Phone");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("th");
-        var el6 = dom.createTextNode("Phone");
+        var el6 = dom.createTextNode("Email");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
@@ -4154,7 +4115,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.47ea3499"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"v0.0.1"});
 }
 
 /* jshint ignore:end */

@@ -1,0 +1,165 @@
+/**
+ * importer.less
+ *
+ * By default, new Sails projects are configured to compile this file
+ * from LESS to CSS.  Unlike CSS files, LESS files are not compiled and
+ * included automatically unless they are imported below.
+ *
+ * The LESS files imported below are compiled and included in the order
+ * they are listed.  Mixins, variables, etc. should be imported first
+ * so that they can be accessed by subsequent LESS stylesheets.
+ *
+ * (Just like the rest of the asset pipeline bundled in Sails, you can
+ * always omit, customize, or replace this behavior with SASS, SCSS,
+ * or any other Grunt tasks you like.)
+ */
+
+@import './bootstrap/bootstrap.less';
+@import 'vars.less';
+@import 'globals.less';
+@import 'fonts.less';
+
+body {
+  font-family: 'Alegreya Sans SC';
+  margin: 0px;
+  padding: 0px;
+}
+
+html {
+  padding: 0px;
+  margin: 0px;
+}
+
+.wrapper {
+  max-width: 482px;
+  margin: 0 auto 0px auto;
+  padding: 20px;
+  transition: margin opacity 0.5s ease;
+  -webkit-transition: opacity 0.5s ease;
+  opacity: 0.001;
+}
+
+.wrapper.show {
+  opacity: 1;
+}
+
+@media (min-width: 900px) {
+  .wrapper {
+    margin: 8% auto 0px auto;
+  }
+}
+
+header .logo-wrapper {
+  display: inline-block;
+}
+
+.button,
+input.button {
+  outline: none;
+  border: 2px solid rgb(103,157,129);
+  padding: 15px 35px;
+  border-radius: 2px;
+  font-family: 'Alegreya Sans SC';
+  color: rgb(100,100,100);
+  cursor: pointer;
+  -webkit-transition: all 0.18s ease;
+  background-color: white;
+  box-shadow: none;
+  -webkit-appearance: none;
+}
+
+input.button:active {
+  outline: none;
+}
+
+.button.small {
+  padding: 6px 15px;
+}
+
+.button:active {
+  -webkit-transform: scale(0.94);
+}
+
+header {
+  position: relative;
+}
+
+header .button#signup {
+  position: absolute;
+  right: 0px;
+  bottom: 18px;
+  vertical-align: top;
+  display: inline-block;
+  float: right;
+}
+
+.info {
+  position: relative;
+  background: white;
+  z-index: 2;
+}
+
+img#poster {
+  width: 100%;
+}
+
+form#eventsignupform {
+
+}
+
+form#eventsignupform.show {
+  display: block;
+}
+
+form#eventsignupform input[type="text"],
+form#eventsignupform input[type="email"],
+form#eventsignupform input[type="password"] {
+  display: block;
+  border: 1px solid rgb(100, 100, 100);
+  border-radius: 2px;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  background-color: white;
+  padding: 6px 15px;
+  font-family: 'Alegreya Sans SC';
+  font-size: 14px;
+  width: 200px;
+}
+
+
+form#eventsignupform input[name="phoneNumber"] {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+form#eventsignupform input[name="name"] {
+  margin-bottom: 15px;
+}
+
+form#eventsignupform input[name="email"] {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+form#eventsignupform i {
+  color: rgb(120,120,120);
+}
+
+form#eventsignupform .button {
+  display: inline-block;
+  margin: 15px 0px;
+  background-color: white;
+  font-size: 16px;
+}
+
+.flash {
+  color: rgb(103,157,129);
+}
+
+.flash.error {
+  color: rgb(202, 59, 119);
+}
+
+.clear {
+  clear: both;
+}

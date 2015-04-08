@@ -87,21 +87,30 @@ export default {
 
   findOrCreateOne: function(params, cb) {
     var query = {
-      or: Object.keys(params).reduce((or, paramKey) => {
-        var paramVal = params[paramKey]
-        if(paramVal) {
-          or.push({ [paramKey]: paramVal })
-        }
-        return or
-      }, [])
+      or: []
+    }
+
+    if(params.email && params.email !== '') {
+      query.or.push({ email: params.email })
+    }
+
+    if(params.phoneNumber && params.phoneNumber !== '') {
+      query.or.push({ phoneNumber: params.phoneNumber })
+    }
+
+    var ensuredUser = (user) => {
+      for(var attr in params) {
+        if(params[attr]) user[attr] = params[attr]
+      }
+      return user.save()
     }
 
     return User.findOne(query).then((user) => {
       if(user) {
-        return Promise.resolve(user)
+        return Promise.resolve(user).then(ensuredUser)
       }
       else {
-        return User.create(params)
+        return User.create(params).then(ensuredUser)
       }
     })
   }

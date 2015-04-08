@@ -7,6 +7,10 @@ export default Ember.Controller.extend({
 
   isClean: Ember.computed.not('model.isDirty'),
 
+  displaySubscriptionBoolean: function() {
+    return this.model.get('subscribesToNews') ? 'yes' : 'no'
+  }.property('model.subscribesToNews'),
+
   resetModel: function() {
     if(this.model.get('isDirty')) {
       this.model.rollback()
