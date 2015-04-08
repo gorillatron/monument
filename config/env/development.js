@@ -23,11 +23,11 @@ export default {
 
   port: 3000,
 
-  session: {
-    adapter: 'mongo',
-    url: 'mongodb://localhost',
-    collection: 'sessions',
-    port: 27017
-  }
+  // session: {
+  //   adapter: 'mongo',
+  //   url: 'mongodb://localhost',
+  //   collection: 'sessions',
+  //   port: 27017
+  // }
 
 };
