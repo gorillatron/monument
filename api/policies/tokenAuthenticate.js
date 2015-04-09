@@ -13,10 +13,8 @@
   var token = authorizationHeader.replace('Token:', '')
 
   if( token === req.session.token ) {
-    next()
-  }
-  else {
-    res.forbidden({ error: {code: 'tokenerror', message: 'Invalid or no "Token:" in Authorization header'} })
+    return next()
   }
 
+  res.forbidden({ error: {code: 'tokenerror', message: 'Invalid or no "Token:" in Authorization header'} })
 };
