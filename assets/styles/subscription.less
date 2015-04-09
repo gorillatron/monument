@@ -163,3 +163,21 @@ form#eventsignupform .button {
 .clear {
   clear: both;
 }
+
+.g-recaptcha {
+  .transition(all 0.3s ease);
+  overflow: hidden;
+  &.inactive {
+    opacity: 0.001;
+    max-height: 0px;
+    border-width: 0px;
+    padding: 0px;
+    margin: 0px;
+    .translate(0px, 40px);
+  }
+  &.active {
+    opacity: 1;
+    max-height: 600px;
+    .translate(0px, 0px);
+  }
+}
