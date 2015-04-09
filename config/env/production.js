@@ -31,6 +31,10 @@ var productionConf = {
       url: process.env.MONGOLAB_URI,
       port: 27017
     }
+  },
+
+  session: {
+    secret: process.env.SESSION_SECRET
   }
 }
 
