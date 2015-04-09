@@ -17,19 +17,14 @@ export default {
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
 
-  models: {
-    schema: true,
-    connection: 'mongo',
-    migrate: 'safe'
-  },
-
   port: 3000,
 
-  // session: {
-  //   adapter: 'mongo',
-  //   url: 'mongodb://localhost',
-  //   collection: 'sessions',
-  //   port: 27017
-  // }
+  connections: {
+    mongo: {
+      adapter: 'sails-mongo',
+      host: 'localhost',
+      port: 27017
+    }
+  }
 
 };

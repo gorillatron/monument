@@ -10,18 +10,52 @@
  *
  */
 
- export default {
+import url from 'url';
+import log from 'captains-log';
 
+var logger = log()
+
+logger.debug('config/env/production');
+logger.debug('-------START---------');
+
+var productionConf = {
   port: process.env.PORT,
-
-  models: {
-    schema: true,
-    connection: 'mongo',
-    migrate: 'safe'
-  },
 
   log: {
     level: "debug"
+  },
+
+  connections: {
+    mongo: {
+      adapter: 'sails-mongo',
+      url: process.env.MONGOLAB_URI,
+      port: 27017
+    }
+  }
+}
+
+if(process.env.REDISCLOUD_URL) {
+  var redisURL = url.parse(process.env.REDISCLOUD_URL);
+  var client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
+  var pass = redisURL.auth.split(":")[1];
+
+  productionConf.session = {
+    adapter: 'redis',
+    host: redisURL.hostname,
+    port: redisURL.port,
+    //ttl: <redis session TTL in seconds>,
+    //db: 0,
+    pass: pass,
+    prefix: 'sess:'
   }
 
-};
+  logger.debug('session:', productionConf.session)
+}
+else {
+  logger.warn('no redis url in process.env.REDISCLOUD_URL')
+}
+
+logger.debug('config/env/production')
+logger.debug('-------END---------')
+
+export default productionConf
