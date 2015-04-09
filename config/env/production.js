@@ -36,8 +36,6 @@ var productionConf = {
 
 if(process.env.REDISCLOUD_URL) {
   var redisURL = url.parse(process.env.REDISCLOUD_URL);
-  var client = redis.createClient(redisURL.port, redisURL.hostname, {no_ready_check: true});
-  var pass = redisURL.auth.split(":")[1];
 
   productionConf.session = {
     adapter: 'redis',
