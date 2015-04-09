@@ -38,6 +38,12 @@
     port: 27017
   },
 
+  mongo_dev: {
+    adapter: 'sails-mongo',
+    host: 'localhost',
+    port: 27017
+  }
+
   /***************************************************************************
   *                                                                          *
   * MySQL is the world's most popular relational database.                   *

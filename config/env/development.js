@@ -17,17 +17,19 @@ export default {
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
 
-  // models: {
-  //   connection: 'someMongodbServer'
-  // }
+  models: {
+    schema: true,
+    connection: 'mongo_dev',
+    migrate: 'safe'
+  },
 
   port: 3000,
 
-  // session: {
-  //   adapter: 'mongo',
-  //   url: 'mongodb://localhost',
-  //   collection: 'sessions',
-  //   port: 27017
-  // }
+  session: {
+    adapter: 'mongo',
+    url: 'mongodb://localhost',
+    collection: 'sessions',
+    port: 27017
+  }
 
 };
