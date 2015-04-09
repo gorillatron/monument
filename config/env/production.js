@@ -42,16 +42,11 @@ if(process.env.REDISCLOUD_URL) {
   var redisURL = url.parse(process.env.REDISCLOUD_URL);
   var pass = redisURL.auth.split(":")[1];
 
-  productionConf.session = {
-    adapter: 'redis',
-    host: redisURL.hostname,
-    port: redisURL.port,
-    //ttl: <redis session TTL in seconds>,
-    //db: 0,
-    pass: pass,
-    prefix: 'sess:'
-  }
-
+  productionConf.session.adapter = 'redis',
+  productionConf.session.host = redisURL.hostname
+  productionConf.session.port = redisURL.port
+  productionConf.session.pass = pass
+  productionConf.session.prefix = 'sess:'
 }
 else {
   logger.warn('no redis url in process.env.REDISCLOUD_URL')
