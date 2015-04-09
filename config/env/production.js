@@ -15,10 +15,15 @@ import log from 'captains-log';
 
 var logger = log()
 
-logger.debug('config/env/production');
-logger.debug('-------START---------');
+if(!process.env.REDISCLOUD_URL) {
+  logger.warn('no redis url in process.env.REDISCLOUD_URL')
+}
 
-var productionConf = {
+var redisURL = url.parse(process.env.REDISCLOUD_URL);
+var redisPass = redisURL.auth.split(":")[1];
+
+export default {
+  
   port: process.env.PORT,
 
   log: {
@@ -34,25 +39,11 @@ var productionConf = {
   },
 
   session: {
-    secret: process.env.SESSION_SECRET
+    secret: process.env.SESSION_SECRET,
+    adapter: 'redis',
+    host: redisURL.hostname,
+    port: redisURL.port,
+    pass: redisPass,
+    prefix: 'sess:'
   }
 }
-
-if(process.env.REDISCLOUD_URL) {
-  var redisURL = url.parse(process.env.REDISCLOUD_URL);
-  var pass = redisURL.auth.split(":")[1];
-
-  productionConf.session.adapter = 'redis',
-  productionConf.session.host = redisURL.hostname
-  productionConf.session.port = redisURL.port
-  productionConf.session.pass = pass
-  productionConf.session.prefix = 'sess:'
-}
-else {
-  logger.warn('no redis url in process.env.REDISCLOUD_URL')
-}
-
-logger.debug('config/env/production')
-logger.debug('-------END---------')
-
-export default productionConf
