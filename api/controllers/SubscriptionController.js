@@ -49,6 +49,7 @@ export default {
 					res.redirect('/subscription')
 				})
 				.catch(WLValidationError, (validationErrors) => {
+					sails.log.info('SubscriptionController:subscribe User.findOrCreateOne threw WLValidationError', validationErrors)
 					req.session.formdata = {email, phoneNumber, name}
 					req.session.flash = {
 						error: true,
@@ -57,12 +58,13 @@ export default {
 					res.redirect('subscription')
 				})
 				.catch((error) => {
-					sails.log.error(error)
+					sails.log.error('SubscriptionController:subscribe User.findOrCreateOne threw Error', error)
 					res.serverError(error)
 				})
 
 		})
 		.catch((captchaErrorResponse) => {
+			sails.log.info('ReCaptchaService.validateResponse threw', captchaErrorResponse)
 			req.session.formdata = {email, phoneNumber, name}
 			req.session.flash = {
 				error: true,
