@@ -34,5 +34,6 @@ export var models = {
   migrate: 'safe',
 
   connection: 'mongo'
+  
 
 };
