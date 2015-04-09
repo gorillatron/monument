@@ -46,11 +46,12 @@ export default {
 
 				User.findOrCreateOne(userData)
 					.then((user) => {
+						sails.log.debug('SubscriptionController.subscribe: User.create', user.toJSON())
 						req.session.flash = { messages: ['Takk for din påmelding!'] }
 						res.redirect('/subscription')
 					})
 					.catch(WLValidationError, (validationErrors) => {
-						sails.log.info('SubscriptionController:subscribe User.findOrCreateOne threw WLValidationError', validationErrors)
+						sails.log.info('SubscriptionController:subscribe User.findOrCreateOne threw WLValidationError', validationErrors.message)
 						req.session.formdata = {email, phoneNumber, name}
 						req.session.flash = {
 							error: true,
@@ -65,7 +66,7 @@ export default {
 
 			})
 			.catch((captchaErrorResponse) => {
-				sails.log.info('ReCaptchaService.validateResponse threw', captchaErrorResponse)
+				sails.log.warn('ReCaptchaService.validateResponse threw', captchaErrorResponse)
 				req.session.formdata = {email, phoneNumber, name}
 				req.session.flash = {
 					error: true,
