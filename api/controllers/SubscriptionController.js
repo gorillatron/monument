@@ -41,37 +41,38 @@ export default {
 			subscribesToNews: true
 		}
 
-		ReCaptchaService.validateResponse(reCaptchaResponse).then(() => {
+		ReCaptchaService.validateResponse(reCaptchaResponse)
+			.then(() => {
 
-			User.findOrCreateOne(userData)
-				.then((user) => {
-					req.session.flash = { messages: ['Takk for din påmelding!'] }
-					res.redirect('/subscription')
-				})
-				.catch(WLValidationError, (validationErrors) => {
-					sails.log.info('SubscriptionController:subscribe User.findOrCreateOne threw WLValidationError', validationErrors)
-					req.session.formdata = {email, phoneNumber, name}
-					req.session.flash = {
-						error: true,
-						messages: [validationErrors.message]
-					}
-					res.redirect('subscription')
-				})
-				.catch((error) => {
-					sails.log.error('SubscriptionController:subscribe User.findOrCreateOne threw Error', error)
-					res.serverError(error)
-				})
+				User.findOrCreateOne(userData)
+					.then((user) => {
+						req.session.flash = { messages: ['Takk for din påmelding!'] }
+						res.redirect('/subscription')
+					})
+					.catch(WLValidationError, (validationErrors) => {
+						sails.log.info('SubscriptionController:subscribe User.findOrCreateOne threw WLValidationError', validationErrors)
+						req.session.formdata = {email, phoneNumber, name}
+						req.session.flash = {
+							error: true,
+							messages: [validationErrors.message]
+						}
+						res.redirect('subscription')
+					})
+					.catch((error) => {
+						sails.log.error('SubscriptionController:subscribe User.findOrCreateOne threw Error', error)
+						res.serverError(error)
+					})
 
-		})
-		.catch((captchaErrorResponse) => {
-			sails.log.info('ReCaptchaService.validateResponse threw', captchaErrorResponse)
-			req.session.formdata = {email, phoneNumber, name}
-			req.session.flash = {
-				error: true,
-				messages: ['invalid captcha']
-			}
-			res.redirect('subscription')
-		})
+			})
+			.catch((captchaErrorResponse) => {
+				sails.log.info('ReCaptchaService.validateResponse threw', captchaErrorResponse)
+				req.session.formdata = {email, phoneNumber, name}
+				req.session.flash = {
+					error: true,
+					messages: ['invalid captcha']
+				}
+				res.redirect('subscription')
+			})
 	}
 
 }
