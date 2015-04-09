@@ -48,7 +48,6 @@ if(process.env.REDISCLOUD_URL) {
     prefix: 'sess:'
   }
 
-  logger.debug('session:', productionConf.session)
 }
 else {
   logger.warn('no redis url in process.env.REDISCLOUD_URL')

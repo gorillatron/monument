@@ -8,7 +8,7 @@
 import slugalize from '../helpers/slugalize';
 import WLValidationError from 'sails/node_modules/waterline/lib/waterline/error/WLValidationError';
 import norwegianNumberRegexp from '../regexp/norwegianNumber';
-
+import validateCaptchaResponse from '../helpers/validateCaptchaResponse';
 
 export default {
 
@@ -26,6 +26,7 @@ export default {
 		var phoneNumber = req.param('phoneNumber')
 		var email = req.param('email')
 		var name = req.param('name')
+		var reCaptchaResponse = req.param('g-recaptcha-response')
 
 		var phoneNumberParts = norwegianNumberRegexp.exec(phoneNumber)
 
@@ -40,22 +41,34 @@ export default {
 			subscribesToNews: true
 		}
 
-		User.findOrCreateOne(userData)
-			.then((user) => {
-				req.session.flash = { messages: ['Takk for din påmelding!'] }
-				res.redirect('/subscription')
-			})
-			.catch(WLValidationError, (validationErrors) => {
-				req.session.formdata = {email, phoneNumber, name}
-				req.session.flash = {
-					error: true,
-					messages: [validationErrors.message]
-				}
-				res.redirect('subscription')
-			})
-			.catch((error) => {
-				res.serverError(error)
-			})
+		validateCaptchaResponse(sails.config.recaptcha, reCaptchaResponse).then(() => {
+
+			User.findOrCreateOne(userData)
+				.then((user) => {
+					req.session.flash = { messages: ['Takk for din påmelding!'] }
+					res.redirect('/subscription')
+				})
+				.catch(WLValidationError, (validationErrors) => {
+					req.session.formdata = {email, phoneNumber, name}
+					req.session.flash = {
+						error: true,
+						messages: [validationErrors.message]
+					}
+					res.redirect('subscription')
+				})
+				.catch((error) => {
+					res.serverError(error)
+				})
+
+		})
+		.catch((captchaErrorResponse) => {
+			req.session.formdata = {email, phoneNumber, name}
+			req.session.flash = {
+				error: true,
+				messages: ['invalid captcha']
+			}
+			res.redirect('subscription')
+		})
 	}
 
 }
