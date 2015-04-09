@@ -13,17 +13,15 @@
 import url from 'url';
 import log from 'captains-log';
 
-var logger = log()
-
 if(!process.env.REDISCLOUD_URL) {
-  logger.warn('no redis url in process.env.REDISCLOUD_URL')
+  sails.log.warn('no redis url in process.env.REDISCLOUD_URL:', process.env.REDISCLOUD_URL)
 }
 
 var redisURL = url.parse(process.env.REDISCLOUD_URL);
 var redisPass = redisURL.auth.split(":")[1];
 
 export default {
-  
+
   port: process.env.PORT,
 
   log: {

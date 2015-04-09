@@ -8,7 +8,7 @@
 import slugalize from '../helpers/slugalize';
 import WLValidationError from 'sails/node_modules/waterline/lib/waterline/error/WLValidationError';
 import norwegianNumberRegexp from '../regexp/norwegianNumber';
-import validateCaptchaResponse from '../helpers/validateCaptchaResponse';
+
 
 export default {
 
@@ -41,7 +41,7 @@ export default {
 			subscribesToNews: true
 		}
 
-		validateCaptchaResponse(sails.config.recaptcha, reCaptchaResponse).then(() => {
+		ReCaptchaService.validateResponse(reCaptchaResponse).then(() => {
 
 			User.findOrCreateOne(userData)
 				.then((user) => {
@@ -57,6 +57,7 @@ export default {
 					res.redirect('subscription')
 				})
 				.catch((error) => {
+					sails.log.error(error)
 					res.serverError(error)
 				})
 

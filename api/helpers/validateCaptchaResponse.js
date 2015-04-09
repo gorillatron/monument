@@ -8,6 +8,10 @@ export default function validateCaptchaResponse(config, response) {
       .header('Accept', 'application/json')
       .send({ "secret": config.secret, "response": response })
       .end(function (response) {
+        if(!response) {
+          sails.log.warn('validateCaptchaResponse: no response')
+          reject()
+        }
         if(response.status !== 200) {
           reject(response.body)
         }
