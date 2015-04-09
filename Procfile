@@ -1,1 +1,1 @@
-web: node startserver.js --harmony --prod
+web: node startserver.js --harmony
