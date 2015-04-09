@@ -36,12 +36,6 @@
     adapter: 'sails-mongo',
     url: process.env.MONGOLAB_URI,
     port: 27017
-  },
-
-  mongo_dev: {
-    adapter: 'sails-mongo',
-    host: 'localhost',
-    port: 27017
   }
 
   /***************************************************************************

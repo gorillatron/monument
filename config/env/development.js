@@ -19,7 +19,7 @@ export default {
 
   models: {
     schema: true,
-    connection: 'mongo_dev',
+    connection: 'mongo',
     migrate: 'safe'
   },
 
