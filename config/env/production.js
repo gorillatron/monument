@@ -10,11 +10,12 @@
  *
  */
 
+import Sails from 'sails';
 import url from 'url';
 import log from 'captains-log';
 
 if(!process.env.REDISCLOUD_URL) {
-  sails.log.warn('no redis url in process.env.REDISCLOUD_URL:', process.env.REDISCLOUD_URL)
+  Sails.log.warn('no redis url in process.env.REDISCLOUD_URL:', process.env.REDISCLOUD_URL)
 }
 
 var redisURL = url.parse(process.env.REDISCLOUD_URL);

@@ -2,12 +2,15 @@ import co from 'co';
 import Promise from 'bluebird';
 import Sails from 'sails';
 import request from 'request-promise';
+import yargs from 'yargs';
 
 Sails.log.debug('[job:importSoundclodTracks] starting')
 
 Sails.log.debug('[job:importSoundclodTracks] loading sails')
 
-Sails.load(() => {
+Sails.load({
+  environment: yargs.argv.prod ? 'production' : 'development'
+}, () => {
 
   Sails.log.debug('[job:importSoundclodTracks] sails loaded')
   var requestTime = (new Date).getTime()
