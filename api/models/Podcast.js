@@ -5,6 +5,7 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+import Promise from 'bluebird';
 import soundcloudConfig from '../../config/soundcloud';
 
 
@@ -18,18 +19,16 @@ var soundcloudTrackIndex = {
   index: {},
 
   populate:function( cb ) {
-    Podcast.find((err, podcasts) => {
-      if(err) {
-        return cb(err)
-      }
+    return Podcast.find()
+      .then((podcasts) => {
+        this.index = podcasts.reduce((index, podcast) => {
+          index[podcast.soundcloudTrack.id] = true
+          return index
+        }, {})
 
-      this.index = podcasts.reduce((index, podcast) => {
-        index[podcast.soundcloudTrack.id] = true
-        return index
-      }, {})
-
-      return cb()
-    })
+        if(cb) return cb()
+      })
+      .catch((err) => { if(cb) cb(err) })
   },
 
   has: function(id) {
@@ -67,6 +66,28 @@ export default {
 
   beforeValidate: function(values, next) {
     soundcloudTrackIndex.populate(next)
+  },
+
+  createIfNotExists: function(podcast) {
+    return soundcloudTrackIndex.populate()
+      .then(() => {
+
+        var data
+
+        if(Array.isArray(podcast)) {
+          data = podcast.filter((podcast) => !soundcloudTrackIndex.has(podcast.soundcloudTrack.id))
+          data = data.length ? data : null
+        }
+        else {
+          data = podcast && podcast.soundcloudTrack && !soundcloudTrackIndex.has(podcast.soundcloudTrack.id) ? podcast : null
+        }
+
+        if(data) {
+          return Podcast.create(data)
+        }
+
+        return Promise.resolve()
+      })
   }
 
 };
