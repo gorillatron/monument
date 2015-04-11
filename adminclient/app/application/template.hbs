@@ -10,9 +10,12 @@
       <ul class="nav navbar-nav">
 
         {{#if session.isAuthenticated}}
-          {{#link-to 'users' tagName="li"}}
+          <li>
             {{#link-to 'users' }} users {{/link-to}}
-          {{/link-to}}
+          </li>
+          <li>
+            {{#link-to 'podcasts' }} podcasts {{/link-to}}
+          </li>
         {{/if}}
 
       </ul>

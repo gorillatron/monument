@@ -11,12 +11,11 @@
   return function(req, res, next) {
 
     if(req.session.user.role !== role) {
-      return res.forbidden({ error: {code: 'roleexception', message: 'This route requires role: ' + role + ' but session user has role ' + req.session.user.role} })
-    }
-    else {
-      next()
+      return res.forbidden({ error: {
+        code: 'roleexception', message: 'This route requires role: ' + role +
+              ' but session user has role ' + req.session.user.role} })
     }
 
+    next()
   }
-
 }

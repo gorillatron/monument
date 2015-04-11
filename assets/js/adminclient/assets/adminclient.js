@@ -57,42 +57,6 @@ define('adminclient/application/template', ['exports'], function (exports) {
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
       var child0 = (function() {
-        var child0 = (function() {
-          return {
-            isHTMLBars: true,
-            revision: "Ember@1.11.1",
-            blockParams: 0,
-            cachedFragment: null,
-            hasRendered: false,
-            build: function build(dom) {
-              var el0 = dom.createDocumentFragment();
-              var el1 = dom.createTextNode(" users ");
-              dom.appendChild(el0, el1);
-              return el0;
-            },
-            render: function render(context, env, contextualElement) {
-              var dom = env.dom;
-              dom.detectNamespace(contextualElement);
-              var fragment;
-              if (env.useFragmentCache && dom.canClone) {
-                if (this.cachedFragment === null) {
-                  fragment = this.build(dom);
-                  if (this.hasRendered) {
-                    this.cachedFragment = fragment;
-                  } else {
-                    this.hasRendered = true;
-                  }
-                }
-                if (this.cachedFragment) {
-                  fragment = dom.cloneNode(this.cachedFragment, true);
-                }
-              } else {
-                fragment = this.build(dom);
-              }
-              return fragment;
-            }
-          };
-        }());
         return {
           isHTMLBars: true,
           revision: "Ember@1.11.1",
@@ -101,17 +65,12 @@ define('adminclient/application/template', ['exports'], function (exports) {
           hasRendered: false,
           build: function build(dom) {
             var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("            ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
+            var el1 = dom.createTextNode(" users ");
             dom.appendChild(el0, el1);
             return el0;
           },
           render: function render(context, env, contextualElement) {
             var dom = env.dom;
-            var hooks = env.hooks, block = hooks.block;
             dom.detectNamespace(contextualElement);
             var fragment;
             if (env.useFragmentCache && dom.canClone) {
@@ -129,8 +88,42 @@ define('adminclient/application/template', ['exports'], function (exports) {
             } else {
               fragment = this.build(dom);
             }
-            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
-            block(env, morph0, context, "link-to", ["users"], {}, child0, null);
+            return fragment;
+          }
+        };
+      }());
+      var child1 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.11.1",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode(" podcasts ");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
             return fragment;
           }
         };
@@ -143,7 +136,27 @@ define('adminclient/application/template', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment("");
+          var el1 = dom.createTextNode("          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("li");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n          ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("li");
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n          ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -167,10 +180,10 @@ define('adminclient/application/template', ['exports'], function (exports) {
           } else {
             fragment = this.build(dom);
           }
-          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-          dom.insertBoundary(fragment, null);
-          dom.insertBoundary(fragment, 0);
-          block(env, morph0, context, "link-to", ["users"], {"tagName": "li"}, child0, null);
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          var morph1 = dom.createMorphAt(dom.childAt(fragment, [3]),1,1);
+          block(env, morph0, context, "link-to", ["users"], {}, child0, null);
+          block(env, morph1, context, "link-to", ["podcasts"], {}, child1, null);
           return fragment;
         }
       };
@@ -1396,6 +1409,125 @@ define('adminclient/login/template', ['exports'], function (exports) {
   }()));
 
 });
+define('adminclient/podcast/model', ['exports', 'ember-data'], function (exports, DS) {
+
+	'use strict';
+
+	exports['default'] = DS['default'].Model.extend({});
+
+});
+define('adminclient/podcasts/index/controller', ['exports', 'ember'], function (exports, Ember) {
+
+	'use strict';
+
+	exports['default'] = Ember['default'].ArrayController.extend({});
+
+});
+define('adminclient/podcasts/index/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
+
+    model: function model(params) {
+      return this.store.find("podcast");
+    }
+
+  });
+
+});
+define('adminclient/podcasts/index/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.11.1",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("h3");
+        var el2 = dom.createTextNode("Podcasts");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        return fragment;
+      }
+    };
+  }()));
+
+});
+define('adminclient/podcasts/template', ['exports'], function (exports) {
+
+  'use strict';
+
+  exports['default'] = Ember.HTMLBars.template((function() {
+    return {
+      isHTMLBars: true,
+      revision: "Ember@1.11.1",
+      blockParams: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      build: function build(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      render: function render(context, env, contextualElement) {
+        var dom = env.dom;
+        var hooks = env.hooks, content = hooks.content;
+        dom.detectNamespace(contextualElement);
+        var fragment;
+        if (env.useFragmentCache && dom.canClone) {
+          if (this.cachedFragment === null) {
+            fragment = this.build(dom);
+            if (this.hasRendered) {
+              this.cachedFragment = fragment;
+            } else {
+              this.hasRendered = true;
+            }
+          }
+          if (this.cachedFragment) {
+            fragment = dom.cloneNode(this.cachedFragment, true);
+          }
+        } else {
+          fragment = this.build(dom);
+        }
+        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        dom.insertBoundary(fragment, 0);
+        content(env, morph0, context, "outlet");
+        return fragment;
+      }
+    };
+  }()));
+
+});
 define('adminclient/router', ['exports', 'ember', 'adminclient/config/environment'], function (exports, Ember, config) {
 
   'use strict';
@@ -1408,6 +1540,7 @@ define('adminclient/router', ['exports', 'ember', 'adminclient/config/environmen
     this.resource("users", function () {
       this.resource("user", { path: "/:user_id" });
     });
+    this.resource("podcasts", function () {});
   });
 
   exports['default'] = Router;
@@ -2190,6 +2323,36 @@ define('adminclient/tests/login/route.jshint', function () {
   });
 
 });
+define('adminclient/tests/podcast/model.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - podcast');
+  test('podcast/model.js should pass jshint', function() { 
+    ok(true, 'podcast/model.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/podcasts/index/controller.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - podcasts/index');
+  test('podcasts/index/controller.js should pass jshint', function() { 
+    ok(true, 'podcasts/index/controller.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/podcasts/index/route.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - podcasts/index');
+  test('podcasts/index/route.js should pass jshint', function() { 
+    ok(false, 'podcasts/index/route.js should pass jshint.\npodcasts/index/route.js: line 7, col 38, Missing semicolon.\npodcasts/index/route.js: line 6, col 19, \'params\' is defined but never used.\n\n2 errors'); 
+  });
+
+});
 define('adminclient/tests/router.jshint', function () {
 
   'use strict';
@@ -2317,6 +2480,31 @@ define('adminclient/tests/unit/authentication/controller-test.jshint', function 
   module('JSHint - unit/authentication');
   test('unit/authentication/controller-test.js should pass jshint', function() { 
     ok(true, 'unit/authentication/controller-test.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/unit/controller/route-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("route:controller", {});
+
+  ember_qunit.test("it exists", function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('adminclient/tests/unit/controller/route-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/controller');
+  test('unit/controller/route-test.js should pass jshint', function() { 
+    ok(true, 'unit/controller/route-test.js should pass jshint.'); 
   });
 
 });
@@ -2470,6 +2658,83 @@ define('adminclient/tests/unit/models/user-test.jshint', function () {
   module('JSHint - unit/models');
   test('unit/models/user-test.js should pass jshint', function() { 
     ok(true, 'unit/models/user-test.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/unit/podcast/controller-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("controller:podcast", {});
+
+  // Replace this with your real tests.
+  ember_qunit.test("it exists", function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('adminclient/tests/unit/podcast/controller-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/podcast');
+  test('unit/podcast/controller-test.js should pass jshint', function() { 
+    ok(true, 'unit/podcast/controller-test.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/unit/podcast/model-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleForModel("podcast", {
+    // Specify the other units that are required for this test.
+    needs: []
+  });
+
+  ember_qunit.test("it exists", function (assert) {
+    var model = this.subject();
+    // var store = this.store();
+    assert.ok(!!model);
+  });
+
+});
+define('adminclient/tests/unit/podcast/model-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/podcast');
+  test('unit/podcast/model-test.js should pass jshint', function() { 
+    ok(true, 'unit/podcast/model-test.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/unit/podcast/route-test', ['ember-qunit'], function (ember_qunit) {
+
+  'use strict';
+
+  ember_qunit.moduleFor("route:podcast", {});
+
+  ember_qunit.test("it exists", function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+
+  // Specify the other units that are required for this test.
+  // needs: ['controller:foo']
+
+});
+define('adminclient/tests/unit/podcast/route-test.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - unit/podcast');
+  test('unit/podcast/route-test.js should pass jshint', function() { 
+    ok(true, 'unit/podcast/route-test.js should pass jshint.'); 
   });
 
 });
@@ -3076,7 +3341,7 @@ define('adminclient/user/controller', ['exports', 'ember', 'ember-notify'], func
       },
 
       destroy: function destroy() {
-        if (confirm("Are you sure you want to destroy user " + this.model.get("name"))) {
+        if (confirm("Are you sure you want to destroy user " + this.model.get("name") + ". \nNB: User data will not be permanently deleted.")) {
           this.model.deleteRecord();
           this.model.save().then(function () {
             Notify['default'].success("User deleted.");
@@ -3147,107 +3412,18 @@ define('adminclient/user/template', ['exports'], function (exports) {
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("table");
-        dom.setAttribute(el1,"class","table");
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","row");
         var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("tbody");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-sm-12");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("Name:");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("Email:");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("Phone:");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("Role:");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tr");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("News Subscriber:");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("td");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
+        var el3 = dom.createElement("h3");
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
@@ -3258,19 +3434,142 @@ define('adminclient/user/template', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("button");
-        dom.setAttribute(el1,"type","button");
-        dom.setAttribute(el1,"class","btn btn-success");
-        var el2 = dom.createTextNode("Save");
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","row");
+        var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-sm-12");
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("table");
+        dom.setAttribute(el3,"class","table");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("tbody");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("tr");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("Name:");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("tr");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("Email:");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("tr");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("Phone:");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("tr");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("Role:");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("tr");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("News Subscriber:");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("button");
+        dom.setAttribute(el3,"type","button");
+        dom.setAttribute(el3,"class","btn btn-success");
+        var el4 = dom.createTextNode("Save");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, content = hooks.content, element = hooks.element;
+        var hooks = env.hooks, content = hooks.content, get = hooks.get, inline = hooks.inline, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -3288,20 +3587,23 @@ define('adminclient/user/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element0 = dom.childAt(fragment, [0, 1]);
-        var element1 = dom.childAt(fragment, [2]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1, 3]),0,0);
-        var morph1 = dom.createMorphAt(dom.childAt(element0, [3, 3]),0,0);
-        var morph2 = dom.createMorphAt(dom.childAt(element0, [5, 3]),0,0);
-        var morph3 = dom.createMorphAt(dom.childAt(element0, [7, 3]),1,1);
-        var morph4 = dom.createMorphAt(dom.childAt(element0, [9, 3]),1,1);
-        inline(env, morph0, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.name"), "editable": true});
-        inline(env, morph1, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.email"), "editable": true});
-        inline(env, morph2, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.phoneNumber"), "editable": true});
-        inline(env, morph3, context, "view", ["select"], {"content": get(env, context, "roles"), "selection": get(env, context, "model.role")});
-        content(env, morph4, context, "displaySubscriptionBoolean");
-        element(env, element1, context, "bind-attr", [], {"disabled": "isClean"});
-        element(env, element1, context, "action", ["save", get(env, context, "model")], {});
+        var element0 = dom.childAt(fragment, [3, 1]);
+        var element1 = dom.childAt(element0, [1, 1]);
+        var element2 = dom.childAt(element0, [3]);
+        var morph0 = dom.createMorphAt(dom.childAt(fragment, [1, 1, 1]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [1, 3]),0,0);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [3, 3]),0,0);
+        var morph3 = dom.createMorphAt(dom.childAt(element1, [5, 3]),0,0);
+        var morph4 = dom.createMorphAt(dom.childAt(element1, [7, 3]),1,1);
+        var morph5 = dom.createMorphAt(dom.childAt(element1, [9, 3]),1,1);
+        content(env, morph0, context, "model.name");
+        inline(env, morph1, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.name"), "editable": true});
+        inline(env, morph2, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.email"), "editable": true});
+        inline(env, morph3, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.phoneNumber"), "editable": true});
+        inline(env, morph4, context, "view", ["select"], {"content": get(env, context, "roles"), "selection": get(env, context, "model.role")});
+        inline(env, morph5, context, "input", [], {"type": "checkbox", "name": "subscribesToNews", "checked": get(env, context, "model.subscribesToNews")});
+        element(env, element2, context, "bind-attr", [], {"disabled": "isClean"});
+        element(env, element2, context, "action", ["save", get(env, context, "model")], {});
         return fragment;
       }
     };
@@ -3434,47 +3736,47 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         hasRendered: false,
         build: function build(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("        ");
+          var el1 = dom.createTextNode("            ");
           dom.appendChild(el0, el1);
           var el1 = dom.createElement("tr");
-          var el2 = dom.createTextNode("\n          ");
+          var el2 = dom.createTextNode("\n              ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
-          var el3 = dom.createTextNode("\n            ");
+          var el3 = dom.createTextNode("\n                ");
           dom.appendChild(el2, el3);
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n          ");
+          var el3 = dom.createTextNode("\n              ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n          ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("td");
-          var el3 = dom.createComment("");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n          ");
+          var el2 = dom.createTextNode("\n              ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n          ");
+          var el2 = dom.createTextNode("\n              ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n          ");
+          var el2 = dom.createTextNode("\n              ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
           var el3 = dom.createComment("");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n          ");
+          var el2 = dom.createTextNode("\n              ");
           dom.appendChild(el1, el2);
           var el2 = dom.createElement("td");
-          var el3 = dom.createTextNode("\n            ");
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n              ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("td");
+          var el3 = dom.createTextNode("\n                ");
           dom.appendChild(el2, el3);
           var el3 = dom.createElement("button");
           dom.setAttribute(el3,"type","button");
@@ -3482,10 +3784,10 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
           var el4 = dom.createTextNode("delete");
           dom.appendChild(el3, el4);
           dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n          ");
+          var el3 = dom.createTextNode("\n              ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n        ");
+          var el2 = dom.createTextNode("\n            ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
@@ -3541,60 +3843,21 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createElement("section");
-        dom.setAttribute(el1,"class","data-table");
-        var el2 = dom.createTextNode("\n\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("style");
-        dom.setAttribute(el2,"media","screen");
-        var el3 = dom.createTextNode("\n\n    .csv-generator-box .attribute-select {\n      opacity: 0.001;\n      transform: translatex(-40px);\n      transition: all 0.2s;\n    }\n\n    .csv-generator-box .attribute-select.display {\n      transform: translatex(0px);\n      opacity: 1;\n    }\n\n    .csv-generator-box .csv {\n      position: relative;\n      margin: 15px 0px;\n      padding: 10px;\n      border: 1px solid rgb(230,230,230);\n    }\n    .csv-generator-box .csv .glyphicon-remove {\n      position: absolute;\n      top: 10px;\n      right: 10px;\n    }\n\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1,"class","row");
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","csv-generator-box");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("button");
-        dom.setAttribute(el3,"type","button");
-        dom.setAttribute(el3,"class","btn btn-info btn-sm");
-        var el4 = dom.createTextNode("\n      generate csv\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("span");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("button");
-        dom.setAttribute(el4,"type","button");
-        dom.setAttribute(el4,"class","btn btn-info btn-sm");
-        var el5 = dom.createTextNode("email");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("button");
-        dom.setAttribute(el4,"type","button");
-        dom.setAttribute(el4,"class","btn btn-info btn-sm");
-        var el5 = dom.createTextNode("phonenumber");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
+        dom.setAttribute(el2,"class","col-sm-12");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
+        dom.setAttribute(el3,"class","navbar-header");
         var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode(" ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("span");
-        dom.setAttribute(el4,"class","glyphicon glyphicon-remove");
+        var el4 = dom.createElement("h3");
+        var el5 = dom.createTextNode("Users");
+        dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
@@ -3604,62 +3867,128 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("table");
-        dom.setAttribute(el2,"class","table");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","col-sm-12");
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createElement("thead");
-        var el4 = dom.createTextNode("\n      ");
+        var el3 = dom.createElement("section");
+        dom.setAttribute(el3,"class","data-table");
+        var el4 = dom.createTextNode("\n\n      ");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("tr");
+        var el4 = dom.createElement("div");
+        dom.setAttribute(el4,"class","csv-generator-box");
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        var el5 = dom.createElement("th");
-        var el6 = dom.createTextNode("Name");
+        var el5 = dom.createElement("button");
+        dom.setAttribute(el5,"type","button");
+        dom.setAttribute(el5,"class","btn btn-info btn-sm");
+        var el6 = dom.createTextNode("\n          generate csv\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        var el5 = dom.createElement("th");
-        var el6 = dom.createTextNode("Phone");
+        var el5 = dom.createElement("span");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("button");
+        dom.setAttribute(el6,"type","button");
+        dom.setAttribute(el6,"class","btn btn-info btn-sm");
+        var el7 = dom.createTextNode("email");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("button");
+        dom.setAttribute(el6,"type","button");
+        dom.setAttribute(el6,"class","btn btn-info btn-sm");
+        var el7 = dom.createTextNode("phonenumber");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        var el5 = dom.createElement("th");
-        var el6 = dom.createTextNode("Email");
+        var el5 = dom.createElement("div");
+        var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("th");
-        var el6 = dom.createTextNode("Role");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("th");
-        var el6 = dom.createTextNode("News subscriber");
+        var el6 = dom.createTextNode(" ");
         dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("th");
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6,"class","glyphicon glyphicon-remove");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
+        var el4 = dom.createTextNode("\n\n      ");
         dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("tbody");
-        var el4 = dom.createTextNode("\n\n");
+        var el4 = dom.createElement("table");
+        dom.setAttribute(el4,"class","table");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("thead");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("tr");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("th");
+        var el8 = dom.createTextNode("Name");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("th");
+        var el8 = dom.createTextNode("Phone");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("th");
+        var el8 = dom.createTextNode("Email");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("th");
+        var el8 = dom.createTextNode("Role");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("th");
+        var el8 = dom.createTextNode("News subscriber");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("th");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("tbody");
+        var el6 = dom.createTextNode("\n\n");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
+        var el4 = dom.createTextNode("\n\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
@@ -3667,8 +3996,6 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
@@ -3692,8 +4019,8 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element2 = dom.childAt(fragment, [2]);
-        var element3 = dom.childAt(element2, [3]);
+        var element2 = dom.childAt(fragment, [2, 3, 1]);
+        var element3 = dom.childAt(element2, [1]);
         var element4 = dom.childAt(element3, [1]);
         var element5 = dom.childAt(element3, [3]);
         var element6 = dom.childAt(element5, [1]);
@@ -3701,7 +4028,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         var element8 = dom.childAt(element3, [5]);
         var element9 = dom.childAt(element8, [3]);
         var morph0 = dom.createMorphAt(element8,1,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element2, [5, 3]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [3, 3]),1,1);
         element(env, element4, context, "action", ["toggleButtons"], {});
         element(env, element5, context, "bind-attr", [], {"class": ":attribute-select displayButtons:display"});
         element(env, element6, context, "action", ["generateCsv", "email"], {});
@@ -4115,7 +4442,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"v0.0.1"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.079a1546"});
 }
 
 /* jshint ignore:end */

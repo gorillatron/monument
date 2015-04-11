@@ -40,6 +40,8 @@ export var routes = {
   '/admin/login': 'AdminController.index',
   '/admin/users': 'AdminController.index',
   '/admin/users/:userid': 'AdminController.index',
+  '/admin/podcasts': 'AdminController.index',
+  '/admin/podcasts/:podcastid': 'AdminController.index',
 
   'get /session/token': 'SessionController.getToken',
   'post /session/token': 'SessionController.generate',

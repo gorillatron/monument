@@ -29,7 +29,7 @@ export default Ember.Controller.extend({
     },
 
     destroy: function() {
-      if(confirm("Are you sure you want to destroy user " + this.model.get('name'))) {
+      if(confirm("Are you sure you want to destroy user " + this.model.get('name') + ". \nNB: User data will not be permanently deleted.")) {
         this.model.deleteRecord()
         this.model.save().then(() => {
           Notify.success('User deleted.')

@@ -61,6 +61,10 @@ export default {
     partakingAtEvent: {
       collection: 'Event',
       via: 'participants'
+    },
+
+    deleteTime: {
+      type: 'date'
     }
 
   },
@@ -113,6 +117,24 @@ export default {
         return User.create(params).then(ensuredUser)
       }
     })
+  },
+
+  findOneNotDeletedAnd: function(query) {
+    query = query ? query : {}
+    var or = query.or ? query.or : []
+    or.push({ deleteTime: undefined })
+    or.push({ deleteTime: null })
+    query.or = or
+    return User.findOne(query)
+  },
+
+  findNotDeletedAnd: function(query) {
+    query = query ? query : {}
+    var or = query.or ? query.or : []
+    or.push({ deleteTime: undefined })
+    or.push({ deleteTime: null })
+    query.or = or
+    return User.find(query)
   }
 
 };
