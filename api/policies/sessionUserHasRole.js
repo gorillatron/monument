@@ -7,13 +7,19 @@
  * @docs        :: http://sailsjs.org/#!documentation/policies
  *
  */
- export default function(role) {
+
+import PolicyException from './PolicyException';
+
+
+export default function(role) {
   return function(req, res, next) {
 
+    // return res.forbidden(new PolicyException({ message:
+    //   `Invalid user role, required role is ${role}, requesting user is ${req.session.user.role}`}))
+
     if(req.session.user.role !== role) {
-      return res.forbidden({ error: {
-        code: 'roleexception', message: 'This route requires role: ' + role +
-              ' but session user has role ' + req.session.user.role} })
+      return res.forbidden(new PolicyException({ message:
+        `Invalid user role, required role is ${role}, requesting user is ${req.session.user.role}`}))
     }
 
     next()
