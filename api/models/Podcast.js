@@ -18,17 +18,12 @@ var soundcloudTrackIndex = {
 
   index: {},
 
-  populate:function( cb ) {
-    return Podcast.find()
-      .then((podcasts) => {
-        this.index = podcasts.reduce((index, podcast) => {
-          index[podcast.soundcloudTrack.id] = true
-          return index
-        }, {})
-
-        if(cb) return cb()
-      })
-      .catch((err) => { if(cb) cb(err) })
+  populate: async function( cb ) {
+    var podcasts = await Podcast.find()
+    this.index = podcasts.reduce((index, podcast) => {
+      index[podcast.soundcloudTrack.id] = true
+      return index
+    }, {})
   },
 
   has: function(id) {
@@ -64,30 +59,29 @@ export default {
 
   },
 
-  beforeValidate: function(values, next) {
-    soundcloudTrackIndex.populate(next)
+  beforeValidate: async function(values, next) {
+    await soundcloudTrackIndex.populate()
+    next()
   },
 
-  createIfNotExists: function(podcast) {
-    return soundcloudTrackIndex.populate()
-      .then(() => {
+  createIfNotExists: async function(podcast) {
+    var data
 
-        var data
+    await soundcloudTrackIndex.populate()
+    
+    if(Array.isArray(podcast)) {
+      data = podcast.filter((podcast) => !soundcloudTrackIndex.has(podcast.soundcloudTrack.id))
+      data = data.length ? data : null
+    }
+    else {
+      data = podcast && podcast.soundcloudTrack && !soundcloudTrackIndex.has(podcast.soundcloudTrack.id) ? podcast : null
+    }
 
-        if(Array.isArray(podcast)) {
-          data = podcast.filter((podcast) => !soundcloudTrackIndex.has(podcast.soundcloudTrack.id))
-          data = data.length ? data : null
-        }
-        else {
-          data = podcast && podcast.soundcloudTrack && !soundcloudTrackIndex.has(podcast.soundcloudTrack.id) ? podcast : null
-        }
+    if(data) {
+      return Podcast.create(data)
+    }
 
-        if(data) {
-          return Podcast.create(data)
-        }
-
-        return Promise.resolve()
-      })
+    return Promise.resolve()
   }
 
 };

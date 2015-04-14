@@ -3,6 +3,10 @@ import Promise from 'bluebird';
 
 var config = sails.config.recaptcha
 
+
+export class ValidationError extends Error{}
+
+
 export default {
 
   validateResponse: function(response) {
@@ -11,21 +15,21 @@ export default {
       unirest.post(config.verifyUrl)
         .header('Accept', 'application/json')
         .send({ "secret": config.secret, "response": response })
-        .end(function (response) {
+        .end((response) => {
           if(!response) {
             sails.log.warn('validateCaptchaResponse: no response')
-            reject()
+            reject(new ValidationError('empty response'))
           }
-          if(response.status !== 200) {
-            reject(response.body)
+          else if(response.status !== 200) {
+            reject(new ValidationError(response.body))
           }
-          if(response.body.success) {
-            resolve(response.body)
+          else if(response.body.success) {
+            resolve(new ValidationError(response.body))
           }
           else {
-            reject(response.body)
+            reject(new ValidationError(response.body))
           }
-        });
+        })
     })
   }
 

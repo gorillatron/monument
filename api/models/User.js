@@ -28,7 +28,8 @@ export default {
   attributes: {
 
     name: {
-      type: 'string'
+      type: 'string',
+      required: true
     },
 
     email: {

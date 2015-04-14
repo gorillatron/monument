@@ -1,1 +1,1 @@
-web: node startserver.js --harmony --prod
+web: ./node_modules/babel/bin/babel-node app.js --stage=1

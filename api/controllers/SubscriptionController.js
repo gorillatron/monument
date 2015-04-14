@@ -5,9 +5,9 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-import slugalize from '../helpers/slugalize';
 import WLValidationError from 'sails/node_modules/waterline/lib/waterline/error/WLValidationError';
 import norwegianNumberRegexp from '../regexp/norwegianNumber';
+import {ValidationError as ReCaptchaValidationError} from '../services/ReCaptchaService';
 
 
 export default {
@@ -22,7 +22,7 @@ export default {
 		res.view('subscription/index', {formdata, validationErrors, layout: 'subscription/layout'})
 	},
 
-	subscribe: function(req, res, next) {
+	subscribe: async function(req, res, next) {
 		var phoneNumber = req.param('phoneNumber')
 		var email = req.param('email')
 		var name = req.param('name')
@@ -41,39 +41,45 @@ export default {
 			subscribesToNews: true
 		}
 
-		ReCaptchaService.validateResponse(reCaptchaResponse)
-			.then(() => {
+		try {
 
-				User.findOrCreateOne(userData)
-					.then((user) => {
-						sails.log.debug('SubscriptionController.subscribe: User.create', user.toJSON())
-						req.session.flash = { messages: ['Takk for din påmelding!'] }
-						res.redirect('/subscription')
-					})
-					.catch(WLValidationError, (validationErrors) => {
-						sails.log.info('SubscriptionController:subscribe User.findOrCreateOne threw WLValidationError', validationErrors.message)
-						req.session.formdata = {email, phoneNumber, name}
-						req.session.flash = {
-							error: true,
-							messages: [validationErrors.message]
-						}
-						res.redirect('subscription')
-					})
-					.catch((error) => {
-						sails.log.error('SubscriptionController:subscribe User.findOrCreateOne threw Error', error)
-						res.serverError(error)
-					})
+			let captchaResponse = await ReCaptchaService.validateResponse(reCaptchaResponse)
+			let user = await User.findOrCreateOne(userData)
 
-			})
-			.catch((captchaErrorResponse) => {
+			sails.log.debug('SubscriptionController.subscribe: User.create', user.name, user.email, user.phoneNumber)
+			req.session.flash = { messages: ['Takk for din påmelding!'] }
+
+			return res.redirect('subscription')
+
+		}
+		catch(error) {
+
+			if(error instanceof ReCaptchaValidationError) {
 				sails.log.warn('ReCaptchaService.validateResponse threw', captchaErrorResponse)
 				req.session.formdata = {email, phoneNumber, name}
 				req.session.flash = {
 					error: true,
 					messages: ['invalid captcha']
 				}
-				res.redirect('subscription')
-			})
+				return res.redirect('subscription')
+			}
+
+			else if(error instanceof WLValidationError) {
+				sails.log.info('SubscriptionController:subscribe User.findOrCreateOne threw WLValidationError', error.message)
+				req.session.formdata = {email, phoneNumber, name}
+				req.session.flash = {
+					error: true,
+					messages: [error.message]
+				}
+				return res.redirect('subscription')
+			}
+
+			else {
+				sails.log.error('SubscriptionController:subscribe User.findOrCreateOne threw Error', error)
+				return res.serverError(error)
+			}
+
+		}
 	}
 
 }
