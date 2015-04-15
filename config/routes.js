@@ -32,20 +32,29 @@ export var routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': 'SubscriptionController.signup',
-  '/subscription': 'SubscriptionController.signup',
-  '/subscribe': 'SubscriptionController.subscribe',
+  /**
+   * Site routes
+  */
+  '/':              'IndexController.index',
+  '/subscription':  'SubscriptionController.signup',
+  '/subscribe':     'SubscriptionController.subscribe',
 
-  '/admin': 'AdminController.index',
-  '/admin/login': 'AdminController.index',
-  '/admin/users': 'AdminController.index',
-  '/admin/users/:userid': 'AdminController.index',
-  '/admin/podcasts': 'AdminController.index',
+  /**
+   * Admin routes
+  */
+  '/admin':                     'AdminController.index',
+  '/admin/login':               'AdminController.index',
+  '/admin/users':               'AdminController.index',
+  '/admin/users/:userid':       'AdminController.index',
+  '/admin/podcasts':            'AdminController.index',
   '/admin/podcasts/:podcastid': 'AdminController.index',
 
-  'get /session/token': 'SessionController.getToken',
-  'post /session/token': 'SessionController.generate',
-  'delete /session/token': 'SessionController.destroy'
+  /**
+   * Session routes
+  */
+  'get /session/token':     'SessionController.getToken',
+  'post /session/token':    'SessionController.generate',
+  'delete /session/token':  'SessionController.destroy'
 
   /***************************************************************************
   *                                                                          *
