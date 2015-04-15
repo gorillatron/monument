@@ -35,9 +35,11 @@ export var routes = {
   /**
    * Site routes
   */
-  '/':              'IndexController.index',
-  '/subscription':  'SubscriptionController.signup',
-  '/subscribe':     'SubscriptionController.subscribe',
+  '/':                'IndexController.index',
+  '/subscription':    'SubscriptionController.signup',
+  '/subscribe':       'SubscriptionController.subscribe',
+
+  '/page/:page_name': 'PageController.showPage',
 
   /**
    * Admin routes

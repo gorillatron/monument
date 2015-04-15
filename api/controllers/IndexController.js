@@ -9,8 +9,15 @@ export default {
 
 	layout: 'layout',
 
-	index: function(req, res) {
-		res.view('index')
+	index: async function(req, res) {
+
+		var podcasts = await Podcast.find()
+
+		return res.view('index', {
+			locals: {
+				podcasts: podcasts
+			}
+		})
 	}
 
 };

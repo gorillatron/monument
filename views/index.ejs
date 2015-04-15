@@ -1,1 +1,14 @@
-<h1>welcome brother</h1>
+
+<ul class="podcasts list-unstyled">
+
+<% podcasts.forEach(function(podcast) { %>
+
+  <li class="podcast">
+
+    <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
+
+  </li>
+
+<% }) %>
+
+</ul>

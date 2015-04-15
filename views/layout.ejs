@@ -13,12 +13,48 @@
 
     <meta name="robots" content="index,follow">
 
+    <!-- fav icon -->
+    <link rel="icon" type="image/ico" href="/images/logo.ico"/>
+
+    <link rel="stylesheet" href="/styles/index.css">
+
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   </head>
 
   <body>
-    <%- body %>
+
+    <div class="container-fluid">
+
+      <header>
+
+        <div class="logo-wrapper">
+          <div class="logo">
+            <div class="icon"></div>
+            <h1>onument</h1>
+          </div>
+        </div>
+
+        <nav id="header-nav">
+          <ul class="nav">
+            <li>
+              <a href="/">/</a>
+            </li>
+            <li>
+              <a href="/page/about">/about</a>
+            </li>
+            <li>
+              <a href="/page/contact">/contact</a>
+            </li>
+          </ul>
+        </nav>
+
+      </header>
+
+      <%- body %>
+
+    </div>
+
   </body>
 </html>
