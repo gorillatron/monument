@@ -7,7 +7,7 @@
 
 import WLValidationError from 'sails/node_modules/waterline/lib/waterline/error/WLValidationError';
 import norwegianNumberRegexp from '../regexp/norwegianNumber';
-import {ValidationError as ReCaptchaValidationError} from '../services/ReCaptchaService';
+import ReCaptchaValidationError from '../services/exceptions/ReCaptchaValidationError';
 
 
 export default {
@@ -30,7 +30,7 @@ export default {
 
 		var phoneNumberParts = norwegianNumberRegexp.exec(phoneNumber)
 
-		if(phoneNumberParts) {
+		if(Array.isArray(phoneNumberParts)) {
 			phoneNumber = phoneNumberParts[5]
 		}
 
@@ -55,7 +55,7 @@ export default {
 		catch(error) {
 
 			if(error instanceof ReCaptchaValidationError) {
-				sails.log.warn('ReCaptchaService.validateResponse threw', captchaErrorResponse)
+				sails.log.warn('ReCaptchaService.validateResponse failed')
 				req.session.formdata = {email, phoneNumber, name}
 				req.session.flash = {
 					error: true,
@@ -78,7 +78,6 @@ export default {
 				sails.log.error('SubscriptionController:subscribe User.findOrCreateOne threw Error', error)
 				return res.serverError(error)
 			}
-
 		}
 	}
 

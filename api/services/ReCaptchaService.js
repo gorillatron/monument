@@ -1,15 +1,14 @@
 import unirest from 'unirest';
 import Promise from 'bluebird';
+import ReCaptchaValidationError from './exceptions/ReCaptchaValidationError'
+
 
 var config = sails.config.recaptcha
 
 
-export class ValidationError extends Error{}
-
-
 export default {
 
-  validateResponse: function(response) {
+  validateResponse: async function(response) {
     return new Promise((resolve, reject) => {
 
       unirest.post(config.verifyUrl)
@@ -18,16 +17,16 @@ export default {
         .end((response) => {
           if(!response) {
             sails.log.warn('validateCaptchaResponse: no response')
-            reject(new ValidationError('empty response'))
+            reject(new ReCaptchaValidationError('empty response'))
           }
           else if(response.status !== 200) {
-            reject(new ValidationError(response.body))
+            reject(new ReCaptchaValidationError(response.body))
           }
           else if(response.body.success) {
-            resolve(new ValidationError(response.body))
+            resolve(new ReCaptchaValidationError(response.body))
           }
           else {
-            reject(new ValidationError(response.body))
+            reject(new ReCaptchaValidationError(response.body))
           }
         })
     })
