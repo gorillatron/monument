@@ -1,1 +1,1 @@
-web: ./node_modules/babel/bin/babel-node app.js --stage=1
+web: ./node_modules/babel/bin/babel-node app.js --stage=1 --prod
