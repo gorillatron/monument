@@ -19,23 +19,29 @@ module.exports = {
 
 		var pageName = req.param('page_name')
 
+		if(!pageName) {
+			return res.notFound('These are not the droids you are looking for.')
+		}
+
 		try {
+
 			pages = await Page.find()
 			page = pages.filter((page) => page.name === pageName)[0]
+
+			if(!page) {
+				return res.notFound('These are not the droids you are looking for.')
+			}
+
+			html = markdown.toHTML(page.content)
+
+			return res.view('page', {
+				locals: {html, pages}
+			})
+
 		}
 		catch(error) {
 			return res.serverError(error)
 		}
-
-		if(!page) {
-			return res.notFound('These are not the droids you are looking for.')
-		}
-
-		html = markdown.toHTML(page.content)
-
-		return res.view('page', {
-			locals: {html, pages}
-		})
 	}
 
 }
