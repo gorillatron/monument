@@ -3,9 +3,14 @@
 
 <% podcasts.forEach(function(podcast) { %>
 
-  <li class="podcast">
+  <li class="podcast media">
 
-    <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
+    <div class="media-center">
+      <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
+        <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
+        <h5><%=podcast.soundcloudTrack.title%></h5>
+      </a>
+    </div>
 
   </li>
 

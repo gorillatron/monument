@@ -14,10 +14,11 @@ module.exports = {
 		var page = null
 		var html = null
 
+		var pages = await Page.find()
 		var pageName = req.param('page_name')
 
 		try {
-			page = await Page.find({name: pageName})
+			page = await Page.findOne({name: pageName})
 		}
 		catch(error) {
 			return res.serverError(error)
@@ -30,7 +31,7 @@ module.exports = {
 		html = markdown.toHTML(page.content)
 
 		return res.view('page', {
-			locals: {html}
+			locals: {html, pages}
 		})
 	}
 

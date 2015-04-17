@@ -41,12 +41,11 @@
             <li>
               <a href="/">/</a>
             </li>
-            <li>
-              <a href="/page/about">/about</a>
-            </li>
-            <li>
-              <a href="/page/contact">/contact</a>
-            </li>
+            <% pages.forEach(function(page){ %>
+              <li>
+                <a href="/page/<%=page.name%>">/<%=page.name%></a>
+              </li>
+            <% })%>
           </ul>
         </nav>
 
