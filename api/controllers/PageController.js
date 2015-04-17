@@ -5,20 +5,23 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+import Promise from 'bluebird';
 import {markdown} from 'markdown';
+
 
 module.exports = {
 
 	showPage: async function(req, res, next) {
 
+		var pages = null
 		var page = null
 		var html = null
 
-		var pages = await Page.find()
 		var pageName = req.param('page_name')
 
 		try {
-			page = await Page.findOne({name: pageName})
+			pages = await Page.find()
+			page = pages.filter((page) => page.name === pageName)[0]
 		}
 		catch(error) {
 			return res.serverError(error)
