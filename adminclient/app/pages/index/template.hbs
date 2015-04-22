@@ -1,0 +1,48 @@
+<!-- <section class="data-filter">
+  <form class="navbar-form navbar-left" role="search">
+    <div class="form-group">
+      {{input type="text" value=search placeholder="search" class="form-control"}}
+    </div>
+  </form>
+</section> -->
+
+<div class="row">
+
+  <div class="col-sm-12">
+    <div class="navbar-header">
+      <h3>Pages</h3>
+    </div>
+  </div>
+
+  <div class="col-sm-12">
+    <section class="data-table">
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Last updated</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {{#each page in controller}}
+            <tr>
+              <td>
+                {{#link-to 'page' page.model}} {{page.model.name}} {{/link-to}}
+              </td>
+              <td>todo</td>
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" {{action 'destroy' page}}>delete</button>
+              </td>
+            </tr>
+          {{/each}}
+
+        </tbody>
+      </table>
+
+    </section>
+  </div>
+
+</div>

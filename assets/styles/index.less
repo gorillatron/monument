@@ -26,10 +26,18 @@ body {
 
 header {
 
+  margin-bottom: 25px;
+
   #header-nav {
     ul li {
       display: inline-block;
       margin-right: 10px;
+      &.active {
+        border-bottom: 1px solid black;
+      }
+      &:hover {
+        border-bottom: 1px solid rgba(80,80,80, 0.4);
+      }
     }
   }
 
@@ -40,14 +48,21 @@ header {
 
 }
 
+.podcasts {
 
-ul.podcasts {
+  .row {
+    margin-bottom: 15px;
+  }
 
-  margin: 15px 0px 0px 0px;
+  .podcast {
+    img {
+      border-radius: 2px;
+      .transition(all 0.1s ease-out);
 
-  li.podcast {
-    width: 300px;
-    margin: 0px auto 15px auto;
+      &:hover {
+        .scale(1.1);
+      }
+    }
   }
 
 }

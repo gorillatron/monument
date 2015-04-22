@@ -11,6 +11,8 @@ import {markdown} from 'markdown';
 
 module.exports = {
 
+	layout: 'layout',
+
 	showPage: async function(req, res, next) {
 
 		var pages = null
@@ -20,7 +22,7 @@ module.exports = {
 		var pageName = req.param('page_name')
 
 		if(!pageName) {
-			return res.notFound('These are not the droids you are looking for.')
+			return res.noDroids()
 		}
 
 		try {
@@ -29,13 +31,13 @@ module.exports = {
 			page = pages.filter((page) => page.name === pageName)[0]
 
 			if(!page) {
-				return res.notFound('These are not the droids you are looking for.')
+				return res.noDroids()
 			}
 
 			html = markdown.toHTML(page.content)
 
 			return res.view('page', {
-				locals: {html, pages}
+				locals: {html, pages, pageName}
 			})
 
 		}

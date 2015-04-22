@@ -13,13 +13,11 @@ export default {
 
 	index: async function(req, res) {
 
+		var pageName = 'podcasts'
 		var [pages, podcasts] = await Promise.all([ Page.find(), Podcast.find() ])
 
 		return res.view('index', {
-			locals: {
-				pages: pages,
-				podcasts: podcasts
-			}
+			locals: {pageName, pages, podcasts}
 		})
 	}
 

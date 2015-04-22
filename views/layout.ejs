@@ -38,12 +38,12 @@
 
         <nav id="header-nav">
           <ul class="nav">
-            <li>
-              <a href="/">/</a>
+            <li class="<%= pageName == 'podcasts' ? 'active': '' %>">
+              <a href="/">podcasts</a>
             </li>
             <% pages.forEach(function(page){ %>
-              <li>
-                <a href="/page/<%=page.name%>">/<%=page.name%></a>
+              <li class="<%= pageName == page.name ? 'active': '' %>">
+                <a href="/static/<%=page.name%>"><%=page.name%></a>
               </li>
             <% })%>
           </ul>

@@ -13,24 +13,24 @@ import soundcloudConfig from '../../config/soundcloud';
  * Index for soundcloud track ids.
  * Used to check that the track id is unique in the database.
  * The index is populated each time the beforeValidate hook of Podcast is run.
+ *
+ * NB: this is a hack, but a workaround for waterline ORM not having asynchronous type checks.
 */
 var soundcloudTrackIndex = {
 
-  index: {},
-
-  populate: async function( cb ) {
+  create: async function( cb ) {
     var podcasts = await Podcast.find()
-    this.index = podcasts.reduce((index, podcast) => {
+
+    var index = podcasts.reduce((index, podcast) => {
       index[podcast.soundcloudTrack.id] = true
       return index
     }, {})
-  },
 
-  has: function(id) {
-    return this.index[id] === true
+    return {
+      has: (id) => index[id] ? true : false
+    }
   }
 }
-
 
 export default {
 
@@ -40,10 +40,6 @@ export default {
 
     trackBelongsToSiteOwnersSoundcloudUser: function(track) {
       return track.user_id === soundcloudConfig.userId
-    },
-
-    uniqueTrack: function (track) {
-      return !soundcloudTrackIndex.has(track.id)
     }
 
   },
@@ -53,35 +49,33 @@ export default {
     soundcloudTrack: {
       type: 'json',
       required: true,
-      uniqueTrack: true,
       trackBelongsToSiteOwnersSoundcloudUser: true
     }
 
   },
 
-  beforeValidate: async function(values, next) {
-    await soundcloudTrackIndex.populate()
-    next()
-  },
-
   createIfNotExists: async function(podcast) {
-    var data
-
-    await soundcloudTrackIndex.populate()
-    
     if(Array.isArray(podcast)) {
-      data = podcast.filter((podcast) => !soundcloudTrackIndex.has(podcast.soundcloudTrack.id))
-      data = data.length ? data : null
+      return this.createManyIfNotExists(podcast)
     }
     else {
-      data = podcast && podcast.soundcloudTrack && !soundcloudTrackIndex.has(podcast.soundcloudTrack.id) ? podcast : null
+      return this.createOneIfNotExists(podcast)
     }
+  },
 
-    if(data) {
-      return Podcast.create(data)
-    }
+  createManyIfNotExists: async function(podcasts) {
+    let index = await soundcloudTrackIndex.create()
+    let podcastsToCreate = podcasts.filter((podcast) => !index.has(podcast.soundcloudTrack.id))
 
-    return Promise.resolve()
+    return Podcast.create(podcastsToCreate)
+  },
+
+  createOneIfNotExists: async function(podcast) {
+    let index = await soundcloudTrackIndex.create()
+    let exists = podcast && podcast.soundcloudTrack && index.has(podcast.soundcloudTrack.id)
+
+    return exists ? Promise.resolve()
+                  : Podcast.create(podcast)
   }
 
 };

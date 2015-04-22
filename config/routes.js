@@ -35,14 +35,15 @@ export var routes = {
   /**
    * Site routes
   */
-  '/':                'IndexController.index',
-  '/subscription':    'SubscriptionController.signup',
-  '/subscribe':       'SubscriptionController.subscribe',
-
-  '/page/:page_name': 'PageController.showPage',
+  '/':                    'IndexController.index',
+  '/subscription':        'SubscriptionController.signup',
+  '/subscribe':           'SubscriptionController.subscribe',
+  '/static/:page_name':   'PageController.showPage',
 
   /**
    * Admin routes
+   * One page app so all routes point to same html and javascript. Routing
+   * is then done on the client
   */
   '/admin':                     'AdminController.index',
   '/admin/login':               'AdminController.index',
@@ -50,6 +51,8 @@ export var routes = {
   '/admin/users/:userid':       'AdminController.index',
   '/admin/podcasts':            'AdminController.index',
   '/admin/podcasts/:podcastid': 'AdminController.index',
+  '/admin/pages':               'AdminController.index',
+  '/admin/pages/:pagename':     'AdminController.index',
 
   /**
    * Session routes
