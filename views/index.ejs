@@ -15,9 +15,9 @@ function split(a, n) {
   <% split(podcasts, podcasts.length / 4).forEach(function(row) { %>
 
     <div class="row">
-    <% row.forEach(function(podcast) { %>
+    <% row.forEach(function(podcast, index) { %>
 
-        <div class="col-xs-12 col-sm-3 podcast">
+        <div class="col-xs-4 col-sm-3 podcast">
           <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
             <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
             <h5><%=podcast.soundcloudTrack.title.replace('Monument', '')%></h5>
