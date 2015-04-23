@@ -1459,9 +1459,19 @@ define('adminclient/login/template', ['exports'], function (exports) {
 });
 define('adminclient/page/controller', ['exports', 'ember'], function (exports, Ember) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].Controller.extend({});
+  exports['default'] = Ember['default'].Controller.extend({
+
+    actions: {
+
+      save: function save() {
+        return this.model.save();
+      }
+
+    }
+
+  });
 
 });
 define('adminclient/page/model', ['exports', 'ember-data'], function (exports, DS) {
@@ -1498,13 +1508,19 @@ define('adminclient/page/template', ['exports'], function (exports) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("button");
+        dom.setAttribute(el1,"type","button");
+        dom.setAttribute(el1,"class","btn btn-success");
+        var el2 = dom.createTextNode("Save");
+        dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, content = hooks.content;
+        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -1522,9 +1538,11 @@ define('adminclient/page/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
+        var element0 = dom.childAt(fragment, [2]);
         var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
         dom.insertBoundary(fragment, 0);
-        content(env, morph0, context, "outlet");
+        inline(env, morph0, context, "textarea", [], {"value": get(env, context, "model.content")});
+        element(env, element0, context, "action", ["save", get(env, context, "model")], {});
         return fragment;
       }
     };
@@ -2780,7 +2798,7 @@ define('adminclient/tests/page/controller.jshint', function () {
 
   module('JSHint - page');
   test('page/controller.js should pass jshint', function() { 
-    ok(true, 'page/controller.js should pass jshint.'); 
+    ok(false, 'page/controller.js should pass jshint.\npage/controller.js: line 8, col 31, Missing semicolon.\n\n1 error'); 
   });
 
 });
