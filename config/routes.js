@@ -36,6 +36,7 @@ export var routes = {
    * Site routes
   */
   '/':                    'IndexController.index',
+  '/static/_preview':     'PageController.preview',
   '/static/:page_name':   'PageController.showPage',
 
   /**

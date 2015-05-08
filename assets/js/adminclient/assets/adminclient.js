@@ -1415,6 +1415,12 @@ define('adminclient/page/controller', ['exports', 'ember', 'ember-notify'], func
 
   exports['default'] = Ember['default'].Controller.extend({
 
+    previewHref: (function () {
+      var name = encodeURIComponent(this.model.get("name"));
+      var content = encodeURIComponent(this.model.get("content"));
+      return "/static/_preview?name=" + name + "&content=" + content;
+    }).property("model.name", "model.content"),
+
     actions: {
 
       save: function save() {
@@ -1510,21 +1516,73 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("button");
-        dom.setAttribute(el2,"type","button");
-        dom.setAttribute(el2,"class","btn btn-success");
-        var el3 = dom.createTextNode("Save");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createElement("a");
-        dom.setAttribute(el2,"class","help");
-        dom.setAttribute(el2,"href","http://daringfireball.net/projects/markdown/basics");
-        dom.setAttribute(el2,"target","_blank");
-        var el3 = dom.createTextNode("\n    Markdown Basics\n  ");
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","actions");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("ul");
+        dom.setAttribute(el3,"class","list-inline left");
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("button");
+        dom.setAttribute(el5,"type","button");
+        dom.setAttribute(el5,"class","btn btn-success");
+        var el6 = dom.createTextNode("Save");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"class","preview");
+        dom.setAttribute(el5,"target","_blank");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6,"class","glyphicon glyphicon-eye-open");
+        dom.setAttribute(el6,"aria-hidden","true");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5,"class","help");
+        dom.setAttribute(el5,"href","http://daringfireball.net/projects/markdown/basics");
+        dom.setAttribute(el5,"target","_blank");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6,"class","glyphicon glyphicon-question-sign");
+        dom.setAttribute(el6,"aria-hidden","true");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n        ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n");
@@ -1553,12 +1611,15 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [1]);
-        var element1 = dom.childAt(element0, [5]);
+        var element1 = dom.childAt(element0, [5, 1]);
+        var element2 = dom.childAt(element1, [1, 1]);
+        var element3 = dom.childAt(element1, [3, 1]);
         var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
         var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
         inline(env, morph0, context, "input", [], {"type": "text", "value": get(env, context, "model.name"), "size": "50"});
         inline(env, morph1, context, "textarea", [], {"value": get(env, context, "model.content")});
-        element(env, element1, context, "action", ["save", get(env, context, "model")], {});
+        element(env, element2, context, "action", ["save", get(env, context, "model")], {});
+        element(env, element3, context, "bind-attr", [], {"href": "previewHref"});
         return fragment;
       }
     };
@@ -5135,7 +5196,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.6486c18a"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.fc8ba293"});
 }
 
 /* jshint ignore:end */

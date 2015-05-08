@@ -4,6 +4,12 @@ import Notify from 'ember-notify';
 
 export default Ember.Controller.extend({
 
+  previewHref: function() {
+    let name = encodeURIComponent(this.model.get('name'))
+    let content = encodeURIComponent(this.model.get('content'))
+    return `/static/_preview?name=${name}&content=${content}`
+  }.property('model.name', 'model.content'),
+
   actions: {
 
     save: function() {
