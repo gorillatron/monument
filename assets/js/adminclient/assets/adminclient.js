@@ -1459,7 +1459,27 @@ define('adminclient/page/create/route', ['exports', 'ember', 'simple-auth/mixins
 
     model: function model() {
       return this.store.createRecord("page");
-    }
+    },
+
+    actions: {
+
+      willTransition: function willTransition(transition) {
+        var model = this.controller.model;
+
+        if (model.get("isDirty") && !confirm("Page isnt saved, you want to continue without saving?")) {
+          transition.abort();
+        }
+      }
+
+    },
+
+    clearUnPersistedModel: (function () {
+      var model = this.controller.model;
+
+      if (model.get("isNew")) {
+        return model.deleteRecord();
+      }
+    }).on("deactivate")
 
   });
 
@@ -1472,7 +1492,23 @@ define('adminclient/page/edit/route', ['exports', 'ember'], function (exports, E
 
     controllerName: "page",
 
-    templateName: "page/edit"
+    templateName: "page/edit",
+
+    clearUnPersistedModel: (function () {
+      this.controller.model.rollback();
+    }).on("deactivate"),
+
+    actions: {
+
+      willTransition: function willTransition(transition) {
+        var model = this.controller.model;
+
+        if (model.get("isDirty") && !confirm("Page isnt saved, you want to continue without saving?")) {
+          transition.abort();
+        }
+      }
+
+    }
 
   });
 
@@ -4077,13 +4113,6 @@ define('adminclient/user/controller', ['exports', 'ember', 'ember-notify'], func
       return this.model.get("subscribesToNews") ? "yes" : "no";
     }).property("model.subscribesToNews"),
 
-    resetModel: function resetModel() {
-      if (this.model.get("isDirty")) {
-        this.model.rollback();
-      }
-      return false;
-    },
-
     actions: {
 
       save: function save() {
@@ -4147,7 +4176,7 @@ define('adminclient/user/route', ['exports', 'ember', 'simple-auth/mixins/authen
     },
 
     deactivate: function deactivate() {
-      this.controller.resetModel();
+      this.controller.model.rollback();
     }
 
   });
@@ -4193,7 +4222,7 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
-        dom.setAttribute(el2,"class","col-sm-12");
+        dom.setAttribute(el2,"class","col-sm-12 user-form");
         var el3 = dom.createTextNode("\n\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("table");
@@ -4213,7 +4242,11 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
         var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
@@ -4231,7 +4264,11 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
         var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
@@ -4249,7 +4286,11 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("td");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
         var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n        ");
@@ -4345,15 +4386,15 @@ define('adminclient/user/template', ['exports'], function (exports) {
         var element1 = dom.childAt(element0, [1, 1]);
         var element2 = dom.childAt(element0, [3]);
         var morph0 = dom.createMorphAt(dom.childAt(fragment, [1, 1, 1]),0,0);
-        var morph1 = dom.createMorphAt(dom.childAt(element1, [1, 3]),0,0);
-        var morph2 = dom.createMorphAt(dom.childAt(element1, [3, 3]),0,0);
-        var morph3 = dom.createMorphAt(dom.childAt(element1, [5, 3]),0,0);
+        var morph1 = dom.createMorphAt(dom.childAt(element1, [1, 3]),1,1);
+        var morph2 = dom.createMorphAt(dom.childAt(element1, [3, 3]),1,1);
+        var morph3 = dom.createMorphAt(dom.childAt(element1, [5, 3]),1,1);
         var morph4 = dom.createMorphAt(dom.childAt(element1, [7, 3]),1,1);
         var morph5 = dom.createMorphAt(dom.childAt(element1, [9, 3]),1,1);
         content(env, morph0, context, "model.name");
-        inline(env, morph1, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.name"), "editable": true});
-        inline(env, morph2, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.email"), "editable": true});
-        inline(env, morph3, context, "view", ["contenteditable"], {"tagName": "span", "plaintext": true, "value": get(env, context, "model.phoneNumber"), "editable": true});
+        inline(env, morph1, context, "input", [], {"type": "text", "value": get(env, context, "model.name"), "size": "50"});
+        inline(env, morph2, context, "input", [], {"type": "text", "value": get(env, context, "model.email"), "size": "50"});
+        inline(env, morph3, context, "input", [], {"type": "text", "value": get(env, context, "model.phoneNumber"), "size": "50"});
         inline(env, morph4, context, "view", ["select"], {"content": get(env, context, "roles"), "selection": get(env, context, "model.role")});
         inline(env, morph5, context, "input", [], {"type": "checkbox", "name": "subscribesToNews", "checked": get(env, context, "model.subscribesToNews")});
         element(env, element2, context, "bind-attr", [], {"disabled": "isClean"});
@@ -5196,7 +5237,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.fc8ba293"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.0929701c"});
 }
 
 /* jshint ignore:end */

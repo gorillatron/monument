@@ -9,6 +9,27 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   model: function() {
     return this.store.createRecord('page')
-  }
+  },
+
+  actions: {
+
+    willTransition: function(transition) {
+      let model = this.controller.model
+
+      if(model.get('isDirty') && !confirm('Page isnt saved, you want to continue without saving?')) {
+        transition.abort()
+      }
+    }
+
+  },
+
+  clearUnPersistedModel: function(){
+    let model = this.controller.model
+
+    if(model.get('isNew')) {
+      return model.deleteRecord()
+    }
+
+  }.on('deactivate')
 
 });

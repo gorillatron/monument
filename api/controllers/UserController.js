@@ -33,6 +33,7 @@ export default {
         }
 
         user.deleteTime = new Date()
+
         return user.save()
       })
       .then((deletedUser) => res.jsonx({ user: deletedUser }) )

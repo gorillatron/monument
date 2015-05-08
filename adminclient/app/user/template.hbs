@@ -7,21 +7,27 @@
 
 <div class="row">
 
-  <div class="col-sm-12">
+  <div class="col-sm-12 user-form">
 
     <table class="table">
       <tbody>
         <tr>
           <td>Name:</td>
-          <td>{{view "contenteditable" tagName="span" plaintext=true value=model.name editable=true}}</td>
+          <td>
+            {{input type="text" value=model.name size="50"}}
+          </td>
         </tr>
         <tr>
           <td>Email:</td>
-          <td>{{view "contenteditable" tagName="span" plaintext=true value=model.email editable=true}}</td>
+          <td>
+            {{input type="text" value=model.email size="50"}}
+          </td>
         </tr>
         <tr>
           <td>Phone:</td>
-          <td>{{view "contenteditable" tagName="span" plaintext=true value=model.phoneNumber editable=true}}</td>
+          <td>
+            {{input type="text" value=model.phoneNumber size="50"}}
+          </td>
         </tr>
         <tr>
           <td>Role:</td>

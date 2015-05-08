@@ -20,7 +20,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   deactivate: function() {
-    this.controller.resetModel()
+    this.controller.model.rollback()
   }
 
 });
