@@ -1,4 +1,19 @@
-{{input type="text" value=model.name size="50"}}
-{{textarea value=model.content}}
 
-<button type="button" class="btn btn-success" {{action 'save' model}}>Save</button>
+<section class="podcast-edit-form">
+
+  <div class="field title">
+    {{input type="text" value=model.name size="50"}}
+  </div>
+
+  <div class="field content">
+    {{textarea value=model.content}}
+  </div>
+
+
+  <button type="button" class="btn btn-success" {{action 'save' model}}>Save</button>
+
+  <a class="help" href="http://daringfireball.net/projects/markdown/basics" target="_blank">
+    Markdown Basics
+  </a>
+
+</section>

@@ -39,10 +39,6 @@ define('adminclient/application/route', ['exports', 'ember', 'simple-auth/mixins
 
   exports['default'] = Ember['default'].Route.extend(ApplicationRouteMixin['default'], {
 
-    beforeModel: function beforeModel() {
-      return this.transitionTo("users");
-    },
-
     actions: {
 
       sessionInvalidationSucceeded: function sessionInvalidationSucceeded() {
@@ -1488,18 +1484,50 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
-        var el1 = dom.createComment("");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("button");
-        dom.setAttribute(el1,"type","button");
-        dom.setAttribute(el1,"class","btn btn-success");
-        var el2 = dom.createTextNode("Save");
+        var el1 = dom.createElement("section");
+        dom.setAttribute(el1,"class","podcast-edit-form");
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","field title");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2,"class","field content");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        dom.setAttribute(el2,"type","button");
+        dom.setAttribute(el2,"class","btn btn-success");
+        var el3 = dom.createTextNode("Save");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("a");
+        dom.setAttribute(el2,"class","help");
+        dom.setAttribute(el2,"href","http://daringfireball.net/projects/markdown/basics");
+        dom.setAttribute(el2,"target","_blank");
+        var el3 = dom.createTextNode("\n    Markdown Basics\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
         return el0;
@@ -1524,13 +1552,13 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element0 = dom.childAt(fragment, [4]);
-        var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
-        var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
-        dom.insertBoundary(fragment, 0);
+        var element0 = dom.childAt(fragment, [1]);
+        var element1 = dom.childAt(element0, [5]);
+        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
         inline(env, morph0, context, "input", [], {"type": "text", "value": get(env, context, "model.name"), "size": "50"});
         inline(env, morph1, context, "textarea", [], {"value": get(env, context, "model.content")});
-        element(env, element0, context, "action", ["save", get(env, context, "model")], {});
+        element(env, element1, context, "action", ["save", get(env, context, "model")], {});
         return fragment;
       }
     };
@@ -1541,9 +1569,11 @@ define('adminclient/page/model', ['exports', 'ember-data'], function (exports, D
 
   'use strict';
 
+  var contentDefault = "\nAn h1 header\n============\n\nParagraphs are separated by a blank line.\n\n2nd paragraph. *Italic*, **bold**, and `monospace`. Itemized lists\nlook like:\n\n  * this one\n  * that one\n  * the other one\n\n####  links\n\n[this is a link to google](http://www.google.com)\n\nNote that --- not considering the asterisk --- the actual text\ncontent starts at 4-columns in.\n\n> Block quotes are\n> written like so.\n>\n> They can span multiple paragraphs,\n> if you like.\n\nUse 3 dashes for an em-dash. Use 2 dashes for ranges (ex., \"it's all\nin chapters 12--14\"). Three dots ... will be converted to an ellipsis.\nUnicode is supported. ☺\n\n\n\nAn h2 header\n------------\n\nHere's a numbered list:\n\n 1. first item\n 2. second item\n 3. third item\n\n";
+
   exports['default'] = DS['default'].Model.extend({
-    name: DS['default'].attr("string"),
-    content: DS['default'].attr("string"),
+    name: DS['default'].attr("string", { defaultValue: "Title Placeholder" }),
+    content: DS['default'].attr("string", { defaultValue: contentDefault }),
     createdAt: DS['default'].attr("date"),
     updatedAt: DS['default'].attr("date")
   });
@@ -5105,7 +5135,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.a109d87f"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.6486c18a"});
 }
 
 /* jshint ignore:end */
