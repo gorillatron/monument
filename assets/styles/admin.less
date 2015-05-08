@@ -15,72 +15,11 @@
  */
 
 @import './bootstrap/bootstrap.less';
+
 @import 'vars.less';
 @import 'globals.less';
 @import 'fonts.less';
-@import 'ember-notify.less';
+@import './admin/ember-notify.less';
 
-// --- USERS ----
-.csv-generator-box .attribute-select {
-  opacity: 0.001;
-  transform: translatex(-40px);
-  transition: transform 0.2s, opacity 0.3s;
-}
-
-.csv-generator-box .attribute-select.display {
-  transform: translatex(0px);
-  opacity: 1;
-}
-
-.csv-generator-box .csv {
-  position: relative;
-  margin: 15px 0px;
-  padding: 10px;
-  border: 1px solid rgb(230,230,230);
-}
-.csv-generator-box .csv .glyphicon-remove {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.podcast-edit-form {
-
-  .field {
-    input, textarea {
-      display: block;
-      padding: 15px;
-      width: 100%;
-      height: 100%;
-      border: 0px solid transparent;
-    }
-  }
-
-  .title {
-    font-size: 1.6em;
-    border-bottom: 2px solid @brand-success;
-  }
-
-  .content {
-    height: 400px;
-    textarea {
-      min-height: 200px;
-      max-height: 1200px;
-    }
-    margin-bottom: 20px;
-  }
-
-  button.btn {
-    float: right;
-  }
-
-  .help {
-    float: right;
-    margin-right: 25px;
-    margin-top: 8px;
-  }
-
-}
-
-
-// --- USERS ----
+@import './admin/user.less';
+@import './admin/podcast.less';

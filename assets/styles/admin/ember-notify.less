@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 5000;
   bottom: 0px;
-  right: 0px;
+  width: 100%;
   pointer-events: none;
 }
 
@@ -11,7 +11,8 @@
   margin: 10px;
   position: relative;
   width: 300px;
-  right: -310px;
+  -webkit-transform: translatey(300px);
+  margin: 0px auto 40px auto;
 }
 .ember-notify {
   /* the following is purely so that it doesn't look broken without Foundation installed */
@@ -25,7 +26,7 @@
 }
 
 .ember-notify-cn .ember-notify-show {
-  right: 0;
+  -webkit-transform: translatey(0px);
 }
 .ember-notify-cn .ember-notify-show,
 .ember-notify-cn .ember-notify {
