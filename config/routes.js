@@ -36,9 +36,9 @@ export var routes = {
    * Site routes
   */
   '/':                    'IndexController.index',
-  '/subscription':        'SubscriptionController.signup',
-  '/subscribe':           'SubscriptionController.subscribe',
-  '/static/:page_name':   'PageController.showPage',
+  // '/subscription':        'SubscriptionController.signup',
+  // '/subscribe':           'SubscriptionController.subscribe',
+  // '/static/:page_name':   'PageController.showPage',
 
   /**
    * Admin routes
