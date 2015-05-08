@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "debug": "node debug app.js"
+    "devstart": "./node_modules/babel/bin/babel-node app.js --stage=1"
   },
   "main": "app.js",
   "repository": {
