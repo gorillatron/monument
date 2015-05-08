@@ -39,6 +39,10 @@ define('adminclient/application/route', ['exports', 'ember', 'simple-auth/mixins
 
   exports['default'] = Ember['default'].Route.extend(ApplicationRouteMixin['default'], {
 
+    beforeModel: function beforeModel() {
+      return this.transitionTo("users");
+    },
+
     actions: {
 
       sessionInvalidationSucceeded: function sessionInvalidationSucceeded() {
@@ -93,42 +97,6 @@ define('adminclient/application/template', ['exports'], function (exports) {
         };
       }());
       var child1 = (function() {
-        return {
-          isHTMLBars: true,
-          revision: "Ember@1.11.1",
-          blockParams: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          build: function build(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode(" podcasts ");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          render: function render(context, env, contextualElement) {
-            var dom = env.dom;
-            dom.detectNamespace(contextualElement);
-            var fragment;
-            if (env.useFragmentCache && dom.canClone) {
-              if (this.cachedFragment === null) {
-                fragment = this.build(dom);
-                if (this.hasRendered) {
-                  this.cachedFragment = fragment;
-                } else {
-                  this.hasRendered = true;
-                }
-              }
-              if (this.cachedFragment) {
-                fragment = dom.cloneNode(this.cachedFragment, true);
-              }
-            } else {
-              fragment = this.build(dom);
-            }
-            return fragment;
-          }
-        };
-      }());
-      var child2 = (function() {
         return {
           isHTMLBars: true,
           revision: "Ember@1.11.1",
@@ -192,16 +160,6 @@ define('adminclient/application/template', ['exports'], function (exports) {
           var el2 = dom.createTextNode("\n          ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n          ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("li");
-          var el2 = dom.createTextNode("\n            ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n          ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n");
           dom.appendChild(el0, el1);
           return el0;
@@ -228,10 +186,8 @@ define('adminclient/application/template', ['exports'], function (exports) {
           }
           var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
           var morph1 = dom.createMorphAt(dom.childAt(fragment, [3]),1,1);
-          var morph2 = dom.createMorphAt(dom.childAt(fragment, [5]),1,1);
           block(env, morph0, context, "link-to", ["users"], {}, child0, null);
-          block(env, morph1, context, "link-to", ["podcasts"], {}, child1, null);
-          block(env, morph2, context, "link-to", ["pages"], {}, child2, null);
+          block(env, morph1, context, "link-to", ["pages"], {}, child1, null);
           return fragment;
         }
       };
@@ -1457,7 +1413,7 @@ define('adminclient/login/template', ['exports'], function (exports) {
   }()));
 
 });
-define('adminclient/page/controller', ['exports', 'ember'], function (exports, Ember) {
+define('adminclient/page/controller', ['exports', 'ember', 'ember-notify'], function (exports, Ember, Notify) {
 
   'use strict';
 
@@ -1466,7 +1422,22 @@ define('adminclient/page/controller', ['exports', 'ember'], function (exports, E
     actions: {
 
       save: function save() {
-        return this.model.save();
+        return this.model.save().then(function () {
+          return Notify['default'].success("Page saved");
+        }, function () {
+          return Notify['default'].error("Could not persist to the server.");
+        });
+      },
+
+      destroy: function destroy() {
+        if (confirm("Are you sure you want to destroy page: " + this.model.get("name") + ". \nNB: IT WILL BE PERMANENTLY DELETED")) {
+          this.model.deleteRecord();
+          this.model.save().then(function () {
+            return Notify['default'].success("Page deleted");
+          }, function () {
+            return Notify['default'].error("Could not persist to the server.");
+          });
+        }
       }
 
     }
@@ -1474,26 +1445,37 @@ define('adminclient/page/controller', ['exports', 'ember'], function (exports, E
   });
 
 });
-define('adminclient/page/model', ['exports', 'ember-data'], function (exports, DS) {
+define('adminclient/page/create/route', ['exports', 'ember', 'simple-auth/mixins/authenticated-route-mixin'], function (exports, Ember, AuthenticatedRouteMixin) {
 
   'use strict';
 
-  exports['default'] = DS['default'].Model.extend({
-    name: DS['default'].attr("string"),
-    content: DS['default'].attr("string"),
-    createdAt: DS['default'].attr("date"),
-    updatedAt: DS['default'].attr("date")
+  exports['default'] = Ember['default'].Route.extend(AuthenticatedRouteMixin['default'], {
+
+    controllerName: "page",
+
+    templateName: "page/edit",
+
+    model: function model() {
+      return this.store.createRecord("page");
+    }
+
   });
 
 });
-define('adminclient/page/route', ['exports', 'ember'], function (exports, Ember) {
+define('adminclient/page/edit/route', ['exports', 'ember'], function (exports, Ember) {
 
-	'use strict';
+  'use strict';
 
-	exports['default'] = Ember['default'].Route.extend({});
+  exports['default'] = Ember['default'].Route.extend({
+
+    controllerName: "page",
+
+    templateName: "page/edit"
+
+  });
 
 });
-define('adminclient/page/template', ['exports'], function (exports) {
+define('adminclient/page/edit/template', ['exports'], function (exports) {
 
   'use strict';
 
@@ -1506,6 +1488,10 @@ define('adminclient/page/template', ['exports'], function (exports) {
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
         var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n\n");
@@ -1538,15 +1524,29 @@ define('adminclient/page/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element0 = dom.childAt(fragment, [2]);
+        var element0 = dom.childAt(fragment, [4]);
         var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+        var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
         dom.insertBoundary(fragment, 0);
-        inline(env, morph0, context, "textarea", [], {"value": get(env, context, "model.content")});
+        inline(env, morph0, context, "input", [], {"type": "text", "value": get(env, context, "model.name"), "size": "50"});
+        inline(env, morph1, context, "textarea", [], {"value": get(env, context, "model.content")});
         element(env, element0, context, "action", ["save", get(env, context, "model")], {});
         return fragment;
       }
     };
   }()));
+
+});
+define('adminclient/page/model', ['exports', 'ember-data'], function (exports, DS) {
+
+  'use strict';
+
+  exports['default'] = DS['default'].Model.extend({
+    name: DS['default'].attr("string"),
+    content: DS['default'].attr("string"),
+    createdAt: DS['default'].attr("date"),
+    updatedAt: DS['default'].attr("date")
+  });
 
 });
 define('adminclient/pages/index/controller', ['exports', 'ember'], function (exports, Ember) {
@@ -1693,8 +1693,52 @@ define('adminclient/pages/index/template', ['exports'], function (exports) {
           var element0 = dom.childAt(fragment, [1]);
           var element1 = dom.childAt(element0, [5, 1]);
           var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
-          block(env, morph0, context, "link-to", ["page", get(env, context, "page.model")], {}, child0, null);
+          block(env, morph0, context, "link-to", ["page.edit", get(env, context, "page.model")], {}, child0, null);
           element(env, element1, context, "action", ["destroy", get(env, context, "page")], {});
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.11.1",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("                ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("button");
+          dom.setAttribute(el1,"type","button");
+          dom.setAttribute(el1,"class","btn btn-success btn-sm");
+          var el2 = dom.createTextNode("Create page");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
           return fragment;
         }
       };
@@ -1780,7 +1824,33 @@ define('adminclient/pages/index/template', ['exports'], function (exports) {
         dom.appendChild(el5, el6);
         var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n        ");
+        var el6 = dom.createTextNode("\n          ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("tr");
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("td");
+        var el8 = dom.createTextNode("\n");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createComment("");
+        dom.appendChild(el7, el8);
+        var el8 = dom.createTextNode("            ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("td");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n            ");
+        dom.appendChild(el6, el7);
+        var el7 = dom.createElement("td");
+        var el8 = dom.createTextNode("\n            ");
+        dom.appendChild(el7, el8);
+        dom.appendChild(el6, el7);
+        var el7 = dom.createTextNode("\n          ");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n\n        ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n      ");
@@ -1817,8 +1887,11 @@ define('adminclient/pages/index/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(dom.childAt(fragment, [2, 3, 1, 1, 3]),1,1);
+        var element2 = dom.childAt(fragment, [2, 3, 1, 1, 3]);
+        var morph0 = dom.createMorphAt(element2,1,1);
+        var morph1 = dom.createMorphAt(dom.childAt(element2, [3, 1]),1,1);
         block(env, morph0, context, "each", [get(env, context, "controller")], {"keyword": "page"}, child0, null);
+        block(env, morph1, context, "link-to", ["page.create"], {}, child1, null);
         return fragment;
       }
     };
@@ -1871,13 +1944,6 @@ define('adminclient/pages/template', ['exports'], function (exports) {
       }
     };
   }()));
-
-});
-define('adminclient/podcast/model', ['exports', 'ember-data'], function (exports, DS) {
-
-	'use strict';
-
-	exports['default'] = DS['default'].Model.extend({});
 
 });
 define('adminclient/podcasts/index/controller', ['exports', 'ember'], function (exports, Ember) {
@@ -2001,14 +2067,16 @@ define('adminclient/router', ['exports', 'ember', 'adminclient/config/environmen
   });
 
   Router.map(function () {
+
     this.resource("users", function () {
       this.resource("user", { path: "/:user_id" });
     });
 
-    this.resource("podcasts", function () {});
+    this.resource("pages", function () {});
 
-    this.resource("pages", function () {
-      this.resource("page", { path: "/:page_id" });
+    this.resource("page", function () {
+      this.route("edit", { path: "/:page_id" });
+      this.route("create", { path: "/create" });
     });
   });
 
@@ -2671,7 +2739,7 @@ define('adminclient/tests/application/route.jshint', function () {
 
   module('JSHint - application');
   test('application/route.js should pass jshint', function() { 
-    ok(false, 'application/route.js should pass jshint.\napplication/route.js: line 9, col 33, Missing semicolon.\n\n1 error'); 
+    ok(true, 'application/route.js should pass jshint.'); 
   });
 
 });
@@ -2681,7 +2749,7 @@ define('adminclient/tests/authenticators/custom.jshint', function () {
 
   module('JSHint - authenticators');
   test('authenticators/custom.js should pass jshint', function() { 
-    ok(false, 'authenticators/custom.js should pass jshint.\nauthenticators/custom.js: line 16, col 28, Missing semicolon.\nauthenticators/custom.js: line 19, col 27, Missing semicolon.\nauthenticators/custom.js: line 23, col 25, Missing semicolon.\nauthenticators/custom.js: line 24, col 9, Missing semicolon.\nauthenticators/custom.js: line 25, col 7, Missing semicolon.\nauthenticators/custom.js: line 29, col 53, Missing semicolon.\nauthenticators/custom.js: line 30, col 33, Missing semicolon.\nauthenticators/custom.js: line 42, col 72, Missing semicolon.\nauthenticators/custom.js: line 43, col 22, Missing semicolon.\nauthenticators/custom.js: line 46, col 28, Missing semicolon.\nauthenticators/custom.js: line 49, col 20, Missing semicolon.\nauthenticators/custom.js: line 50, col 9, Missing semicolon.\nauthenticators/custom.js: line 51, col 7, Missing semicolon.\nauthenticators/custom.js: line 63, col 18, Missing semicolon.\nauthenticators/custom.js: line 65, col 17, Missing semicolon.\nauthenticators/custom.js: line 66, col 9, Missing semicolon.\nauthenticators/custom.js: line 67, col 7, Missing semicolon.\nauthenticators/custom.js: line 43, col 18, \'xhr\' is not defined.\nauthenticators/custom.js: line 54, col 24, \'data\' is defined but never used.\nauthenticators/custom.js: line 62, col 14, \'response\' is defined but never used.\nauthenticators/custom.js: line 64, col 11, \'xhr\' is defined but never used.\n\n21 errors'); 
+    ok(false, 'authenticators/custom.js should pass jshint.\nauthenticators/custom.js: line 43, col 18, \'xhr\' is not defined.\nauthenticators/custom.js: line 54, col 24, \'data\' is defined but never used.\nauthenticators/custom.js: line 62, col 14, \'response\' is defined but never used.\nauthenticators/custom.js: line 64, col 11, \'xhr\' is defined but never used.\n\n4 errors'); 
   });
 
 });
@@ -2701,7 +2769,7 @@ define('adminclient/tests/func/fuzzymatch.jshint', function () {
 
   module('JSHint - func');
   test('func/fuzzymatch.js should pass jshint', function() { 
-    ok(false, 'func/fuzzymatch.js should pass jshint.\nfunc/fuzzymatch.js: line 2, col 9, \'a\' is already defined.\nfunc/fuzzymatch.js: line 2, col 26, Missing semicolon.\nfunc/fuzzymatch.js: line 3, col 9, \'b\' is already defined.\nfunc/fuzzymatch.js: line 3, col 26, Missing semicolon.\nfunc/fuzzymatch.js: line 4, col 13, Missing semicolon.\nfunc/fuzzymatch.js: line 8, col 19, Missing semicolon.\nfunc/fuzzymatch.js: line 11, col 14, Missing semicolon.\nfunc/fuzzymatch.js: line 12, col 2, Missing semicolon.\n\n8 errors'); 
+    ok(false, 'func/fuzzymatch.js should pass jshint.\nfunc/fuzzymatch.js: line 2, col 9, \'a\' is already defined.\nfunc/fuzzymatch.js: line 3, col 9, \'b\' is already defined.\n\n2 errors'); 
   });
 
 });
@@ -2711,7 +2779,7 @@ define('adminclient/tests/func/objectFilter.jshint', function () {
 
   module('JSHint - func');
   test('func/objectFilter.js should pass jshint', function() { 
-    ok(false, 'func/objectFilter.js should pass jshint.\nfunc/objectFilter.js: line 5, col 23, Missing semicolon.\nfunc/objectFilter.js: line 8, col 21, Missing semicolon.\nfunc/objectFilter.js: line 11, col 15, Missing semicolon.\nfunc/objectFilter.js: line 12, col 9, Missing semicolon.\nfunc/objectFilter.js: line 13, col 2, Missing semicolon.\n\n5 errors'); 
+    ok(true, 'func/objectFilter.js should pass jshint.'); 
   });
 
 });
@@ -2798,7 +2866,27 @@ define('adminclient/tests/page/controller.jshint', function () {
 
   module('JSHint - page');
   test('page/controller.js should pass jshint', function() { 
-    ok(false, 'page/controller.js should pass jshint.\npage/controller.js: line 8, col 31, Missing semicolon.\n\n1 error'); 
+    ok(true, 'page/controller.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/page/create/route.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - page/create');
+  test('page/create/route.js should pass jshint', function() { 
+    ok(true, 'page/create/route.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/page/edit/route.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - page/edit');
+  test('page/edit/route.js should pass jshint', function() { 
+    ok(true, 'page/edit/route.js should pass jshint.'); 
   });
 
 });
@@ -2809,16 +2897,6 @@ define('adminclient/tests/page/model.jshint', function () {
   module('JSHint - page');
   test('page/model.js should pass jshint', function() { 
     ok(true, 'page/model.js should pass jshint.'); 
-  });
-
-});
-define('adminclient/tests/page/route.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - page');
-  test('page/route.js should pass jshint', function() { 
-    ok(true, 'page/route.js should pass jshint.'); 
   });
 
 });
@@ -2838,17 +2916,7 @@ define('adminclient/tests/pages/index/route.jshint', function () {
 
   module('JSHint - pages/index');
   test('pages/index/route.js should pass jshint', function() { 
-    ok(false, 'pages/index/route.js should pass jshint.\npages/index/route.js: line 7, col 35, Missing semicolon.\npages/index/route.js: line 6, col 19, \'params\' is defined but never used.\n\n2 errors'); 
-  });
-
-});
-define('adminclient/tests/podcast/model.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - podcast');
-  test('podcast/model.js should pass jshint', function() { 
-    ok(true, 'podcast/model.js should pass jshint.'); 
+    ok(false, 'pages/index/route.js should pass jshint.\npages/index/route.js: line 6, col 19, \'params\' is defined but never used.\n\n1 error'); 
   });
 
 });
@@ -2868,7 +2936,7 @@ define('adminclient/tests/podcasts/index/route.jshint', function () {
 
   module('JSHint - podcasts/index');
   test('podcasts/index/route.js should pass jshint', function() { 
-    ok(false, 'podcasts/index/route.js should pass jshint.\npodcasts/index/route.js: line 7, col 38, Missing semicolon.\npodcasts/index/route.js: line 6, col 19, \'params\' is defined but never used.\n\n2 errors'); 
+    ok(false, 'podcasts/index/route.js should pass jshint.\npodcasts/index/route.js: line 6, col 19, \'params\' is defined but never used.\n\n1 error'); 
   });
 
 });
@@ -3639,7 +3707,7 @@ define('adminclient/tests/user/controller.jshint', function () {
 
   module('JSHint - user');
   test('user/controller.js should pass jshint', function() { 
-    ok(false, 'user/controller.js should pass jshint.\nuser/controller.js: line 11, col 61, Missing semicolon.\nuser/controller.js: line 16, col 28, Missing semicolon.\nuser/controller.js: line 18, col 17, Missing semicolon.\nuser/controller.js: line 25, col 38, Missing semicolon.\nuser/controller.js: line 27, col 57, Missing semicolon.\nuser/controller.js: line 28, col 9, Missing semicolon.\nuser/controller.js: line 33, col 34, Missing semicolon.\nuser/controller.js: line 35, col 42, Missing semicolon.\nuser/controller.js: line 37, col 59, Missing semicolon.\nuser/controller.js: line 38, col 11, Missing semicolon.\n\n10 errors'); 
+    ok(true, 'user/controller.js should pass jshint.'); 
   });
 
 });
@@ -3659,7 +3727,7 @@ define('adminclient/tests/user/route.jshint', function () {
 
   module('JSHint - user');
   test('user/route.js should pass jshint', function() { 
-    ok(false, 'user/route.js should pass jshint.\nuser/route.js: line 11, col 18, Missing semicolon.\nuser/route.js: line 16, col 27, Missing semicolon.\nuser/route.js: line 23, col 33, Missing semicolon.\n\n3 errors'); 
+    ok(true, 'user/route.js should pass jshint.'); 
   });
 
 });
@@ -3669,7 +3737,7 @@ define('adminclient/tests/users/index/controller.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/controller.js should pass jshint', function() { 
-    ok(false, 'users/index/controller.js should pass jshint.\nusers/index/controller.js: line 22, col 44, Missing semicolon.\nusers/index/controller.js: line 24, col 47, Missing semicolon.\nusers/index/controller.js: line 25, col 87, Missing semicolon.\nusers/index/controller.js: line 25, col 95, Missing semicolon.\nusers/index/controller.js: line 30, col 45, Missing semicolon.\nusers/index/controller.js: line 31, col 40, Missing semicolon.\nusers/index/controller.js: line 35, col 20, Missing semicolon.\nusers/index/controller.js: line 36, col 36, Missing semicolon.\nusers/index/controller.js: line 40, col 37, Missing semicolon.\n\n9 errors'); 
+    ok(true, 'users/index/controller.js should pass jshint.'); 
   });
 
 });
@@ -3679,7 +3747,7 @@ define('adminclient/tests/users/index/route.jshint', function () {
 
   module('JSHint - users/index');
   test('users/index/route.js should pass jshint', function() { 
-    ok(false, 'users/index/route.js should pass jshint.\nusers/index/route.js: line 10, col 60, Missing semicolon.\nusers/index/route.js: line 11, col 47, Missing semicolon.\nusers/index/route.js: line 3, col 8, \'fuzzymatch\' is defined but never used.\n\n3 errors'); 
+    ok(false, 'users/index/route.js should pass jshint.\nusers/index/route.js: line 3, col 8, \'fuzzymatch\' is defined but never used.\n\n1 error'); 
   });
 
 });
@@ -5037,7 +5105,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.99309625"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.a109d87f"});
 }
 
 /* jshint ignore:end */

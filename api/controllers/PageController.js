@@ -19,7 +19,7 @@ module.exports = {
 		var page = null
 		var html = null
 
-		var pageName = req.param('page_name')
+		var pageName = decodeURIComponent( req.param('page_name') )
 
 		if(!pageName) {
 			return res.noDroids()

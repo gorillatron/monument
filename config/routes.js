@@ -36,9 +36,7 @@ export var routes = {
    * Site routes
   */
   '/':                    'IndexController.index',
-  // '/subscription':        'SubscriptionController.signup',
-  // '/subscribe':           'SubscriptionController.subscribe',
-  // '/static/:page_name':   'PageController.showPage',
+  '/static/:page_name':   'PageController.showPage',
 
   /**
    * Admin routes
@@ -52,7 +50,9 @@ export var routes = {
   '/admin/podcasts':            'AdminController.index',
   '/admin/podcasts/:podcastid': 'AdminController.index',
   '/admin/pages':               'AdminController.index',
-  '/admin/pages/:pagename':     'AdminController.index',
+  '/admin/page':                'AdminController.index',
+  '/admin/page/create':         'AdminController.index',
+  '/admin/page/:pageid':        'AdminController.index',
 
   /**
    * Session routes

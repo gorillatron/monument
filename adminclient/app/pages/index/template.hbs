@@ -30,7 +30,7 @@
           {{#each page in controller}}
             <tr>
               <td>
-                {{#link-to 'page' page.model}} {{page.model.name}} {{/link-to}}
+                {{#link-to 'page.edit' page.model}} {{page.model.name}} {{/link-to}}
               </td>
               <td>todo</td>
               <td>
@@ -38,6 +38,17 @@
               </td>
             </tr>
           {{/each}}
+
+          <tr>
+            <td>
+              {{#link-to 'page.create'}}
+                <button type="button" class="btn btn-success btn-sm">Create page</button>
+              {{/link-to}}
+            </td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
 
         </tbody>
       </table>
