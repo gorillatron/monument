@@ -6,16 +6,18 @@
   </form>
 </section> -->
 
-<div class="row">
+<div class="row list">
 
-  <div class="col-sm-12">
-    <div class="navbar-header">
+  <header class="col-sm-12 row">
+
+    <div class="col-sm-3 title">
       <h3>Pages</h3>
     </div>
-  </div>
 
-  <div class="col-sm-12">
-    <section class="data-table">
+  </header>
+
+  <div class="col-sm-12 row table-wrapper">
+    <section class="col-sm-12 data-table">
 
       <table class="table">
         <thead>
@@ -40,13 +42,10 @@
           {{/each}}
 
           <tr>
-            <td>
+            <td colspan="3" class="create">
               {{#link-to 'page.create'}}
-                <button type="button" class="btn btn-success btn-sm">Create Page</button>
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
               {{/link-to}}
-            </td>
-            <td></td>
-            <td>
             </td>
           </tr>
 

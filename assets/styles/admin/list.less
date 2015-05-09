@@ -8,19 +8,24 @@
         margin: 0px;
       }
     }
-    .actions {
-      ul {
-        text-align: right;
-        margin: 0px;
-        li {
-          opacity: 0.6;
-          font-size: 1.2em;
-          margin-left: 10px;
-          line-height: 1.1;
-          padding-top: 2px;
-          &:hover {
-            opacity: 0.9;
-          }
+  }
+
+  .table-wrapper {
+    td.create {
+      padding: 0px;
+      a {
+        padding: 15px;
+        display: block;
+        width: 100%;
+        line-height: 1.5em;
+        text-align: center;
+        color: rgba(0,0,0, 0.5);
+        .transition(all 0.12s);
+        &:hover {
+          color: rgba(0,0,0, 0.8);
+          background-color: fade(@brand-success, 3%);
+          -webkit-transform: translateY(5px);
+          line-height: 2em;
         }
       }
     }
