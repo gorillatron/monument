@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Notify from 'ember-notify';
 
+
 export default Ember.Controller.extend({
 
   roles: ['admin', 'normal'],
@@ -16,8 +17,18 @@ export default Ember.Controller.extend({
     save: function(){
       this.model.save().then(() => {
         Notify.success('User saved.')
-      }, () => {
-        Notify.error('Could not persist to the server.')
+      }, (errorRes) => {
+        let error = errorRes.responseJSON
+
+        let errorMessages = Object.keys(error.invalidAttributes).map((attrName) => {
+          return error.invalidAttributes[attrName].map((attr) => attr.message)
+        })
+
+        let errorMessage = errorMessages.reduce((arr, next) => {
+          return arr.concat(next)
+        }, []).join('\n')
+
+        Notify.error(errorMessage)
       })
     },
 

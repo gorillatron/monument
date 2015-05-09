@@ -1,10 +1,13 @@
+
+import _ from 'lodash';
+
+
 /**
  * UserController
  *
  * @description :: Server-side logic for managing users
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-
 export default {
 
   find: function(req, res, next) {
@@ -47,16 +50,32 @@ export default {
           return res.notFound()
         }
 
-        user.name = req.body.user.name
-        user.email = req.body.user.email
-        user.phoneNumber = req.body.user.phoneNumber
-        user.subscribesToNews = req.body.user.subscribesToNews
-        user.role = req.body.user.role
+        _.extend(user, _.pick(req.body.user,
+          'name',
+          'email',
+          'phoneNumber',
+          'subscribesToNews',
+          'role'
+        ));
 
         return user.save()
       })
       .then((updatedUser) => res.jsonx({ user: updatedUser }))
       .catch((error) => next(error) )
+  },
+
+  create: function(req, res, next){
+    User.create(
+      _.pick(req.body.user,
+        'name',
+        'email',
+        'phoneNumber',
+        'subscribesToNews',
+        'role'
+      ))
+    .then((createdUser) => res.jsonx({ user: createdUser }))
+    .catch((error) => next(error) )
+
   }
 
 };

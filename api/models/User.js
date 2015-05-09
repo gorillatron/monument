@@ -87,6 +87,22 @@ export default {
         }
       }))
     }
+    else if(values.role === 'admin' && !values.email) {
+      return next(new WLValidationError({
+        "error": "E_VALIDATION",
+        "status": 400,
+        "summary": "admin needs email",
+        "model": "User",
+        "invalidAttributes": {
+          "multi": [
+            {
+              "rule": "adminuserneedsemail",
+              "message": "adminuser has to have a email"
+            }
+          ]
+        }
+      }))
+    }
     return next()
   },
 

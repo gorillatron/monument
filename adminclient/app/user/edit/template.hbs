@@ -1,11 +1,5 @@
 
 <div class="row">
-  <div class="col-sm-12">
-    <h3>{{model.name}}</h3>
-  </div>
-</div>
-
-<div class="row">
 
   <div class="col-sm-12 user-form">
 
@@ -14,19 +8,19 @@
         <tr>
           <td>Name:</td>
           <td>
-            {{input type="text" value=model.name size="50"}}
+            {{input type="text" value=model.name size="50" placeholder="fullname"}}
           </td>
         </tr>
         <tr>
           <td>Email:</td>
           <td>
-            {{input type="text" value=model.email size="50"}}
+            {{input type="text" value=model.email size="50" placeholder="email@domain.com"}}
           </td>
         </tr>
         <tr>
           <td>Phone:</td>
           <td>
-            {{input type="text" value=model.phoneNumber size="50"}}
+            {{input type="text" value=model.phoneNumber size="50" placeholder="12341234"}}
           </td>
         </tr>
         <tr>
