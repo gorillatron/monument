@@ -71,7 +71,9 @@ export default {
         'email',
         'phoneNumber',
         'subscribesToNews',
-        'role'
+        'role',
+        'password',
+        'passwordConfirm'
       ))
     .then((createdUser) => res.jsonx({ user: createdUser }))
     .catch((error) => next(error) )

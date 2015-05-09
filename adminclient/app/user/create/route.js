@@ -5,8 +5,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   controllerName: 'user',
 
-  templateName: 'user/edit',
-
   model: function() {
     return this.store.createRecord('user')
   },

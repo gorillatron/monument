@@ -6,6 +6,8 @@ export default DS.Model.extend({
   email:            DS.attr('string'),
   role:             DS.attr('string'),
   subscribesToNews: DS.attr('boolean'),
+  password:         DS.attr('string'),
+  passwordConfirm:  DS.attr('string'),
   createdAt:        DS.attr('date'),
   updatedAt:        DS.attr('date')
 });

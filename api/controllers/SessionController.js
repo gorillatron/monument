@@ -30,7 +30,7 @@ function authenticateSession(session, user) {
 
 export default {
 
-	getToken: function(req, res) {
+	getToken: function(req, res, next) {
 		if(req.session.authenticated) {
 			return res.jsonx({ token: req.session.token, user: req.session.user })
 		}
@@ -39,8 +39,8 @@ export default {
 		}
 	},
 
-	generate: function(req, res) {
-		User.findOne({
+	generate: function(req, res, next) {
+		User.findOneNotDeletedAnd({
 			or: [
 				{email: req.param('useridentification')},
 				{phoneNumber: req.param('useridentification')}
@@ -55,7 +55,7 @@ export default {
 			}
 
 			if(!authenticatingUser.encryptedPassword) {
-				return res.forbidden({ error: {code: FORBIDDEN, message: 'Unable to authenticate'} })
+				return res.forbidden({ error: {code: FORBIDDEN, message: 'Unable to authenticate user without password'} })
 			}
 
 			bcrypt.compare(req.param('password'), authenticatingUser.encryptedPassword, function(err, compares) {
@@ -65,6 +65,7 @@ export default {
 
 				if(!compares) {
 					invalidateSession(req.session)
+					console.log('!COMPARE PASSWORDS')
 					return res.forbidden({ error: {code: FORBIDDEN, message: 'Unable to authenticate'} })
 				}
 

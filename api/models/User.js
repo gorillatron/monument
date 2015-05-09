@@ -70,6 +70,30 @@ export default {
 
   },
 
+  beforeCreate: function(values, next) {
+    if(values.password) {
+
+      if(values.password !== values.passwordConfirm) {
+        return next(new Error('does not match'))
+      }
+      else if(values.password.length < 8) {
+        return next(new Error('password not > 8 characters'))
+      }
+
+      bcrypt.hash(values.password, 10, function(err, hash) {
+        if(err) {
+          return next(err)
+        }
+        values.encryptedPassword = hash
+        next()
+      })
+
+    }
+    else {
+      next()
+    }
+  },
+
   beforeValidate: function(values, next) {
     if(!values.email && !values.phoneNumber) {
       return next(new WLValidationError({
@@ -82,22 +106,6 @@ export default {
             {
               "rule": "subrequired",
               "message": "phoneNumber or email is required"
-            }
-          ]
-        }
-      }))
-    }
-    else if(values.role === 'admin' && !values.email) {
-      return next(new WLValidationError({
-        "error": "E_VALIDATION",
-        "status": 400,
-        "summary": "admin needs email",
-        "model": "User",
-        "invalidAttributes": {
-          "multi": [
-            {
-              "rule": "adminuserneedsemail",
-              "message": "adminuser has to have a email"
             }
           ]
         }
@@ -136,22 +144,16 @@ export default {
     })
   },
 
-  findOneNotDeletedAnd: function(query) {
+  findOneNotDeletedAnd: function(query, cb) {
     query = query ? query : {}
-    var or = query.or ? query.or : []
-    or.push({ deleteTime: undefined })
-    or.push({ deleteTime: null })
-    query.or = or
-    return User.findOne(query)
+    query.deleteTime = null
+    return User.findOne(query, cb)
   },
 
-  findNotDeletedAnd: function(query) {
+  findNotDeletedAnd: function(query, cb) {
     query = query ? query : {}
-    var or = query.or ? query.or : []
-    or.push({ deleteTime: undefined })
-    or.push({ deleteTime: null })
-    query.or = or
-    return User.find(query)
+    query.deleteTime = null
+    return User.find(query, cb)
   }
 
 };
