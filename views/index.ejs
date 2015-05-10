@@ -1,30 +1,13 @@
 
-<%
-function split(a, n) {
-    var len = a.length,out = [], i = 0;
-    while (i < len) {
-        var size = Math.ceil((len - i) / n--);
-        out.push(a.slice(i, i += size));
-    }
-    return out;
-}
-%>
+<div class="podcasts row">
 
-<div class="podcasts">
+  <% podcasts.forEach(function(podcast) { %>
 
-  <% split(podcasts, podcasts.length / 4).forEach(function(row) { %>
-
-    <div class="row">
-    <% row.forEach(function(podcast, index) { %>
-
-        <div class="col-xs-4 col-sm-3 podcast">
-          <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
-            <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
-            <h5><%=podcast.soundcloudTrack.title.replace('Monument', '')%></h5>
-          </a>
-        </div>
-
-    <% }) %>
+    <div class="col-xs-6 col-sm-3 podcast">
+      <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
+        <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
+        <h5><%=podcast.soundcloudTrack.title.replace('Monument', '')%></h5>
+      </a>
     </div>
 
   <% }) %>
