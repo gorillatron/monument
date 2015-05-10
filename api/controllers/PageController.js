@@ -15,7 +15,7 @@ module.exports = {
 
 	preview: async function(req, res, next) {
 		var pages = null
-		let page = null
+		let currentPage = null
 		var html = null
 
 		if(!req.query || !req.query.name || !req.query.content) {
@@ -29,17 +29,17 @@ module.exports = {
 
 			pages = await Page.find()
 
-			page = {
+			currentPage = {
 				name: pageName,
 				content: previewMarkdown
 			}
 
-			pages.push(page)
+			pages.push(currentPage)
 
-			html = markdown.toHTML(page.content)
+			html = markdown.toHTML(currentPage.content)
 
 			return res.view('page', {
-				locals: {html, pages, pageName}
+				locals: {html, pages, currentPage}
 			})
 
 		}
@@ -51,7 +51,7 @@ module.exports = {
 	showPage: async function(req, res, next) {
 
 		var pages = null
-		var page = null
+		var currentPage = null
 		var html = null
 
 		var pageName = decodeURIComponent( req.param('page_name') )
@@ -63,17 +63,16 @@ module.exports = {
 		try {
 
 			pages = await Page.find()
-			page = pages.filter((page) => page.name === pageName)[0]
 
-			if(!page) {
+			currentPage = pages.filter((page) => page.name === pageName)[0]
+
+			if(!currentPage) {
 				return res.noDroids()
 			}
 
-			html = markdown.toHTML(page.content)
+			html = markdown.toHTML(currentPage.content)
 
-			return res.view('page', {
-				locals: {html, pages, pageName}
-			})
+			return res.view('page', {html, pages, currentPage})
 
 		}
 		catch(error) {

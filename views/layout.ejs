@@ -24,7 +24,6 @@
   </head>
 
   <body>
-
     <div class="container">
 
       <header>
@@ -38,11 +37,11 @@
 
         <nav id="header-nav">
           <ul class="nav">
-            <li class="<%= pageName == 'podcasts' ? 'active': '' %>">
+            <li class="<%= currentPage.name == 'podcasts' ? 'active': '' %>">
               <a href="/">podcasts</a>
             </li>
             <% pages.forEach(function(page){ %>
-              <li class="<%= pageName == page.name ? 'active': '' %>">
+              <li class="<%= currentPage.id == page.id ? 'active': '' %>">
                 <a href="/static/<%=page.name%>"><%=page.name%></a>
               </li>
             <% })%>
@@ -56,6 +55,8 @@
       </div>
 
     </div>
+
+    <%- partial ('ga.ejs') %>
 
   </body>
 </html>

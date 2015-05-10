@@ -13,12 +13,10 @@ export default {
 
 	index: async function(req, res) {
 
-		var pageName = 'podcasts'
 		var [pages, podcasts] = await Promise.all([ Page.find(), Podcast.find() ])
+		var currentPage = {name: 'podcasts'}
 
-		return res.view('index', {
-			locals: {pageName, pages, podcasts}
-		})
+		return res.view('index', {currentPage, pages, podcasts})
 	}
 
 };

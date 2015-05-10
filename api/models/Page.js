@@ -5,17 +5,16 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
-import Promise from 'bluebird';
-import {markdown} from 'markdown';
-
 module.exports = {
+
+  schema: true,
 
   attributes: {
 
     name: {
       type: 'string',
-      required: true,
-      unique: true
+      unique: true,
+      required: true
     },
 
     content: {
