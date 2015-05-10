@@ -39,6 +39,9 @@ export var routes = {
   '/static/_preview':     'PageController.preview',
   '/static/:page_name':   'PageController.showPage',
 
+  'get /subscribe':       'SubscriptionController.signup',
+  'post /subscribe':      'SubscriptionController.subscribe',
+
   /**
    * Admin routes
    * One page app so all routes point to same html and javascript. Routing

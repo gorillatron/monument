@@ -1,0 +1,22 @@
+<header id="main-header">
+
+  <div class="logo-wrapper">
+    <div class="logo">
+      <h1>monument</h1>
+    </div>
+  </div>
+
+  <nav id="header-nav">
+    <ul class="nav">
+      <li class="<%= currentPage.name == 'podcasts' ? 'active': '' %>">
+        <a href="/">podcasts</a>
+      </li>
+      <% pages.forEach(function(page){ %>
+        <li class="<%= currentPage.id == page.id ? 'active': '' %>">
+          <a href="/static/<%=page.name%>"><%=page.name%></a>
+        </li>
+      <% })%>
+    </ul>
+  </nav>
+
+</header>

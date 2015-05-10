@@ -24,30 +24,15 @@
   </head>
 
   <body>
+
     <div class="container">
 
-      <header id="main-header">
+      <%- partial ('main-header.ejs') %>
 
-        <div class="logo-wrapper">
-          <div class="logo">
-            <h1>monument</h1>
-          </div>
-        </div>
+      <% if(typeof showSubscribeBanner !== 'undefined' && showSubscribeBanner){ %>
+        <%- partial ('subscribebanner.ejs') %>
+      <% } %>
 
-        <nav id="header-nav">
-          <ul class="nav">
-            <li class="<%= currentPage.name == 'podcasts' ? 'active': '' %>">
-              <a href="/">podcasts</a>
-            </li>
-            <% pages.forEach(function(page){ %>
-              <li class="<%= currentPage.id == page.id ? 'active': '' %>">
-                <a href="/static/<%=page.name%>"><%=page.name%></a>
-              </li>
-            <% })%>
-          </ul>
-        </nav>
-
-      </header>
 
       <div id="content-wrapper">
         <%- body %>
@@ -55,7 +40,7 @@
 
     </div>
 
-    <%- partial ('ga.ejs') %>
+    <%- partial ('analytics_script.ejs') %>
 
   </body>
 </html>

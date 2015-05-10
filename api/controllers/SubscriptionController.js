@@ -12,14 +12,17 @@ import ReCaptchaValidationError from '../services/exceptions/ReCaptchaValidation
 
 export default {
 
-	signup: function(req, res) {
+	signup: async function(req, res) {
 		var formdata =  req.session.formdata
 		var validationErrors =  req.session.validationErrors
 
 		delete req.session.validationErrors
 		delete req.session.formdata
 
-		res.view('subscription/index', {formdata, validationErrors, layout: 'subscription/layout'})
+		var [pages, podcasts] = await Promise.all([ Page.find(), Podcast.find() ])
+		var currentPage = {name: 'subscribe'}
+
+		res.view('subscribe', {formdata, validationErrors, pages, currentPage})
 	},
 
 	subscribe: async function(req, res, next) {
@@ -48,8 +51,9 @@ export default {
 
 			sails.log.debug('SubscriptionController.subscribe: User.create', user.name, user.email, user.phoneNumber)
 			req.session.flash = { messages: ['Takk for din påmelding!'] }
+			req.session.signedUpForNewsletter = true
 
-			return res.redirect('subscription')
+			return res.redirect('subscribe')
 
 		}
 		catch(error) {
@@ -61,7 +65,7 @@ export default {
 					error: true,
 					messages: ['invalid captcha']
 				}
-				return res.redirect('subscription')
+				return res.redirect('subscribe')
 			}
 
 			else if(error instanceof WLValidationError) {
@@ -71,7 +75,7 @@ export default {
 					error: true,
 					messages: [error.message]
 				}
-				return res.redirect('subscription')
+				return res.redirect('subscribe')
 			}
 
 			else {

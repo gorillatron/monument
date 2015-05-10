@@ -1,0 +1,43 @@
+
+#subscribeform {
+
+  .flash {
+    color: rgb(103,157,129);
+  }
+
+  .flash.error {
+    color: rgb(202, 59, 119);
+  }
+
+  .clear {
+    clear: both;
+  }
+
+  form {
+    i {
+      display: block;
+      color: rgb(100,100,100);
+      margin: 10px 0px;
+    }
+  }
+
+  .g-recaptcha {
+    .transition(all 0.3s ease);
+    overflow: hidden;
+    &.inactive {
+      opacity: 0.001;
+      max-height: 0px;
+      border-width: 0px;
+      padding: 0px;
+      margin: 0px;
+      .translate(0px, 40px);
+    }
+    &.active {
+      opacity: 1;
+      max-height: 600px;
+      .translate(0px, 0px);
+    }
+  }
+
+
+}

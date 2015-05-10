@@ -1,0 +1,52 @@
+<div class="row banner" id="subscribebanner">
+
+  <div class="col-sm-8 info">
+
+    <section class="front">
+      If you want information about upcomming private and public parties then
+      you should most def subscribe to our newsletter.
+    </section>
+
+    <section class="back">
+      <form class="form-inline" id="subscription-form">
+        <div class="form-group">
+          <label class="sr-only" for="email">Email address</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="phoneNumber">Password</label>
+          <input type="text" class="form-control" id="phoneNumber" placeholder="Mobile number">
+        </div>
+      </form>
+    </section>
+
+  </div>
+
+  <div class="col-sm-4">
+    <a href="/subscribe">
+      <button type="button" name="subscribe" class="btn btn-primary">Subscribe</button>
+    </a>
+    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+  </div>
+
+  <script type="text/javascript">
+    ;(function(){
+
+      var subScribeBanner = document.querySelector('#subscribebanner')
+      var removeButton = document.querySelector('#subscribebanner .glyphicon-remove')
+
+      setTimeout(function(){
+        subScribeBanner.classList.add('pop-animate')
+      }, 3500)
+
+      removeButton.addEventListener('click', function() {
+        subScribeBanner.classList.add('fadeout')
+        setTimeout(function(){
+          subScribeBanner.remove()
+        }, 400)
+      })
+
+    })();
+  </script>
+
+</div>
