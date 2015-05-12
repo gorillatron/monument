@@ -21,6 +21,22 @@
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    <% if(currentPage.name == 'podcasts') { %>
+      
+      <meta property="og:type"        content="music.playlist" />
+      <meta property="og:url"         content="https://soundcloud.com/monument-podcast" />
+      <meta property="og:title"       content="Monument" />
+
+      <% podcasts.forEach(function(podcast) { %>
+
+        <meta property="music:song"     content="<%= podcast.soundcloudTrack.title %>" />
+        <meta property="music:song:url" content="<%= podcast.soundcloudTrack.permalink_url %>" />
+
+      <% }) %>
+
+
+    <% }%>
+
   </head>
 
   <body>
