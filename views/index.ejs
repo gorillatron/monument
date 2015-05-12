@@ -3,10 +3,19 @@
 
   <% podcasts.forEach(function(podcast) { %>
 
-    <div class="col-xs-6 col-sm-3 podcast">
+    <div class="col-xs-6 col-sm-3 podcast" itemscope itemtype="http://schema.org/MusicComposition">
       <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
+
         <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
-        <h5><%=podcast.soundcloudTrack.title.replace('Monument', '')%></h5>
+
+        <h5 itemprop="name">
+          <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
+        </h5>
+
+        <div itemprop="composer" style="display: none;">
+          <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
+        </div>
+
       </a>
     </div>
 
