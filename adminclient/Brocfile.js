@@ -3,9 +3,7 @@
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 var app = new EmberApp({
-  babel: {
-    stage: 1
-  }
+  
 });
 
 // Use `app.import` to add additional libraries to the generated

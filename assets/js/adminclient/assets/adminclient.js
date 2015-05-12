@@ -323,7 +323,7 @@ define('adminclient/application/template', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("nav");
-        dom.setAttribute(el3,"class","collapse navbar-collapse bs-navbar-collapse");
+        dom.setAttribute(el3,"class","navbar");
         var el4 = dom.createTextNode("\n\n      ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("ul");
@@ -5492,7 +5492,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.a51eb001"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.7c68eebb"});
 }
 
 /* jshint ignore:end */
