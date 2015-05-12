@@ -13,7 +13,7 @@
         </h5>
 
         <div itemprop="composer" style="display: none;">
-          <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
+          <%=podcast.soundcloudTrack.title.replace('Monument', '').replace(/\d+\:/, '').trim()%>
         </div>
 
       </a>
