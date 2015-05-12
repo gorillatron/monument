@@ -12,8 +12,20 @@
           <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
         </h5>
 
-        <div itemprop="composer" style="display: none;">
+        <div itemprop="composer" itemprop="creator" itemprop="producer" style="display: none;">
           <%=podcast.soundcloudTrack.title.replace('Monument', '').replace(/\d+\:/, '').trim()%>
+        </div>
+
+        <div itemprop="audience" style="display: none;">
+          ravers, freaks, everyone, old, young, sick and healthy
+        </div>
+
+        <div itemprop="genre" style="display: none;">
+          techno mix
+        </div>
+
+        <div itemprop="label" style="display: none;">
+          Monument
         </div>
 
       </a>
