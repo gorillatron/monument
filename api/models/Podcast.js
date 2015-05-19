@@ -50,7 +50,12 @@ export default {
       type: 'json',
       required: true,
       trackBelongsToSiteOwnersSoundcloudUser: true
-    }
+    },
+
+    // index: {
+    //   type: 'number',
+    //   required: true
+    // }
 
   },
 

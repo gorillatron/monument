@@ -22,9 +22,9 @@ import sessionUserHasRole from '../api/policies/sessionUserHasRole';
 export var policies = {
 
   IndexController: {
-    '*': ['showSubscribeBanner']
+
   },
-  
+
   UserController: {
     '*': ['tokenAuthenticate', sessionUserHasRole('admin')]
   },
@@ -34,7 +34,6 @@ export var policies = {
   },
 
   PageController: {
-    '*':      ['showSubscribeBanner'],
     create:   ['tokenAuthenticate', sessionUserHasRole('admin')],
     edit:     ['tokenAuthenticate', sessionUserHasRole('admin')],
     destroy:  ['tokenAuthenticate', sessionUserHasRole('admin')]

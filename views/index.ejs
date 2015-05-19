@@ -6,7 +6,7 @@
     <div class="col-xs-6 col-sm-3 podcast" itemscope itemtype="http://schema.org/MusicComposition">
       <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
 
-        <img src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
+        <img class="artwork" src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
 
         <h5 itemprop="name">
           <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
@@ -32,5 +32,32 @@
     </div>
 
   <% }) %>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="/js/dependencies/velocity.min.js"></script>
+  <script src="/js/dependencies/velocity.ui.js"></script>
+  <script type="text/javascript">
+
+    $('.podcast').each(function(index) {
+      var $podcast = $(this)
+
+      $podcast.css('opacity', 0.001)
+
+      $podcast.find('img.artwork').one("load", function() {
+
+        $podcast
+          .delay(index * 50)
+          .velocity("transition.expandIn", 380)
+
+      })
+      .each(function() {
+        if(this.complete) {
+          $(this).load()
+        }
+      })
+
+    })
+
+  </script>
 
 </div>
