@@ -1,8 +1,9 @@
 
-<section class="podcast-edit-form">
+<section {{bind-attr class=":page-edit-form isFullScreen:fullscreen"}}>
 
   <div class="field title">
     {{input type="text" value=model.name size="50"}}
+    <span class="glyphicon glyphicon-fullscreen" aria-hidden="true" {{action 'toggleFullscreen'}}></span>
   </div>
 
   <div class="field content">

@@ -12,6 +12,14 @@ export default Ember.Controller.extend({
 
   actions: {
 
+    toggleFullscreen: function() {
+      this.set('isFullScreen', !this.get('isFullScreen'))
+    },
+
+    turnOfFullscreen: function() {
+      this.set('isFullScreen', false)
+    },
+
     save: function() {
       return this.model.save()
         .then(() => {

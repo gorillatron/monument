@@ -1423,6 +1423,14 @@ define('adminclient/page/controller', ['exports', 'ember', 'ember-notify'], func
 
     actions: {
 
+      toggleFullscreen: function toggleFullscreen() {
+        this.set("isFullScreen", !this.get("isFullScreen"));
+      },
+
+      turnOfFullscreen: function turnOfFullscreen() {
+        this.set("isFullScreen", false);
+      },
+
       save: function save() {
         return this.model.save().then(function () {
           return Notify['default'].success("Page saved");
@@ -1529,7 +1537,6 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         var el1 = dom.createElement("section");
-        dom.setAttribute(el1,"class","podcast-edit-form");
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("div");
@@ -1537,6 +1544,12 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment("");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("span");
+        dom.setAttribute(el3,"class","glyphicon glyphicon-fullscreen");
+        dom.setAttribute(el3,"aria-hidden","true");
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
@@ -1628,7 +1641,7 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, inline = hooks.inline, element = hooks.element;
+        var hooks = env.hooks, element = hooks.element, get = hooks.get, inline = hooks.inline;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -1647,19 +1660,42 @@ define('adminclient/page/edit/template', ['exports'], function (exports) {
           fragment = this.build(dom);
         }
         var element0 = dom.childAt(fragment, [1]);
-        var element1 = dom.childAt(element0, [5, 1]);
-        var element2 = dom.childAt(element1, [1, 1]);
-        var element3 = dom.childAt(element1, [3, 1]);
-        var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
+        var element1 = dom.childAt(element0, [1]);
+        var element2 = dom.childAt(element1, [3]);
+        var element3 = dom.childAt(element0, [5, 1]);
+        var element4 = dom.childAt(element3, [1, 1]);
+        var element5 = dom.childAt(element3, [3, 1]);
+        var morph0 = dom.createMorphAt(element1,1,1);
         var morph1 = dom.createMorphAt(dom.childAt(element0, [3]),1,1);
+        element(env, element0, context, "bind-attr", [], {"class": ":page-edit-form isFullScreen:fullscreen"});
         inline(env, morph0, context, "input", [], {"type": "text", "value": get(env, context, "model.name"), "size": "50"});
+        element(env, element2, context, "action", ["toggleFullscreen"], {});
         inline(env, morph1, context, "textarea", [], {"value": get(env, context, "model.content")});
-        element(env, element2, context, "action", ["save", get(env, context, "model")], {});
-        element(env, element3, context, "bind-attr", [], {"href": "previewHref"});
+        element(env, element4, context, "action", ["save", get(env, context, "model")], {});
+        element(env, element5, context, "bind-attr", [], {"href": "previewHref"});
         return fragment;
       }
     };
   }()));
+
+});
+define('adminclient/page/edit/view', ['exports', 'ember'], function (exports, Ember) {
+
+  'use strict';
+
+  exports['default'] = Ember['default'].View.extend({
+
+    didInsertElement: function didInsertElement() {
+      this.$().focus();
+    },
+
+    keyDown: function keyDown(event) {
+      if (event.keyCode == 27) {
+        this.get("controller").send("turnOfFullscreen");
+      }
+    }
+
+  });
 
 });
 define('adminclient/page/model', ['exports', 'ember-data'], function (exports, DS) {
@@ -3010,6 +3046,16 @@ define('adminclient/tests/page/edit/route.jshint', function () {
   });
 
 });
+define('adminclient/tests/page/edit/view.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - page/edit');
+  test('page/edit/view.js should pass jshint', function() { 
+    ok(false, 'page/edit/view.js should pass jshint.\npage/edit/view.js: line 10, col 24, Expected \'===\' and instead saw \'==\'.\n\n1 error'); 
+  });
+
+});
 define('adminclient/tests/page/model.jshint', function () {
 
   'use strict';
@@ -3878,16 +3924,6 @@ define('adminclient/tests/users/index/route.jshint', function () {
   module('JSHint - users/index');
   test('users/index/route.js should pass jshint', function() { 
     ok(false, 'users/index/route.js should pass jshint.\nusers/index/route.js: line 3, col 8, \'fuzzymatch\' is defined but never used.\n\n1 error'); 
-  });
-
-});
-define('adminclient/tests/views/contenteditable.jshint', function () {
-
-  'use strict';
-
-  module('JSHint - views');
-  test('views/contenteditable.js should pass jshint', function() { 
-    ok(false, 'views/contenteditable.js should pass jshint.\nviews/contenteditable.js: line 46, col 21, \'event\' is defined but never used.\n\n1 error'); 
   });
 
 });
@@ -5141,72 +5177,6 @@ define('adminclient/users/template', ['exports'], function (exports) {
   }()));
 
 });
-define('adminclient/views/contenteditable', ['exports', 'ember'], function (exports, Ember) {
-
-	'use strict';
-
-	exports['default'] = Ember['default'].View.extend({
-		tagName: "div",
-		attributeBindings: ["contenteditable"],
-
-		// Variables:
-		editable: false,
-		isUserTyping: false,
-		plaintext: false,
-
-		// Properties:
-		contenteditable: (function () {
-			var editable = this.get("editable");
-
-			return editable ? "true" : undefined;
-		}).property("editable"),
-
-		// Processors:
-		processValue: function processValue() {
-			if (!this.get("isUserTyping") && this.get("value")) {
-				return this.setContent();
-			}
-		},
-
-		// Observers:
-		valueObserver: (function () {
-			Ember['default'].run.once(this, "processValue");
-		}).observes("value", "isUserTyping"),
-
-		// Events:
-		didInsertElement: function didInsertElement() {
-			return this.setContent();
-		},
-
-		focusOut: function focusOut() {
-			return this.set("isUserTyping", false);
-		},
-
-		keyDown: function keyDown(event) {
-			if (!event.metaKey) {
-				return this.set("isUserTyping", true);
-			}
-		},
-
-		keyUp: function keyUp(event) {
-			if (this.get("plaintext")) {
-				return this.set("value", this.$().text());
-			} else {
-				return this.set("value", this.$().html());
-			}
-		},
-
-		//render our own html so there are no metamorphs to get screwed up when the user changes the html
-		render: function render(buffer) {
-			buffer.push(this.get("value"));
-		},
-
-		setContent: function setContent() {
-			return this.$().html(Ember['default'].Handlebars.Utils.escapeExpression(this.get("value")));
-		}
-	});
-
-});
 define('adminclient/views/liquid-child', ['exports', 'ember'], function (exports, Ember) {
 
   'use strict';
@@ -5492,7 +5462,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.7c68eebb"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.86374eaf"});
 }
 
 /* jshint ignore:end */
