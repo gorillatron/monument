@@ -1,6 +1,6 @@
 
 
-<div class="wrapper" id="subscribeform">
+<div class="wrapper" id="event_signup_form">
 
   <script src='https://www.google.com/recaptcha/api.js'></script>
 
@@ -22,7 +22,12 @@
 
   <div class="row">
 
-    <div class="col-sm-6">
+    <div class="col-sm-12">
+
+      <p>
+        Om du vil ha informasjon om fremtidige offentlige samt private arrangementer meld deg på her. Du vil ikke bli spammet.
+      </p>
+
       <form id="eventsignupform" class="form" action="/subscribe" method="post">
 
         <div class="form-group">
@@ -31,7 +36,7 @@
 
         <div class="form-group">
           <i> ~ samt ~ </i>
-          <input type="text" name="phoneNumber" class="form-control" placeholder="Mobilnummer" value="<%= formdata ? formdata.phoneNumber : '' %>">
+          <input type="text" name="phoneNumber" class="form-control" placeholder="Norskt Mobilnummer" value="<%= formdata ? formdata.phoneNumber : '' %>">
           <i> ~ og/eller ~ </i>
           <input type="email" name="email" class="form-control" placeholder="Epost" value="<%= formdata ? formdata.email : '' %>">
         </div>
@@ -40,7 +45,7 @@
           <div class="g-recaptcha <%= formdata ? 'active' : 'inactive' %>" data-sitekey="6LeGFQUTAAAAACGv1lGJhopCrDE4aHojBO3bLvns"></div>
         </div>
 
-        <button type="submit" name="button" class="btn btn-success">Subscribe</button>
+        <button type="submit" name="button" class="btn btn-success btn-lg">meld meg på</button>
       </form>
     </div>
 

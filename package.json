@@ -57,6 +57,8 @@
   "author": "gorillatron",
   "license": "",
   "devDependencies": {
-    "connect-mongo": "^0.8.0"
+    "chai": "^3.0.0",
+    "connect-mongo": "^0.8.0",
+    "mocha": "^2.2.5"
   }
 }

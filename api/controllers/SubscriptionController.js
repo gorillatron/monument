@@ -20,7 +20,7 @@ export default {
 		delete req.session.formdata
 
 		var [pages, podcasts] = await Promise.all([ Page.find(), Podcast.find() ])
-		var currentPage = {name: 'subscribe'}
+		var currentPage = {name: 'events'}
 
 		res.view('subscribe', {formdata, validationErrors, pages, currentPage})
 	},
@@ -53,7 +53,7 @@ export default {
 			req.session.flash = { messages: ['Takk for din påmelding!'] }
 			req.session.signedUpForNewsletter = true
 
-			return res.redirect('subscribe')
+			return res.redirect('events')
 
 		}
 		catch(error) {
@@ -65,7 +65,7 @@ export default {
 					error: true,
 					messages: ['invalid captcha']
 				}
-				return res.redirect('subscribe')
+				return res.redirect('events')
 			}
 
 			else if(error instanceof WLValidationError) {
@@ -75,7 +75,7 @@ export default {
 					error: true,
 					messages: [error.message]
 				}
-				return res.redirect('subscribe')
+				return res.redirect('events')
 			}
 
 			else {

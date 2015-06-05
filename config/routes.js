@@ -39,7 +39,7 @@ export var routes = {
   '/static/_preview':     'PageController.preview',
   '/static/:page_name':   'PageController.showPage',
 
-  'get /subscribe':       'SubscriptionController.signup',
+  'get /events':          'SubscriptionController.signup',
   'post /subscribe':      'SubscriptionController.subscribe',
 
   /**

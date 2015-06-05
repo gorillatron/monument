@@ -8,7 +8,7 @@
 import bcrypt from 'bcrypt';
 import Promise from 'bluebird';
 import WLValidationError from 'sails/node_modules/waterline/lib/waterline/error/WLValidationError';
-import norwegianNumberRegexp from '../regexp/norwegianNumber';
+import norwegianNumberValidator from '../validators/norwegianNumber';
 
 var userRoles = {
   'admin': {},
@@ -21,7 +21,13 @@ export default {
 
   types: {
     norwegianNumber: function(number) {
-      return norwegianNumberRegexp.exec(number) ? true : false
+      let errors = norwegianNumberValidator(number)
+      
+      if(errors) {
+        return false
+      }
+
+      return true
     }
   },
 

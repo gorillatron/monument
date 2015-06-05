@@ -11,6 +11,9 @@
       <li class="<%= currentPage.name == 'podcasts' ? 'active': '' %>">
         <a href="/">podcasts</a>
       </li>
+      <li class="<%= currentPage.name == 'events' ? 'active': '' %>">
+        <a href="/events">events</a>
+      </li>
       <% pages.forEach(function(page){ %>
         <li class="<%= currentPage.id == page.id ? 'active': '' %>">
           <a href="/static/<%=page.name%>"><%=page.name%></a>
