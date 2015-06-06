@@ -1686,7 +1686,7 @@ define('adminclient/page/edit/view', ['exports', 'ember'], function (exports, Em
   exports['default'] = Ember['default'].View.extend({
 
     didInsertElement: function didInsertElement() {
-      this.$().focus();
+      this.$(".title input").focus();
     },
 
     keyDown: function keyDown(event) {

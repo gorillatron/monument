@@ -25,27 +25,28 @@
     <div class="col-sm-12">
 
       <p>
-        Om du vil ha informasjon om fremtidige offentlige samt private arrangementer meld deg på her. Du vil ikke bli spammet.
+        If you want information about upcomming public as well as private parties. Sign up here. <br/>
+        You will not be spammed.
       </p>
 
       <form id="eventsignupform" class="form" action="/subscribe" method="post">
 
         <div class="form-group">
-          <input type="text" name="name" class="form-control" placeholder="Fornavn + Etternavn" required value="<%= formdata ? formdata.name : '' %>">
+          <input type="text" name="name" class="form-control" placeholder="Good name + Surname" required value="<%= formdata ? formdata.name : '' %>">
         </div>
 
         <div class="form-group">
           <i> ~ samt ~ </i>
-          <input type="text" name="phoneNumber" class="form-control" placeholder="Norskt Mobilnummer" value="<%= formdata ? formdata.phoneNumber : '' %>">
+          <input type="text" name="phoneNumber" class="form-control" placeholder="+47 mobile" value="<%= formdata ? formdata.phoneNumber : '' %>">
           <i> ~ og/eller ~ </i>
-          <input type="email" name="email" class="form-control" placeholder="Epost" value="<%= formdata ? formdata.email : '' %>">
+          <input type="email" name="email" class="form-control" placeholder="Email" value="<%= formdata ? formdata.email : '' %>">
         </div>
 
         <div class="form-group">
           <div class="g-recaptcha <%= formdata ? 'active' : 'inactive' %>" data-sitekey="6LeGFQUTAAAAACGv1lGJhopCrDE4aHojBO3bLvns"></div>
         </div>
 
-        <button type="submit" name="button" class="btn btn-success btn-lg">meld meg på</button>
+        <button type="submit" name="button" class="btn btn-success btn-lg">beam me up</button>
       </form>
     </div>
 

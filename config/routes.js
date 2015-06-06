@@ -39,8 +39,8 @@ export var routes = {
   '/static/_preview':     'PageController.preview',
   '/static/:page_name':   'PageController.showPage',
 
-  'get /events':          'SubscriptionController.signup',
-  'post /subscribe':      'SubscriptionController.subscribe',
+  'get /events':          'EventsController.index',
+  'post /subscribe':      'EventsController.subscribe',
 
   /**
    * Admin routes

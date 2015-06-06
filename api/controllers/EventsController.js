@@ -12,7 +12,7 @@ import ReCaptchaValidationError from '../services/exceptions/ReCaptchaValidation
 
 export default {
 
-	signup: async function(req, res) {
+	index: async function(req, res) {
 		var formdata =  req.session.formdata
 		var validationErrors =  req.session.validationErrors
 
@@ -22,7 +22,7 @@ export default {
 		var [pages, podcasts] = await Promise.all([ Page.find(), Podcast.find() ])
 		var currentPage = {name: 'events'}
 
-		res.view('subscribe', {formdata, validationErrors, pages, currentPage})
+		res.view('events', {formdata, validationErrors, pages, currentPage})
 	},
 
 	subscribe: async function(req, res, next) {
@@ -50,7 +50,8 @@ export default {
 			let user = await User.findOrCreateOne(userData)
 
 			sails.log.debug('SubscriptionController.subscribe: User.create', user.name, user.email, user.phoneNumber)
-			req.session.flash = { messages: ['Takk for din påmelding!'] }
+
+			req.session.flash = { messages: ['Thank you for signing up :)'] }
 			req.session.signedUpForNewsletter = true
 
 			return res.redirect('events')

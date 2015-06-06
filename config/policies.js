@@ -29,8 +29,8 @@ export var policies = {
     '*': ['tokenAuthenticate', sessionUserHasRole('admin')]
   },
 
-  SubscriptionController: {
-    'signup': ['flash']
+  EventsController: {
+    'index': ['flash']
   },
 
   PageController: {
