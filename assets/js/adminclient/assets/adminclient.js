@@ -402,9 +402,11 @@ define('adminclient/application/template', ['exports'], function (exports) {
   }()));
 
 });
-define('adminclient/application/view', function () {
+define('adminclient/application/view', ['exports', 'ember'], function (exports, Ember) {
 
 	'use strict';
+
+	exports['default'] = Ember['default'].View.extend({});
 
 });
 define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/authenticators/base'], function (exports, Ember, Base) {
@@ -5477,7 +5479,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.86374eaf"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.65cdf8a6"});
 }
 
 /* jshint ignore:end */
