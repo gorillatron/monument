@@ -30,13 +30,17 @@ export var policies = {
   },
 
   EventsController: {
-    'index': ['flash']
+    index: ['flash']
   },
 
   PageController: {
     create:   ['tokenAuthenticate', sessionUserHasRole('admin')],
     edit:     ['tokenAuthenticate', sessionUserHasRole('admin')],
     destroy:  ['tokenAuthenticate', sessionUserHasRole('admin')]
+  },
+
+  AdminController: {
+    index: ['enforceHTTPS']
   }
 
 };

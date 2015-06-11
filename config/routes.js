@@ -60,6 +60,7 @@ export var routes = {
   '/admin/page':                'AdminController.index',
   '/admin/page/create':         'AdminController.index',
   '/admin/page/:pageid':        'AdminController.index',
+  '/admin/forbidden':           'AdminController.forbidden',
 
   /**
    * Session routes
