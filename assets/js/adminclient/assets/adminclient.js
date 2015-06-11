@@ -402,6 +402,11 @@ define('adminclient/application/template', ['exports'], function (exports) {
   }()));
 
 });
+define('adminclient/application/view', function () {
+
+	'use strict';
+
+});
 define('adminclient/authenticators/custom', ['exports', 'ember', 'simple-auth/authenticators/base'], function (exports, Ember, Base) {
 
   'use strict';
@@ -2896,6 +2901,16 @@ define('adminclient/tests/application/route.jshint', function () {
   module('JSHint - application');
   test('application/route.js should pass jshint', function() { 
     ok(true, 'application/route.js should pass jshint.'); 
+  });
+
+});
+define('adminclient/tests/application/view.jshint', function () {
+
+  'use strict';
+
+  module('JSHint - application');
+  test('application/view.js should pass jshint', function() { 
+    ok(true, 'application/view.js should pass jshint.'); 
   });
 
 });
