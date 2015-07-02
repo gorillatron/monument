@@ -4,11 +4,11 @@ import url from 'url';
 export default function(req, res, next) {
   try {
 
-    let protocol = url.parse(req.baseUrl).protocol
-
-    sails.log.debug('enforceHTTPS', {
-      protocol: protocol
-    })
+    // TODO:
+    // If I use req base protocol it is http no matter what.
+    // Probably because of heroku proxy
+    
+    let protocol = 'https'
 
     if(typeof protocol === 'string' && protocol.match('https')) {
       next()
