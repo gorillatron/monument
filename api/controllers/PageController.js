@@ -9,7 +9,7 @@ import Promise from 'bluebird';
 import {markdown} from 'markdown';
 
 
-module.exports = {
+export default {
 
 	layout: 'layout',
 

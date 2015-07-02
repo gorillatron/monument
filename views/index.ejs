@@ -1,37 +1,74 @@
 
+
 <div class="podcasts row">
+<%
+  !(function(){
 
-  <% podcasts.forEach(function(podcast) { %>
+    function chunk(array, chunkSize) {
+      return [].concat.apply([],
+        array.map(function(elem,i) {
+          return i%chunkSize ? [] : [array.slice(i,i+chunkSize)]
+        })
+      )
+    }
 
-    <div class="col-xs-6 col-sm-3 podcast" itemscope itemtype="http://schema.org/MusicComposition">
-      <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
+    var rows = chunk(podcasts, 4)
 
-        <img class="artwork" src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
+    rows.forEach(function(row) {
+    %>
 
-        <h5 itemprop="name">
-          <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
-        </h5>
+      <div class="row">
 
-        <div itemprop="composer" itemprop="creator" itemprop="producer" style="display: none;">
-          <%=podcast.soundcloudTrack.title.replace('Monument', '').replace(/\d+\:/, '').trim()%>
-        </div>
+        <%
+        row.forEach(function(podcast){
+        %>
 
-        <div itemprop="audience" style="display: none;">
-          ravers, freaks, everyone, old, young, sick and healthy
-        </div>
+          <div class="col-xs-6 col-sm-3 podcast" itemscope itemtype="http://schema.org/MusicComposition">
+            <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
 
-        <div itemprop="genre" style="display: none;">
-          techno mix
-        </div>
+              <img class="artwork" src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
 
-        <div itemprop="label" style="display: none;">
-          Monument
-        </div>
+              <h5 itemprop="name">
+                <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
+              </h5>
 
-      </a>
-    </div>
+              <div itemprop="composer" itemprop="creator" itemprop="producer" style="display: none;">
+                <%=podcast.soundcloudTrack.title.replace('Monument', '').replace(/\d+\:/, '').trim()%>
+              </div>
 
-  <% }) %>
+              <div itemprop="audience" style="display: none;">
+                ravers, freaks, everyone, old, young, sick and healthy
+              </div>
+
+              <div itemprop="genre" style="display: none;">
+                techno mix
+              </div>
+
+              <div itemprop="label" style="display: none;">
+                Monument
+              </div>
+
+            </a>
+          </div>
+
+          <%
+        })
+        %>
+
+      </div>
+      <%
+
+    })
+
+  })();
+%>
+
+
+
+
+
+
+  <script charset="utf-8" src="/js/front/index.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="/js/dependencies/velocity.min.js"></script>

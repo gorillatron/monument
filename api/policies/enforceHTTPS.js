@@ -17,4 +17,4 @@ export default function(req, res, next) {
   catch(error) {
     sails.log.fatal(error)
   }
-};
+}
