@@ -6,6 +6,10 @@ export default function(req, res, next) {
 
     let protocol = url.parse(req.baseUrl).protocol
 
+    sails.log.debug('enforceHTTPS', {
+      protocol: protocol
+    })
+
     if(typeof protocol === 'string' && protocol.match('https')) {
       next()
     }
