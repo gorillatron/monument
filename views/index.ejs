@@ -1,84 +1,78 @@
 
 
 <div class="podcasts row">
-<%
-  !(function(){
 
-    function chunk(array, chunkSize) {
-      return [].concat.apply([],
-        array.map(function(elem,i) {
-          return i%chunkSize ? [] : [array.slice(i,i+chunkSize)]
-        })
-      )
-    }
+  <%
+    !(function(){
 
-    var rows = chunk(podcasts, 4)
+      function chunk(array, chunkSize) {
+        return [].concat.apply([],
+          array.map(function(elem,i) {
+            return i%chunkSize ? [] : [array.slice(i,i+chunkSize)]
+          })
+        )
+      }
 
-    rows.forEach(function(row) {
-    %>
+      var rows = chunk(podcasts, 4)
 
-      <div class="row">
+      rows.forEach(function(row) {
+      %>
 
-        <%
-        row.forEach(function(podcast){
-        %>
-
-          <div class="col-xs-6 col-sm-3 podcast" itemscope itemtype="http://schema.org/MusicComposition">
-            <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
-
-              <img class="artwork" src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
-
-              <h5 itemprop="name">
-                <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
-              </h5>
-
-              <div itemprop="composer" itemprop="creator" itemprop="producer" style="display: none;">
-                <%=podcast.soundcloudTrack.title.replace('Monument', '').replace(/\d+\:/, '').trim()%>
-              </div>
-
-              <div itemprop="audience" style="display: none;">
-                ravers, freaks, everyone, old, young, sick and healthy
-              </div>
-
-              <div itemprop="genre" style="display: none;">
-                techno mix
-              </div>
-
-              <div itemprop="label" style="display: none;">
-                Monument
-              </div>
-
-            </a>
-          </div>
+        <div class="row">
 
           <%
-        })
-        %>
+          row.forEach(function(podcast){
+          %>
 
-      </div>
-      <%
+            <div class="col-xs-6 col-sm-3 podcast" itemscope itemtype="http://schema.org/MusicComposition">
+              <a href="<%= podcast.soundcloudTrack.permalink_url%>" target="_blank">
 
-    })
+                <img class="artwork" src="<%=podcast.soundcloudTrack.artwork_url%>" alt="" />
 
-  })();
-%>
+                <h5 itemprop="name">
+                  <%=podcast.soundcloudTrack.title.replace('Monument', '')%>
+                </h5>
 
+                <div itemprop="composer" itemprop="creator" itemprop="producer" style="display: none;">
+                  <%=podcast.soundcloudTrack.title.replace('Monument', '').replace(/\d+\:/, '').trim()%>
+                </div>
 
+                <div itemprop="audience" style="display: none;">
+                  ravers, freaks, everyone, old, young, sick and healthy
+                </div>
 
+                <div itemprop="genre" style="display: none;">
+                  techno mix
+                </div>
 
+                <div itemprop="label" style="display: none;">
+                  Monument
+                </div>
 
+              </a>
+            </div>
 
-  <script charset="utf-8" src="/js/front/index.js"></script>
+            <%
+          })
+          %>
+
+        </div>
+        <%
+
+      })
+
+    })();
+  %>
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="/js/dependencies/velocity.min.js"></script>
   <script src="/js/dependencies/velocity.ui.js"></script>
+  
   <script type="text/javascript">
 
     $('.podcast').each(function(index) {
       var $podcast = $(this)
-
-      $podcast.css('opacity', 0.001)
 
       $podcast.find('img.artwork').one("load", function() {
 
