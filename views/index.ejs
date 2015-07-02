@@ -68,26 +68,155 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="/js/dependencies/velocity.min.js"></script>
   <script src="/js/dependencies/velocity.ui.js"></script>
-  
+
+  <script src="https://cdn.rawgit.com/caolan/highland/2.5.1/dist/highland.js"></script>
+
   <script type="text/javascript">
 
-    $('.podcast').each(function(index) {
-      var $podcast = $(this)
+    var Y = highland
 
-      $podcast.find('img.artwork').one("load", function() {
+    var $podcasts = (
+      $('.podcast')
+        .toArray()
+        .map(function(podcast){
+          return $(podcast)
+        })
+    )
 
-        $podcast
-          .delay(index * 50)
-          .velocity("transition.expandIn", 380)
+    var Y$podcasts = Y($podcasts)
 
+
+    var loads = Y(function(push, next) {
+
+      var index = 0
+      var count = $podcasts.length
+
+      Y$podcasts.each(function($podcast) {
+
+        $podcast.find('img.artwork').one("load", function() {
+
+          index++
+
+          push(null, {
+            index: index,
+            el: $podcast
+          })
+
+        })
+        .each(function() {
+          if(this.complete) {
+            $(this).load()
+          }
+        })
       })
-      .each(function() {
-        if(this.complete) {
-          $(this).load()
-        }
-      })
-
     })
+
+
+    loads.each(function(podcast) {
+      podcast
+        .el
+        .delay(podcast.index * 33)
+        .velocity("transition.expandIn", 380)
+    })
+
+
+
+    var Ywindowsize = Y(function(push) {
+
+      var win = $(window)
+
+      function size() {
+        return { height: win.height(), width: win.width() }
+      }
+
+      push(null, size())
+
+      win.on('resize', function(){
+        push(null, size())
+      })
+    })
+
+
+    var Ywindowcenter = (
+      Ywindowsize
+        .fork()
+        .map(function(size) {
+          return { x: size.width / 2, y: size.height / 2 }
+        })
+        .latest()
+    )
+
+
+    var Ymouseposition = Y(function(push) {
+
+      var doc = $(document)
+
+      function position(event) {
+        return { x: event.pageX, y: event.pageY }
+      }
+
+      doc.on('mousemove', function(event) {
+        push(null, position(event))
+      })
+    })
+
+
+    var Ycenterdelta = (
+      Ymouseposition
+        .zip(Ywindowcenter)
+        .map(function(poscent) {
+
+          var position = poscent[0]
+          var center = poscent[1]
+
+          var xdelta = center.x - position.x
+          var ydelta = center.y - position.y
+
+
+          return { x: xdelta, y: ydelta }
+        })
+    )
+
+    //
+    // var Yparallax = function(stream) {
+    //   return Y(function(push) {
+    //     stream
+    //       .fork()
+    //       .each(function(delta) {
+    //         push(null, delta)
+    //       })
+    //   })
+    // }
+
+
+    Ycenterdelta
+      .fork()
+      .throttle(20)
+      .through(function(delta) {
+        return Y(function(push, next) {
+          push(null, {
+            run: function() {
+
+              $('#wrapper-1').velocity({
+                translateY: (delta.y / 100) + 'px',
+                translatex: (delta.x / 100) + 'px'
+              }, {
+                duration: 33
+              })
+
+            }
+          })
+        })
+      })
+      .series()
+      .each(function(animation) {
+        console.log(animation)
+        //animation.run()
+      })
+
+    Ycenterdelta.resume()
+
+
 
   </script>
 
