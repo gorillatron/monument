@@ -1,0 +1,167 @@
+<div id="samueli" class="row">
+
+  <style media="screen">
+
+    #samueli {
+      position: relative;
+      margin-bottom: 25px;
+      margin-top: 25px;
+    }
+
+    #samueli .images {
+      width: 100%;
+      box-sizing: border-box;
+      opacity: 0.0001;
+    }
+
+    #samueli .images .image {
+      box-sizing: border-box;
+      vertical-align: top;
+      display: inline-block;
+    }
+
+    #samueli .images .image.first {
+      width: 38%;
+      -webkit-transform: translateX(200%);
+    }
+
+    #samueli .images .image.second {
+      width: 30.5%;
+      margin-left: 8%;
+      -webkit-transform: translateX(400%);
+    }
+
+    #samueli .images .image.last {
+      width: 100%;
+      margin-top: 15px;
+      opacity: 0.0001;
+      -webkit-transform: translateX(300%);
+    }
+
+    #samueli .images .image img {
+      width: 100%;
+    }
+
+  </style>
+
+  <div class="images">
+    <div class="image first">
+      <img src="/images/samueli/1.png" />
+    </div>
+    <div class="image second">
+      <img src="/images/samueli/2.png" />
+    </div>
+    <div class="image last">
+      <img src="/images/samueli/3.png" />
+    </div>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  ;(function(){
+
+    var $samueli = $('#samueli')
+    var $images = $('#samueli .images')
+
+    var $image1 = $('#samueli .images .image.first')
+    var $image2 = $('#samueli .images .image.second')
+    var $image3 = $('#samueli .images .image.last')
+
+    setTimeout(function(){
+
+      $images.velocity({
+        opacity: 1
+      }, {
+        duration: 500
+      })
+
+
+      $image1
+        .velocity({
+          translateX: '-300%'
+        }, {
+          easing: 'easeInSine',
+          duration: 0
+        })
+        .velocity({
+          translateX: 120
+        }, {
+          duration: 750,
+          complete: function() {
+
+            $image1
+              .velocity({
+                translateX: 0
+              }, {
+                easing: 'easeInSine',
+                duration: 150
+              })
+
+          }
+        })
+
+      $image2
+        .delay(0)
+        .velocity({
+          translateX: '500%'
+        }, {
+          duration: 0
+        })
+        .velocity({
+          translateX: -60
+        }, {
+          duration: 1000,
+          complete: function() {
+
+            $image2
+              .velocity({
+                translateX: 0
+              }, {
+                easing: 'easeInSine',
+                duration: 130
+              })
+
+          }
+        })
+
+      $image3
+        .delay(100)
+        .velocity({
+          translateX: '300%'
+        }, {
+          duration: 0
+        })
+        .velocity({
+          translateX: -180,
+          opacity: 1
+        }, {
+          duration: 900,
+          complete: function() {
+
+            $image3
+              .velocity({
+                translateX: 40
+              }, {
+                easing: 'ease-out',
+                duration: 190,
+                complete: function(){
+                  $image3
+                    .velocity({
+                      translateX: 0
+                    }, {
+                      easing: 'ease-in',
+                      duration: 120
+                    })
+                }
+              })
+
+          }
+        })
+
+
+
+    }, 33)
+
+  })();
+</script>
