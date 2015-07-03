@@ -22,20 +22,20 @@
 
     #samueli .images .image.first {
       width: 38%;
-      -webkit-transform: translateX(200%);
+      -webkit-transform: translateX(-100%);
     }
 
     #samueli .images .image.second {
       width: 30.5%;
       margin-left: 8%;
-      -webkit-transform: translateX(400%);
+      -webkit-transform: translateX(100%);
     }
 
     #samueli .images .image.last {
       width: 100%;
       margin-top: 15px;
       opacity: 0.0001;
-      -webkit-transform: translateX(300%);
+      -webkit-transform: translateX(100%);
     }
 
     #samueli .images .image img {
@@ -79,7 +79,7 @@
 
       $image1
         .velocity({
-          translateX: '-300%'
+          translateX: '-100%'
         }, {
           easing: 'easeInSine',
           duration: 0
@@ -87,7 +87,7 @@
         .velocity({
           translateX: 120
         }, {
-          duration: 750,
+          duration: 500,
           complete: function() {
 
             $image1
@@ -104,14 +104,14 @@
       $image2
         .delay(0)
         .velocity({
-          translateX: '500%'
+          translateX: '200%'
         }, {
           duration: 0
         })
         .velocity({
           translateX: -60
         }, {
-          duration: 1000,
+          duration: 700,
           complete: function() {
 
             $image2
@@ -128,7 +128,7 @@
       $image3
         .delay(100)
         .velocity({
-          translateX: '300%'
+          translateX: '100%'
         }, {
           duration: 0
         })
@@ -136,7 +136,7 @@
           translateX: -180,
           opacity: 1
         }, {
-          duration: 900,
+          duration: 700,
           complete: function() {
 
             $image3
