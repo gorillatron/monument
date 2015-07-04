@@ -15,6 +15,7 @@
     }
 
     #samueli .images .image {
+      position: relative;
       box-sizing: border-box;
       vertical-align: top;
       display: inline-block;
@@ -23,12 +24,14 @@
 
     #samueli .images .image.first {
       width: 38%;
+      z-index: 2;
       -webkit-transform: translateX(-40%);
     }
 
     #samueli .images .image.second {
       width: 30.5%;
       margin-left: 8%;
+      z-index: 1;
       -webkit-transform: translateX(-60%);
     }
 
@@ -36,6 +39,7 @@
       width: 100%;
       margin-top: 15px;
       opacity: 0.0001;
+      z-index: 1;
       -webkit-transform: translateX(40%);
     }
 
@@ -86,7 +90,7 @@
           duration: 0
         })
         .velocity({
-          translateX: 120,
+          translateX: 50,
           opacity: 1
         }, {
           duration: 500,
@@ -106,7 +110,7 @@
       $image2
         .delay(0)
         .velocity({
-          translateX: '-60%'
+          translateX: '60%'
         }, {
           duration: 0
         })
@@ -119,10 +123,19 @@
 
             $image2
               .velocity({
-                translateX: 0
+                translateX: -20
               }, {
                 easing: 'easeInSine',
-                duration: 130
+                duration: 60,
+                complete: function(){
+                  $image2
+                    .velocity({
+                      translateX: 0
+                    }, {
+                      easing: 'easeInSine',
+                      duration: 60
+                    })
+                }
               })
 
           }
