@@ -18,24 +18,25 @@
       box-sizing: border-box;
       vertical-align: top;
       display: inline-block;
+      opacity: 0.001;
     }
 
     #samueli .images .image.first {
       width: 38%;
-      -webkit-transform: translateX(-100%);
+      -webkit-transform: translateX(-40%);
     }
 
     #samueli .images .image.second {
       width: 30.5%;
       margin-left: 8%;
-      -webkit-transform: translateX(100%);
+      -webkit-transform: translateX(-60%);
     }
 
     #samueli .images .image.last {
       width: 100%;
       margin-top: 15px;
       opacity: 0.0001;
-      -webkit-transform: translateX(100%);
+      -webkit-transform: translateX(40%);
     }
 
     #samueli .images .image img {
@@ -79,13 +80,14 @@
 
       $image1
         .velocity({
-          translateX: '-100%'
+          translateX: '-40%'
         }, {
           easing: 'easeInSine',
           duration: 0
         })
         .velocity({
-          translateX: 120
+          translateX: 120,
+          opacity: 1
         }, {
           duration: 500,
           complete: function() {
@@ -104,12 +106,13 @@
       $image2
         .delay(0)
         .velocity({
-          translateX: '200%'
+          translateX: '-60%'
         }, {
           duration: 0
         })
         .velocity({
-          translateX: -60
+          translateX: -60,
+          opacity: 1
         }, {
           duration: 700,
           complete: function() {
@@ -128,20 +131,20 @@
       $image3
         .delay(100)
         .velocity({
-          translateX: '100%'
+          translateX: '40%'
         }, {
           duration: 0
         })
         .velocity({
-          translateX: -180,
-          opacity: 1
+          translateX: -180
         }, {
           duration: 700,
           complete: function() {
 
             $image3
               .velocity({
-                translateX: 40
+                translateX: 40,
+                opacity: 1
               }, {
                 easing: 'ease-out',
                 duration: 190,
