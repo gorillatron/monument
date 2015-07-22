@@ -7,7 +7,9 @@ export default function(req, res, next) {
     // TODO:
     // If I use req base protocol it is http no matter what.
     // Probably because of heroku proxy
-    
+
+    return next()
+
     let protocol = 'https'
 
     if(typeof protocol === 'string' && protocol.match('https')) {
