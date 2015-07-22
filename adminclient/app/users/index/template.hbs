@@ -9,6 +9,15 @@
 
   </header>
 
+  {{#if controller.generatedCsv}}
+    <div style="margin: 15px 0px; border: 1px solid rgb(200,200,200); padding: 15px;">
+      {{controller.generatedCsv}}
+    </div>
+  {{/if}}
+
+  <button {{action 'generateCsv' 'phoneNumber'}}>CSV: telefon</button>
+  <button {{action 'generateCsv' 'email'}}>CSV: epost</button>
+
   <div class="col-sm-12 row table-wrapper">
     <section class="col-sm-12 data-table">
 

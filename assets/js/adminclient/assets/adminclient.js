@@ -4755,14 +4755,11 @@ define('adminclient/users/index/controller', ['exports', 'ember'], function (exp
       },
 
       generateCsv: function generateCsv(attr) {
-        clearTimeout(this._buttonDisplayTimer);
-        this.set("displayButtons", false);
-        var csv = this.map(function (userController) {
+        this.set("generatedCsv", this.map(function (userController) {
           return userController.model.get(attr);
         }).filter(function (val) {
           return val && val.length > 0;
-        }).join(", ");
-        this.set("generatedCsv", csv);
+        }).join(", "));
       },
 
       clearCsv: function clearCsv() {
@@ -4795,6 +4792,56 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
 
   exports['default'] = Ember.HTMLBars.template((function() {
     var child0 = (function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.11.1",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("    ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"style","margin: 15px 0px; border: 1px solid rgb(200,200,200); padding: 15px;");
+          var el2 = dom.createTextNode("\n      ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [1]),1,1);
+          content(env, morph0, context, "controller.generatedCsv");
+          return fragment;
+        }
+      };
+    }());
+    var child1 = (function() {
       var child0 = (function() {
         return {
           isHTMLBars: true,
@@ -4941,7 +4988,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         }
       };
     }());
-    var child1 = (function() {
+    var child2 = (function() {
       return {
         isHTMLBars: true,
         revision: "Ember@1.11.1",
@@ -5013,6 +5060,22 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n\n");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createComment("");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        var el3 = dom.createTextNode("CSV: telefon");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("button");
+        var el3 = dom.createTextNode("CSV: epost");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
@@ -5117,7 +5180,7 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
       },
       render: function render(context, env, contextualElement) {
         var dom = env.dom;
-        var hooks = env.hooks, get = hooks.get, block = hooks.block;
+        var hooks = env.hooks, get = hooks.get, block = hooks.block, element = hooks.element;
         dom.detectNamespace(contextualElement);
         var fragment;
         if (env.useFragmentCache && dom.canClone) {
@@ -5135,11 +5198,18 @@ define('adminclient/users/index/template', ['exports'], function (exports) {
         } else {
           fragment = this.build(dom);
         }
-        var element2 = dom.childAt(fragment, [1, 3, 1, 1, 3]);
-        var morph0 = dom.createMorphAt(element2,1,1);
-        var morph1 = dom.createMorphAt(dom.childAt(element2, [3, 1]),1,1);
-        block(env, morph0, context, "each", [get(env, context, "controller")], {"keyword": "user"}, child0, null);
-        block(env, morph1, context, "link-to", ["user.create"], {}, child1, null);
+        var element2 = dom.childAt(fragment, [1]);
+        var element3 = dom.childAt(element2, [5]);
+        var element4 = dom.childAt(element2, [7]);
+        var element5 = dom.childAt(element2, [9, 1, 1, 3]);
+        var morph0 = dom.createMorphAt(element2,3,3);
+        var morph1 = dom.createMorphAt(element5,1,1);
+        var morph2 = dom.createMorphAt(dom.childAt(element5, [3, 1]),1,1);
+        block(env, morph0, context, "if", [get(env, context, "controller.generatedCsv")], {}, child0, null);
+        element(env, element3, context, "action", ["generateCsv", "phoneNumber"], {});
+        element(env, element4, context, "action", ["generateCsv", "email"], {});
+        block(env, morph1, context, "each", [get(env, context, "controller")], {"keyword": "user"}, child1, null);
+        block(env, morph2, context, "link-to", ["user.create"], {}, child2, null);
         return fragment;
       }
     };
@@ -5479,7 +5549,7 @@ catch(err) {
 if (runningTests) {
   require("adminclient/tests/test-helper");
 } else {
-  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.65cdf8a6"});
+  require("adminclient/app")["default"].create({"name":"adminclient","version":"0.0.0.a4d8f64a"});
 }
 
 /* jshint ignore:end */

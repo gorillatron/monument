@@ -27,13 +27,12 @@ export default Ember.ArrayController.extend({
     },
 
     generateCsv: function(attr) {
-      clearTimeout(this._buttonDisplayTimer)
-      this.set('displayButtons', false)
-      var csv = this
-        .map((userController) => userController.model.get(attr))
-        .filter((val) => val && val.length > 0)
-        .join(', ')
-      this.set('generatedCsv', csv)
+      this.set('generatedCsv', (
+        this
+          .map((userController) => userController.model.get(attr))
+          .filter((val) => val && val.length > 0)
+          .join(', ')
+      ))
     },
 
     clearCsv: function() {
