@@ -35,8 +35,8 @@ export var routes = {
   /**
    * Site routes
   */
-  '/':                    'IndexController.index',
-  '/podcasts':             'IndexController.podcasts',
+  '/':                    'IndexController.podcasts',
+  '/podcasts':            'IndexController.podcasts',
   '/static/_preview':     'PageController.preview',
   '/static/:page_name':   'PageController.showPage',
 

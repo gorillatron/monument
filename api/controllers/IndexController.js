@@ -11,10 +11,6 @@ export default {
 
 	layout: 'layout',
 
-	index: async function(req, res) {
-		return res.redirect('events')
-	},
-
 	podcasts: async function(req, res) {
 		var [pages, podcasts] = await Promise.all([ Page.find(), Podcast.find() ])
 		var currentPage = {name: 'podcasts'}
