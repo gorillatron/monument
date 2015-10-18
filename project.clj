@@ -15,6 +15,9 @@
                  [ring/ring-devel "1.4.0"]
                  [ring/ring-core "1.4.0"]
                  [reloaded.repl "0.1.0"]
+                 [environ "1.0.1"]
+                 [hiccup "1.0.5"]
+                 [com.novemberain/monger "3.0.0-rc2"]
                  [javax.servlet/servlet-api "2.5"]]
 
   :main ^:skip-aot monument.core

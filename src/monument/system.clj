@@ -1,8 +1,16 @@
 (ns monument.system
   (:require [com.stuartsierra.component :as component]
-            [monument.server :as server]))
+            [monument.server :as server]
+            [monument.database :as database]
+            [environ.core :refer [env]]))
+
+
+(def port (Integer. (or (env :port) 8080)))
 
 
 (defn create-system []
   (component/system-map
-    :server (server/create-server)))
+    :database (database/create-database)
+    :server (component/using
+              (server/create-server port)
+              [:database])))
