@@ -7,22 +7,33 @@
             [ring.middleware.reload :as reload]
             [monument.middleware :as middleware]
             [monger.collection :as mc]
-            [hiccup.page :refer [html5]]
+            [hiccup.core :refer [html]]
+            [monument.template.layout :as layout-template]
+            [monument.template.podcasts :as podcasts-template]
             [monger.conversion :refer [from-db-object]]))
 
 
 (defn index-handler [req]
   (let [podcasts (mc/find-maps (:db req) "podcast")
-        body (html5
-               [:ul (for [podcast podcasts]
-                      [:li (:title (:soundcloudTrack podcast))])])]
+        pages (mc/find-maps (:db req) "page")]
     {:status 200
-     :body body}))
+     :body (layout-template/render
+             {:pages pages
+              :body (podcasts-template/render {:podcasts podcasts})})}))
+
+
+(defn page-handler [req]
+  (let [page-name (:page (:params req))
+        page (mc/find-maps (:db req) "page" {:name page-name})]
+    (println page)
+    {:status 200
+     :body "Page"}))
 
 
 (defroutes all-routes
            (route/resources "/")
            (GET "/" [] index-handler)
+           (GET "/static/:page" [] page-handler)
            (route/not-found "<h1>Page not found</h1>"))
 
 
