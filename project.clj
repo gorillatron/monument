@@ -17,12 +17,18 @@
                  [reloaded.repl "0.1.0"]
                  [environ "1.0.1"]
                  [hiccup "1.0.5"]
+                 [markdown-clj "0.9.75"]
                  [com.novemberain/monger "3.0.0-rc2"]
                  [javax.servlet/servlet-api "2.5"]]
 
   :main ^:skip-aot monument.core
 
   :target-path "target/%s"
+
+  :plugins [[lein-less "1.7.5"]]
+
+  :less {:source-paths ["src/monument/less/indexfiles"]
+         :target-path "resources/public/css"}
 
   :profiles {:uberjar {:aot :all}
              :dev {:plugins []

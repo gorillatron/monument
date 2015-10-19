@@ -1,0 +1,37 @@
+
+@import 'animations/pop.less';
+
+.banner {
+  margin-bottom: 25px;
+
+  &.fadeout {
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  .glyphicon-remove {
+    color: rgb(140,140,140);
+    margin-left: 15px;
+    cursor: pointer;
+  }
+
+  .info {
+    display: block;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
+    margin-bottom: 15px;
+
+    &.flipped {
+      transform: rotateX( 180deg );
+    }
+
+    section {
+      backface-visibility: hidden;
+      &.back {
+        transform: rotateX( 180deg );
+      }
+    }
+  }
+
+}

@@ -4,12 +4,14 @@
             [compojure.core :refer [GET POST defroutes]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
+            [ring.util.response :refer [charset]]
             [ring.middleware.reload :as reload]
             [monument.middleware :as middleware]
             [monger.collection :as mc]
             [hiccup.core :refer [html]]
             [monument.template.layout :as layout-template]
             [monument.template.podcasts :as podcasts-template]
+            [monument.template.page :as page-template]
             [monger.conversion :refer [from-db-object]]))
 
 
@@ -17,17 +19,21 @@
   (let [podcasts (mc/find-maps (:db req) "podcast")
         pages (mc/find-maps (:db req) "page")]
     {:status 200
-     :body (layout-template/render
-             {:pages pages
-              :body (podcasts-template/render {:podcasts podcasts})})}))
+     :body   (layout-template/render
+               (charset
+                 {:pages pages
+                  :body  (podcasts-template/render {:podcasts podcasts})} "UTF-8"))}))
 
 
 (defn page-handler [req]
   (let [page-name (:page (:params req))
-        page (mc/find-maps (:db req) "page" {:name page-name})]
-    (println page)
+        pages (mc/find-maps (:db req) "page")
+        page (mc/find-one-as-map (:db req) "page" {:name page-name})]
     {:status 200
-     :body "Page"}))
+     :body   (layout-template/render
+               (charset
+                 {:pages pages
+                  :body  (page-template/render {:page page})} "UTF-8"))}))
 
 
 (defroutes all-routes

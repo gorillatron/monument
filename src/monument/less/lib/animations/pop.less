@@ -1,0 +1,22 @@
+
+@-webkit-keyframes pop {
+  0% {
+    -webkit-transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+
+.animate-pop-mixin(@duration: 0.33s; @easing: ease) {
+  -webkit-animation-name: pop;
+  -webkit-animation-duration: @duration;
+  -webkit-animation-easing: @easing;
+}
+
+.pop-animate {
+  .animate-pop-mixin();
+}

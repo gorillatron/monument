@@ -1,0 +1,87 @@
+
+#event_signup_form {
+
+  &.show {
+    display: block;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    display: block;
+    border: 1px solid #646464;
+    border-radius: 2px;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    background-color: white;
+    padding: 6px 15px;
+    font-family: 'Alegreya Sans SC';
+    font-size: 14px;
+    width: 200px;
+  }
+
+  input[name="phoneNumber"] {
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+
+  input[name="name"] {
+    margin-bottom: 15px;
+  }
+
+  input[name="email"] {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  i {
+    color: #787878;
+  }
+
+  .button {
+    display: inline-block;
+    margin: 15px 0px;
+    background-color: white;
+    font-size: 16px;
+  }
+
+  .flash {
+    color: rgb(103,157,129);
+  }
+
+  .flash.error {
+    color: rgb(202, 59, 119);
+  }
+
+  .clear {
+    clear: both;
+  }
+
+  form {
+    i {
+      display: block;
+      color: rgb(100,100,100);
+      margin: 10px 0px;
+    }
+  }
+
+  .g-recaptcha {
+    .transition(all 0.3s ease);
+    overflow: hidden;
+    &.inactive {
+      opacity: 0.001;
+      max-height: 0px;
+      border-width: 0px;
+      padding: 0px;
+      margin: 0px;
+      .translate(0px, 40px);
+    }
+    &.active {
+      opacity: 1;
+      max-height: 600px;
+      .translate(0px, 0px);
+    }
+  }
+
+
+}

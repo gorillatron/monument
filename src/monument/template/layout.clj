@@ -4,7 +4,9 @@
 
 (defn render [{body :body pages :pages}]
   (html5
-    [:head]
+    [:head
+     [:link {:rel "stylesheet" :href "/css/index.css"}]]
     [:body
-     (header/render {:pages pages})
-     [:section#content-wrapper body]]))
+     [:div#wrapper-1.container
+      (header/render {:pages pages})
+      [:div#content-wrapper body]]]))
