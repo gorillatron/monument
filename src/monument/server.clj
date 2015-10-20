@@ -21,7 +21,8 @@
     {:status 200
      :body   (layout-template/render
                (charset
-                 {:pages pages
+                 {:active-page "podcasts"
+                  :pages pages
                   :body  (podcasts-template/render {:podcasts podcasts})} "UTF-8"))}))
 
 
@@ -32,7 +33,8 @@
     {:status 200
      :body   (layout-template/render
                (charset
-                 {:pages pages
+                 {:active-page page-name
+                  :pages pages
                   :body  (page-template/render {:page page})} "UTF-8"))}))
 
 

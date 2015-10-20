@@ -8,6 +8,14 @@
 
       box-sizing: border-box;
       opacity: 0.0001;
+      -webkit-transform: scale(0.2);
+
+      -webkit-transition: all 0.2s;
+
+      &.show {
+        opacity: 1;
+        -webkit-transform: scale(1);
+      }
 
       a {
         text-decoration: none;

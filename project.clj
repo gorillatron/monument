@@ -8,6 +8,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/clojurescript "1.7.145"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [com.stuartsierra/component "0.3.0"]
                  [aleph "0.4.0"]
@@ -25,10 +26,19 @@
 
   :target-path "target/%s"
 
-  :plugins [[lein-less "1.7.5"]]
+  :plugins [[lein-less "1.7.5"]
+            [lein-cljsbuild "1.1.0"]]
 
   :less {:source-paths ["src/monument/less/indexfiles"]
          :target-path "resources/public/css"}
+
+  :cljsbuild {:builds [{:source-paths ["src-cljs/monument/pages/podcasts"]
+                        :compiler {:output-to "resources/public/js/podcasts-page.js"
+                                   :output-dir "resources/public/js/out"
+                                   :main "monument.pages.podcasts.core"
+                                   :optimizations :none
+                                   :asset-path "/js/out"
+                                   :recompile-dependents true}}]}
 
   :profiles {:uberjar {:aot :all}
              :dev {:plugins []
