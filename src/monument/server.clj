@@ -48,11 +48,13 @@
                   :pages pages
                   :body  (page-template/render {:page page})} "UTF-8"))}))
 
+(defn subscribe-handler [req])
 
 (defroutes all-routes
            (route/resources "/")
            (GET "/" [] index-handler)
            (GET "/events" [] events-handler)
+           (POST "/subscribe" [] subscribe-handler)
            (GET "/static/:page" [] page-handler)
            (route/not-found "<h1>Page not found</h1>"))
 

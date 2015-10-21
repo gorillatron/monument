@@ -26,9 +26,9 @@
          [:input.form-control {:type "email" :name "email" :placeholder "email" :value ""}]]
 
         [:div.form-group
-         [:div.g-recaptcha {:data-sitekey "6LeGFQUTAAAAACGv1lGJhopCrDE4aHojBO3bLvns"}]]
+         [:div.g-recaptcha {:data-sitekey "6LeGFQUTAAAAACGv1lGJhopCrDE4aHojBO3bLvns" :class "inactive"}]]
 
-        [:button.btn.btn-success.btn-lg {:name "button" :type "submit"}]]]]]]
+        [:button.btn.btn-success.btn-lg {:name "button" :type "submit"} "BEAM ME UP"]]]]]]
 
    [:script "\n    Array.prototype.slice.call(document.querySelectorAll('input')).forEach(function(input){\n      input.addEventListener('keyup', function(event) {\n        document.querySelector('.g-recaptcha').setAttribute('class', 'g-recaptcha active')\n      })\n    })\n\n    setTimeout(function() {\n      document.querySelector('#mainwrapper').setAttribute('class', 'wrapper show')\n    }, 180)"]])
 

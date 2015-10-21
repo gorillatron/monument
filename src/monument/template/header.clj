@@ -11,8 +11,10 @@
                    "active" "")}
       [:a {:href "/"}
        "podcasts"]]
-     [:li
-      [:a {:href "/events"} "events"]]
+     [:li {:class (if (= active-page "events")
+                    "active" "")}
+      [:a {:href "/events"}
+       "events"]]
      (for [page pages]
        [:li {:class (if (= active-page (:name page))
                      "active" "")}
