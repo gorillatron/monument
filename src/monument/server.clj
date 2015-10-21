@@ -11,6 +11,7 @@
             [hiccup.core :refer [html]]
             [monument.template.layout :as layout-template]
             [monument.template.podcasts :as podcasts-template]
+            [monument.template.events :as events-template]
             [monument.template.page :as page-template]
             [monger.conversion :refer [from-db-object]]))
 
@@ -24,6 +25,16 @@
                  {:active-page "podcasts"
                   :pages pages
                   :body  (podcasts-template/render {:podcasts podcasts})} "UTF-8"))}))
+
+
+(defn events-handler [req]
+  (let [pages (mc/find-maps (:db req) "page")]
+    {:status 200
+     :body   (layout-template/render
+               (charset
+                 {:active-page "events"
+                  :pages pages
+                  :body  (events-template/render)} "UTF-8"))}))
 
 
 (defn page-handler [req]
@@ -41,6 +52,7 @@
 (defroutes all-routes
            (route/resources "/")
            (GET "/" [] index-handler)
+           (GET "/events" [] events-handler)
            (GET "/static/:page" [] page-handler)
            (route/not-found "<h1>Page not found</h1>"))
 
