@@ -2,14 +2,16 @@
   (:require [aleph.http :as http]
             [clojure.data.json :as json]
             [byte-streams :as bs]
+            [environ.core :refer [env]]
             [ring.util.codec :refer [form-encode]]))
 
 
 (defn make-request [recaptcha-response]
   (let [payload (form-encode {:response recaptcha-response
-                              :secret   "wat"})]
+                              :secret   (:recaptcha-secret env)})]
     (-> @(http/post "https://www.google.com/recaptcha/api/siteverify"
-                    {:headers {:accept "application/json"}
+                    {:headers {:accept "application/json"
+                               :content-type "application/x-www-form-urlencoded"}
                      :body payload})
         :body
         bs/to-string
