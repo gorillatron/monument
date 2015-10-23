@@ -2,11 +2,11 @@
   (:require [com.stuartsierra.component :as component]
             [aleph.http :as http]
             [compojure.core :refer [GET POST defroutes]]
-            [compojure.handler :refer [site]]
             [compojure.route :as route]
             [ring.util.response :as response]
             [ring.middleware.reload :as reload]
             [ring.middleware.content-type :as content-type-response]
+            [ring.middleware.defaults :refer [wrap-defaults]]
             [ring.util.codec :refer [form-encode]]
             [monument.middleware :as middleware]
             [monger.collection :as mc]
@@ -16,6 +16,7 @@
             [monument.template.podcasts :as podcasts-template]
             [monument.template.events :as events-template]
             [monument.template.page :as page-template]
+            [monument.recaptcha :as recaptcha]
             [monger.conversion :refer [from-db-object]]
             [clojure.core.async :as a]))
 
@@ -45,7 +46,6 @@
 (defn events-handler [req]
   (let [pages (mc/find-maps (:db req) "page")
         formdata (get-in req [:params])]
-    (println formdata)
     {:status 200
      :body   (layout-template/render
                {:active-page "events"
@@ -56,10 +56,11 @@
 
 (defn subscribe-handler [req]
   (let [formdata (:params req)]
+    (println (recaptcha/validate-response (:g-recaptcha-response formdata)))
     (response/redirect (str "/events?" (form-encode formdata)))))
 
 
-(defroutes all-routes
+(defroutes site-routes
            (route/resources "/")
            (GET "/" [] index-handler)
            (GET "/events" [] events-handler)
@@ -69,7 +70,10 @@
 
 
 (defn app [db]
-  (-> (site #'all-routes)
+  (-> (wrap-defaults #'site-routes {:params {:keywordize true
+                                             :nested true
+                                             :multipart true
+                                             :urlencoded true}})
       (#(if (not= "production" (:ENV env))
          (reload/wrap-reload %)
          %))
