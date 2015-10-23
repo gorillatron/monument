@@ -6,15 +6,18 @@
             [compojure.route :as route]
             [ring.util.response :as response]
             [ring.middleware.reload :as reload]
+            [ring.middleware.content-type :as content-type-response]
             [ring.util.codec :refer [form-encode]]
             [monument.middleware :as middleware]
             [monger.collection :as mc]
             [hiccup.core :refer [html]]
+            [environ.core :refer [env]]
             [monument.template.layout :as layout-template]
             [monument.template.podcasts :as podcasts-template]
             [monument.template.events :as events-template]
             [monument.template.page :as page-template]
-            [monger.conversion :refer [from-db-object]]))
+            [monger.conversion :refer [from-db-object]]
+            [clojure.core.async :as a]))
 
 
 (defn index-handler [req]
@@ -31,6 +34,7 @@
   (let [page-name (:page (:params req))
         pages (mc/find-maps (:db req) "page")
         page (mc/find-one-as-map (:db req) "page" {:name page-name})]
+    (println page)
     {:status 200
      :body   (layout-template/render
                {:active-page page-name
@@ -51,8 +55,7 @@
 
 
 (defn subscribe-handler [req]
-  (let [pages (mc/find-maps (:db req) "page")
-        formdata (:params req)]
+  (let [formdata (:params req)]
     (response/redirect (str "/events?" (form-encode formdata)))))
 
 
@@ -67,7 +70,9 @@
 
 (defn app [db]
   (-> (site #'all-routes)
-      (reload/wrap-reload)
+      (#(if (not= "production" (:ENV env))
+         (reload/wrap-reload %)
+         %))
       (middleware/provide {:db db})))
 
 

@@ -20,6 +20,7 @@
                  [hiccup "1.0.5"]
                  [markdown-clj "0.9.75"]
                  [com.novemberain/monger "3.0.0-rc2"]
+                 [prismatic/schema "1.0.1"]
                  [javax.servlet/servlet-api "2.5"]]
 
   :main ^:skip-aot monument.core

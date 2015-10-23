@@ -2,14 +2,6 @@
   (:require [hiccup.form :as form]))
 
 
-(defn- recaptcha-class [{:keys [name phoneNumber email]}]
- (if (or (not-empty name)
-         (not-empty phoneNumber)
-         (not-empty email))
-  "active"
-  "inactive"))
-
-
 (defn render [{{:keys [name phoneNumber email g-recaptcha-response] :as formdata} :formdata}]
   [:div#event_signup_form.wrapper
 
@@ -18,6 +10,11 @@
    [:div.row
 
     [:div.col-sm-12
+
+     [:p
+      "If you want information about upcomming public as well as private parties. Sign up here."
+      [:br]
+      "You will not be spammed."]
 
       [:div.form-group
 
@@ -33,12 +30,12 @@
          [:input.form-control {:type "email" :name "email" :placeholder "email" :value email}]]
 
         [:div.form-group
+         ;; If we dont allready have a recaptche response then show the recaptcha form.
+         ;; If we have a response include it as a hidden field.
          (if (empty? g-recaptcha-response)
-               [:div.g-recaptcha {:data-sitekey "6LeGFQUTAAAAACGv1lGJhopCrDE4aHojBO3bLvns" :class (recaptcha-class formdata)}]
+               [:div.g-recaptcha {:data-sitekey "6LeGFQUTAAAAACGv1lGJhopCrDE4aHojBO3bLvns"}]
                [:input {:type "hidden" :name "g-recaptcha-response" :value g-recaptcha-response}])]
 
-        [:button.btn.btn-success.btn-lg {:name "button" :type "submit"} "BEAM ME UP"]]]]]
-
-   [:script "\n    Array.prototype.slice.call(document.querySelectorAll('input')).forEach(function(input){\n      input.addEventListener('keyup', function(event) {\n        document.querySelector('.g-recaptcha').setAttribute('class', 'g-recaptcha active')\n      })\n    })\n\n    setTimeout(function() {\n      document.querySelector('#mainwrapper').setAttribute('class', 'wrapper show')\n    }, 180)"]])
+        [:button.btn.btn-success.btn-lg {:name "button" :type "submit"} "BEAM ME UP"]]]]]])
 
 
