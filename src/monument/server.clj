@@ -4,8 +4,9 @@
             [compojure.core :refer [GET POST defroutes]]
             [compojure.handler :refer [site]]
             [compojure.route :as route]
-            [ring.util.response :refer [charset]]
+            [ring.util.response :as response]
             [ring.middleware.reload :as reload]
+            [ring.util.codec :refer [form-encode]]
             [monument.middleware :as middleware]
             [monger.collection :as mc]
             [hiccup.core :refer [html]]
@@ -21,20 +22,9 @@
         pages (mc/find-maps (:db req) "page")]
     {:status 200
      :body   (layout-template/render
-               (charset
-                 {:active-page "podcasts"
-                  :pages pages
-                  :body  (podcasts-template/render {:podcasts podcasts})} "UTF-8"))}))
-
-
-(defn events-handler [req]
-  (let [pages (mc/find-maps (:db req) "page")]
-    {:status 200
-     :body   (layout-template/render
-               (charset
-                 {:active-page "events"
-                  :pages pages
-                  :body  (events-template/render)} "UTF-8"))}))
+               {:active-page "podcasts"
+                :pages pages
+                :body  (podcasts-template/render {:podcasts podcasts})})}))
 
 
 (defn page-handler [req]
@@ -43,12 +33,28 @@
         page (mc/find-one-as-map (:db req) "page" {:name page-name})]
     {:status 200
      :body   (layout-template/render
-               (charset
-                 {:active-page page-name
-                  :pages pages
-                  :body  (page-template/render {:page page})} "UTF-8"))}))
+               {:active-page page-name
+                :pages pages
+                :body  (page-template/render {:page page})})}))
 
-(defn subscribe-handler [req])
+
+(defn events-handler [req]
+  (let [pages (mc/find-maps (:db req) "page")
+        formdata (get-in req [:params])]
+    (println formdata)
+    {:status 200
+     :body   (layout-template/render
+               {:active-page "events"
+                :pages pages
+                :body  (events-template/render
+                         {:formdata formdata})})}))
+
+
+(defn subscribe-handler [req]
+  (let [pages (mc/find-maps (:db req) "page")
+        formdata (:params req)]
+    (response/redirect (str "/events?" (form-encode formdata)))))
+
 
 (defroutes all-routes
            (route/resources "/")
